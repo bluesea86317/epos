@@ -2,18 +2,37 @@ package epos.main.java.service;
 
 import java.sql.SQLException;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import epos.main.java.annotation.MethodTransactionConfig;
-import epos.main.java.annotation.ServiceBeanInfo;
 import epos.main.java.dao.TableDao;
 
-@ServiceBeanInfo(typaAlias = "tableService")
 public class TableService {
 
 	private TableDao tableDao = TableDao.getInstance();
 	
-	@MethodTransactionConfig(needControl = true)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void activeTable() throws SQLException{
-		tableDao.activeService();
+		getTableDao().activeService();
 	}	
 	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void nonActiveTable() throws SQLException{
+		getTableDao().nonActiveTable();
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void testActiveTble() throws SQLException{
+		getTableDao().activeService();
+		getTableDao().nonActiveTable();
+	}
+
+	public TableDao getTableDao() {
+		return tableDao;
+	}
+
+	public void setTableDao(TableDao tableDao) {
+		this.tableDao = tableDao;
+	}
 }

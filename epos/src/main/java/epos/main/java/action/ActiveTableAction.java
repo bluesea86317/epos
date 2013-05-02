@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import epos.main.java.core.Action;
 import epos.main.java.core.ActionForward;
+import epos.main.java.core.Env;
 import epos.main.java.service.TableService;
-import epos.main.java.transaction.Env;
 
 public class ActiveTableAction extends Action {
 	
@@ -20,7 +20,7 @@ public class ActiveTableAction extends Action {
 			HttpServletResponse response)
 			throws IOException {
 		try {
-			tableService.activeTable();
+			tableService.testActiveTble();
 		} catch (SQLException e) {
 			
 			e.printStackTrace();

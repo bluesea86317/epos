@@ -26,7 +26,6 @@ import org.dom4j.io.SAXReader;
 
 import epos.main.java.exception.NonActionForRequstException;
 import epos.main.java.exception.ParameterErrorException;
-import epos.main.java.transaction.Env;
 import epos.main.java.utils.ParamUtils;
 
 public class ActionServlet extends HttpServlet {
@@ -54,9 +53,9 @@ public class ActionServlet extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		String filePath = this.getServletContext().getRealPath("");
+		String contextPath = this.getServletContext().getRealPath("");
 		String fileName = this.getInitParameter("config");
-		String configPath = filePath + fileName;
+		String configPath = contextPath + fileName;
 		
 //		初始化数据库连接		
 		try {
@@ -67,15 +66,12 @@ public class ActionServlet extends HttpServlet {
 //			初始化actionConfig		
 			this.initializeActionConfig(rootNode);
 //			初始化数据库连接
-			this.initializeDataSource(rootNode);
-			Env.initServiceBeanMap();
+//			this.initializeDataSource(rootNode);
+			
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 	
@@ -243,4 +239,5 @@ public class ActionServlet extends HttpServlet {
 		}
 		System.out.println("初始化actionConfig结束");
 	}
+	
 }

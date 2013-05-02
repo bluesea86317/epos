@@ -4,4 +4,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="Table">
 	<typeAlias alias="" type=""/>
+	
+	<update id="testUpdate" parameterClass="java.util.Map">
+		update t_test set testName = #testName# where testId = #testId#		
+	</update>
 </sqlMap>
