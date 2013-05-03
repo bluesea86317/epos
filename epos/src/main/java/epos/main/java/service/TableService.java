@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import epos.main.java.annotation.MethodTransactionConfig;
 import epos.main.java.dao.TableDao;
 
 public class TableService {

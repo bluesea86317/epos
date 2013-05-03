@@ -7,13 +7,15 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+
 
 public class ParamUtils {
 	
 	
 	public static String getString(HttpServletRequest request, String paramName, String defaultValue){
 		String value = request.getParameter(paramName);
-		if(StringUtils.isNullOrEmpty(value)){
+		if(StringUtils.isBlank(value)){
 			return defaultValue;			
 		}
 		return value;

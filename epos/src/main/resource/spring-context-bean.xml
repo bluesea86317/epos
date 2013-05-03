@@ -12,4 +12,8 @@
 	<bean id="tableService" class="epos.main.java.service.TableService">
 		<property name="tableDao" ref="tableDao"></property>
 	</bean>
-	</beans>
+	
+	<bean id="userService" class="epos.main.java.service.UserService">
+		
+	</bean>
+</beans>
