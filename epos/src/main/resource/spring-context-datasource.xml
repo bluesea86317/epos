@@ -10,7 +10,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
 		<property name="configLocations">
 			<list>				
-                  <value>ibatis-sqlMap-Config.xml</value>
+                  <value>ibatis-sqlmap-config.xml</value>
 			</list>
 		</property>
 		<property name="dataSource" ref="dataSource" />
@@ -28,7 +28,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/scblog?useUnicode=true&amp;characterEncoding=utf-8</value>
+			<value>jdbc:mysql://localhost:3306/epos?useUnicode=true&amp;characterEncoding=utf-8</value>
 		</property>
 		<property name="username">
 			<value>root</value>
@@ -36,11 +36,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="password">
 			<value>kingdee</value>
 		</property>
-		<!-- <property name="loginTimeout">
-			<value>100</value>
-		</property> -->
 		<property name="initialSize">
 			<value>3</value>
+		</property>
+		<property name="defaultAutoCommit">
+			<value>false</value>
 		</property>
 	</bean>
 </beans>

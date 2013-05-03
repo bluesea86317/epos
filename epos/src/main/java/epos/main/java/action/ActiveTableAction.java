@@ -6,11 +6,13 @@ import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.ActionForward;
 import epos.main.java.core.Env;
 import epos.main.java.service.TableService;
 
+@ActionAuthFilterConfig(needAuthorize=true)
 public class ActiveTableAction extends Action {
 	
 	TableService tableService = Env.getBean("tableService");

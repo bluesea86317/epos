@@ -15,7 +15,7 @@ public class ParameterErrorException extends Exception {
 	
 	public void outPrint(HttpServletResponse response){
 		try {
-			response.getWriter().print(new Return(Return.PROCESS_RESULT_FAILURE,super.getMessage()).toJason());
+			response.getWriter().print(new Return(Return.PROCESS_RESULT_FAILURE,super.getMessage()).toJson());
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}

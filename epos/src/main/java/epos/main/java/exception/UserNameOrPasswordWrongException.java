@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import epos.main.java.core.Return;
 
 @SuppressWarnings("serial")
-public class NonActionForRequstException extends Exception {
-	
-	public NonActionForRequstException(String message){
-		super(message);
+public class UserNameOrPasswordWrongException extends Exception {
+
+	public UserNameOrPasswordWrongException(String msg) {
+		super(msg);
 	}
 	
 	public void outPrint(HttpServletResponse response){

@@ -33,7 +33,7 @@ public class Return {
 		this.msg = msg;
 	}
 	
-	public String toJason(){
+	public String toJson(){
 		JSONObject jsonObject = JSONObject.fromObject( this ); 
 		return jsonObject.toString();
 	}

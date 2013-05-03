@@ -17,10 +17,7 @@ public class TableDao extends SqlMapClientDaoSupport {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("testId", 1);
 		paramMap.put("testName", "chenwen");
-//		getJdbcDaoTemplate().update("Table.testUpdate", paramMap);
 		getSqlMapClientTemplate().update("Table.testUpdate", paramMap);
-		System.out.println("call activeService");
-		throw new SQLException("Test");
 		
 	}
 	
@@ -28,7 +25,6 @@ public class TableDao extends SqlMapClientDaoSupport {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("testId", 2);
 		paramMap.put("testName", "test");
-		getSqlMapClientTemplate().update("Table.testUpdate", "");
-		System.out.println("call nonActiveTable");
+		getSqlMapClientTemplate().update("Table.testUpdate", paramMap);
 	}
 }

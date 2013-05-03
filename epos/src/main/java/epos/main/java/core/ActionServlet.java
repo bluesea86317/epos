@@ -2,9 +2,6 @@ package epos.main.java.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -24,9 +20,11 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.exception.NonActionForRequstException;
 import epos.main.java.exception.ParameterErrorException;
-import epos.main.java.utils.ParamUtils;
+import epos.main.java.exception.UserNameOrPasswordWrongException;
+import epos.main.java.service.UserService;
 
 public class ActionServlet extends HttpServlet {
 
@@ -77,16 +75,20 @@ public class ActionServlet extends HttpServlet {
 	
 	private void process(HttpServletRequest request, HttpServletResponse response){
 		try {
-			String actionPath = getActionPathFromRequest(request);
+			JSONObject jsonParam = getJsonParam(request);
 //			设置请求和响应的编码规则
 			response.setCharacterEncoding("UTF-8");
 			request.setCharacterEncoding("UTF-8");
-			
+			String actionPath = jsonParam.getString("action");
 			ActionConfig actionConfig = configMap.get(actionPath);
 			if(null == actionConfig){
-				throw new NonActionForRequstException("There is no action bean for this request which action name is \"" + actionPath + "\"");			
+				throw new NonActionForRequstException("This action name '" + actionPath + "' is wrong.");			
 			}
-//			讲处理结果通过json字符串格式返回给客户端
+			
+//			对需要验权的action进行用户名和密码的正确性验证
+			authorizeAction(jsonParam);
+			
+//			将处理结果通过json字符串格式返回给客户端
 			returnResult(request, response, actionConfig);			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -107,16 +109,59 @@ public class ActionServlet extends HttpServlet {
 		} catch (ParameterErrorException e) {			
 			e.outPrint(response);
 			e.printStackTrace();
+		} catch (UserNameOrPasswordWrongException e) {
+			e.outPrint(response);
+			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * 调用action, 返回处理的结果, 结果格式为json字符串
+	 * @param request
+	 * @param response
+	 * @param actionConfig
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	private void returnResult(HttpServletRequest request, HttpServletResponse response, ActionConfig actionConfig) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException{		
 		String clzName = actionConfig.getActionclass();
 		Action action = (Action)Class.forName(clzName).newInstance();
 		outPut(response, action.excute(request, response));
 	}
 	
-	private String getActionPathFromRequest(HttpServletRequest request) throws ParameterErrorException{		
+	/**
+	 * 对需要授权的action做用户名密码的合法性验证
+	 * @param jsonParam
+	 * @throws ClassNotFoundException
+	 * @throws UserNameOrPasswordWrongException
+	 */
+	private void authorizeAction(JSONObject jsonParam) throws ClassNotFoundException, UserNameOrPasswordWrongException{
+		ActionConfig actionConfig = configMap.get(jsonParam.getString("action"));
+		String clzName = actionConfig.getActionclass();
+		ActionAuthFilterConfig annotation  = Class.forName(clzName).getAnnotation(ActionAuthFilterConfig.class);
+		if(annotation != null && annotation.needAuthorize()){
+			try {
+				String userName = jsonParam.getString("userName");
+				String password = jsonParam.getString("password");
+				UserService userService = Env.getBean("userService");
+				if(StringUtils.isBlank(userName) || StringUtils.isBlank(password) || !userService.validateUserNameAndPassword(userName, password)){
+					throw new UserNameOrPasswordWrongException("Wrong username or password !");
+				}				
+			} catch (Exception e) {
+				throw new UserNameOrPasswordWrongException("Wrong username or password !");
+			}
+		}
+	}
+	
+	/**
+	 * 获取请求的json参数对象
+	 * @param request
+	 * @return
+	 * @throws ParameterErrorException
+	 */
+	private JSONObject getJsonParam(HttpServletRequest request) throws ParameterErrorException{		
 		String param = request.getParameter("json");
 		if(StringUtils.isBlank(param)){
 			throw new ParameterErrorException("There is no parameter named 'json'. ");
@@ -125,23 +170,15 @@ public class ActionServlet extends HttpServlet {
 			JSONObject jsonObj = new JSONObject();
 			JSONArray jsonArray = JSONArray.fromObject("["+param+"]");
 			jsonObj = jsonArray.getJSONObject(0);
-			return jsonObj.getString("action");			
+			return jsonObj;			
 		} catch (Exception e) {
-			
+			throw new ParameterErrorException("The parameter is not a correct json type. ");
 		}
-		return null;
+//		return null;
 	}
 	
 	/**
-	 * ajax result return : success
-	 * @param response
-	 */
-	public void return_out(HttpServletResponse response,String result, String msg){
-		outPut(response,"{\"resultCode\":\"" + result + "\",\"msg\":\"" + msg + "\"}");
-	}
-	
-	/**
-	 * ajax输出
+	 * 
 	 * @param response
 	 * @param result
 	 */
@@ -153,59 +190,6 @@ public class ActionServlet extends HttpServlet {
 		}
 	}
 	
-	/**
-	 * 初始化数据库连接
-	 * @param rootNode
-	 */
-	private void initializeDataSource(Element rootNode){
-		System.out.println("初始化数据库连接开始");
-		List<?> dataSourceNodesList = rootNode.selectNodes("data-sources/data-source");
-		Element dataSourceNode = (Element)dataSourceNodesList.get(0);
-		String className = dataSourceNode.attributeValue("type");
-		Class<?> clazz;
-		try {
-			clazz = Class.forName(className);
-			Object dataSource = clazz.newInstance();
-//			获取DB参数
-			List<?> dataSourcePropertyNodesList = rootNode.selectNodes("data-sources/data-source/property");
-			for(Object node : dataSourcePropertyNodesList){
-				Element propertyNode = (Element)node;
-				String dataSourceProperty = propertyNode.attributeValue("name");
-				String dataSourceValue = propertyNode.attributeValue("value");
-				Field[] fields = clazz.getDeclaredFields();
-				for(Field field : fields){
-					if(field.getName().equals(dataSourceProperty)){
-						Method method = clazz.getMethod("set" + ParamUtils.upperCaseMethodName(field.getName()), field.getType());
-						method.invoke(dataSource, ParamUtils.convertString(dataSourceValue, field.getType()));
-					}
-				}
-			}
-//			初始化DB连接
-			DataSourceFactory.init((DataSource)dataSource);
-			System.out.println("初始化数据库连接结束");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * 初始化actionConfig
