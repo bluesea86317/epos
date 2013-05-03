@@ -4,5 +4,6 @@
 <sqlMapConfig>
 	<settings useStatementNamespaces="true"/>
 
-	<sqlMap resource="epos/sql/Table.xml"/>	
+	<sqlMap resource="epos/sql/Table.xml"/>
+	<sqlMap resource="epos/sql/User.xml"/>
 </sqlMapConfig>

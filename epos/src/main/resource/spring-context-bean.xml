@@ -13,7 +13,11 @@
 		<property name="tableDao" ref="tableDao"></property>
 	</bean>
 	
+	<bean id="userDao" class="epos.main.java.dao.UserDao">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	
 	<bean id="userService" class="epos.main.java.service.UserService">
-		
+		<property name="userDao" ref="userDao"></property>
 	</bean>
 </beans>

@@ -150,6 +150,7 @@ public class ActionServlet extends HttpServlet {
 					throw new UserNameOrPasswordWrongException("Wrong username or password !");
 				}				
 			} catch (Exception e) {
+				e.printStackTrace();
 				throw new UserNameOrPasswordWrongException("Wrong username or password !");
 			}
 		}

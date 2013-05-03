@@ -23,8 +23,7 @@ public class TableService {
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void testActiveTble() throws SQLException{
-		getTableDao().activeService();
-		getTableDao().nonActiveTable();
+		
 	}
 
 	public TableDao getTableDao() {
