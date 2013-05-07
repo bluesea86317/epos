@@ -12,6 +12,8 @@
 	</data-sources> -->
 	<action-mapping>
 		<action class="epos.main.java.action.ActiveTableAction" path="activeTable">
+		</action>
+		<action class="epos.main.java.action.ListUserAction" path="listUser">
 		</action>		
 	</action-mapping>
 </mvc-config>

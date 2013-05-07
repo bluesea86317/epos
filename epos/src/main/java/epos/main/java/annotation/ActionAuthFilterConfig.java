@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface ActionAuthFilterConfig {
 
 	boolean needAuthorize();
+	
+	boolean mustBeAdmin();
 }

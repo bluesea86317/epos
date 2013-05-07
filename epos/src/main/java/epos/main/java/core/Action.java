@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class Action {
 	
-	public abstract String excute(HttpServletRequest request, HttpServletResponse response) throws IOException;	
+	public abstract String excute(HttpServletRequest request, HttpServletResponse response, Return returnObj) throws IOException;	
 	
 	
 }

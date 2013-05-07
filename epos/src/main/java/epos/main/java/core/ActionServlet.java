@@ -23,8 +23,10 @@ import org.dom4j.io.SAXReader;
 import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.exception.NonActionForRequstException;
 import epos.main.java.exception.ParameterErrorException;
+import epos.main.java.exception.UnauthorizedException;
 import epos.main.java.exception.UserNameOrPasswordWrongException;
 import epos.main.java.service.UserService;
+import epos.main.java.vo.User;
 
 public class ActionServlet extends HttpServlet {
 
@@ -112,6 +114,9 @@ public class ActionServlet extends HttpServlet {
 		} catch (UserNameOrPasswordWrongException e) {
 			e.outPrint(response);
 			e.printStackTrace();
+		} catch (UnauthorizedException e) {
+			e.outPrint(response);
+			e.printStackTrace();
 		}
 	}
 	
@@ -128,7 +133,8 @@ public class ActionServlet extends HttpServlet {
 	private void returnResult(HttpServletRequest request, HttpServletResponse response, ActionConfig actionConfig) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException{		
 		String clzName = actionConfig.getActionclass();
 		Action action = (Action)Class.forName(clzName).newInstance();
-		outPut(response, action.excute(request, response));
+		Return returnObj = new Return(Return.PROCESS_RESULT_SUCCESS,"");
+		outPut(response, action.excute(request, response, returnObj));
 	}
 	
 	/**
@@ -136,23 +142,24 @@ public class ActionServlet extends HttpServlet {
 	 * @param jsonParam
 	 * @throws ClassNotFoundException
 	 * @throws UserNameOrPasswordWrongException
+	 * @throws UnauthorizedException 
 	 */
-	private void authorizeAction(JSONObject jsonParam) throws ClassNotFoundException, UserNameOrPasswordWrongException{
+	private void authorizeAction(JSONObject jsonParam) throws ClassNotFoundException, UserNameOrPasswordWrongException, UnauthorizedException{
 		ActionConfig actionConfig = configMap.get(jsonParam.getString("action"));
 		String clzName = actionConfig.getActionclass();
 		ActionAuthFilterConfig annotation  = Class.forName(clzName).getAnnotation(ActionAuthFilterConfig.class);
 		if(annotation != null && annotation.needAuthorize()){
-			try {
+			
 				String userName = jsonParam.getString("userName");
 				String password = jsonParam.getString("password");
 				UserService userService = Env.getBean("userService");
-				if(StringUtils.isBlank(userName) || StringUtils.isBlank(password) || !userService.validateUserNameAndPassword(userName, password)){
+				User user = userService.getUserByNameAndPassword(userName, password);
+				if(StringUtils.isBlank(userName) || StringUtils.isBlank(password) || user == null){
 					throw new UserNameOrPasswordWrongException("Wrong username or password !");
-				}				
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new UserNameOrPasswordWrongException("Wrong username or password !");
-			}
+				}else if(annotation.mustBeAdmin() && !user.isAdmin()){
+					throw new UnauthorizedException("该用户没有此操作权限");
+				}
+			
 		}
 	}
 	

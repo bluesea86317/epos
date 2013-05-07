@@ -4,8 +4,22 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="User">
 	<typeAlias alias="userClass" type="epos.main.java.vo.User"/>
+	<resultMap class="userClass" id="userMap">
+		<result property="id" column="fid" javaType="int" jdbcType="number"/>
+		<result property="userName" column="fuserName" javaType="string" jdbcType="varchar"/>
+		<result property="password" column="fpassword" javaType="string" jdbcType="varchar"/>
+		<result property="realName" column="frealName" javaType="string" jdbcType="varchar"/>
+		<result property="mobile" column="fmobile" javaType="string" jdbcType="varchar"/>
+		<result property="isAdmin" column="fisAdmin" javaType="boolean" jdbcType="number"/>
+	</resultMap>
 	
-	<select id="getUserByNameAndPsw" resultClass="userClass" parameterClass="java.util.Map">
-		select * from t_user;
+	
+	<select id="getUserByNameAndPsw" resultMap="userMap" parameterClass="java.util.Map">
+		select * from t_user where fuserName = #userName# and fpassword = password(#password#);
 	</select>
+	
+	<select id="getUsers" resultMap="userMap">
+		select * from t_user
+	</select>
+	
 </sqlMap>
