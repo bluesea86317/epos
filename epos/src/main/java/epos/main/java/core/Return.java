@@ -33,8 +33,13 @@ public class Return {
 		this.msg = msg;
 	}
 	
-	public String toJson(){
-		JSONObject jsonObject = JSONObject.fromObject( this ); 
+	public String toJsonString(){
+		JSONObject jsonObject = toJsonObj(); 
 		return jsonObject.toString();
+	}
+	
+	public JSONObject toJsonObj(){
+		JSONObject jsonObject = JSONObject.fromObject( this ); 
+		return jsonObject;
 	}
 }

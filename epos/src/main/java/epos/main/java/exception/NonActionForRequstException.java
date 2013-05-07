@@ -15,7 +15,7 @@ public class NonActionForRequstException extends Exception {
 	
 	public void outPrint(HttpServletResponse response){
 		try {
-			response.getWriter().print(new Return(Return.PROCESS_RESULT_FAILURE,super.getMessage()).toJson());
+			response.getWriter().print(new Return(Return.PROCESS_RESULT_FAILURE,super.getMessage()).toJsonString());
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}

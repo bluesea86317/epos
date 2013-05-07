@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 import epos.main.java.core.Return;
 
 @SuppressWarnings("serial")
-public class ParameterErrorException extends Exception {
-	
-	public ParameterErrorException(String msg) {
+public class UploadImageException extends Exception {
+
+	public UploadImageException(String msg){
 		super(msg);
 	}
 	
@@ -20,4 +20,5 @@ public class ParameterErrorException extends Exception {
 			e.printStackTrace();
 		}
 	}
+	
 }
