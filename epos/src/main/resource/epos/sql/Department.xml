@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 <sqlMap namespace="Department">
 	<typeAlias alias="departmentClass" type="epos.main.java.vo.Department"/>
 	<resultMap class="departmentClass" id="departmentMap">
-		<result property="id" column="fid" javaType="int" jdbcType="number"/>
+		<result property="departmentId" column="fid" javaType="int" jdbcType="number"/>
 		<result property="departmentName" column="fdepartmentName" javaType="string" jdbcType="varchar"/>
 		<result property="printerInfo" column="fprinterInfo" javaType="string" jdbcType="varchar"/>
 	</resultMap>
@@ -15,7 +15,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</select>
 	
 	<insert id="addDepartment" parameterClass="departmentClass">
-		insert into t_department (fdepartmentName,fprinterInfo) values (#departmentName#,#printerInfo#)
+		insert into t_department(fdepartmentName,fprinterInfo) values (#departmentName#,#printerInfo#)
 	</insert>
 	
 	<delete id="deleteDepartment" parameterClass="int">
@@ -24,6 +24,6 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	
 	<update id="updateDepartment" parameterClass="departmentClass">
 		update t_department set fdepartmentName = #departmentName#, fprinterInfo = #printerInfo#
-		where fid = #id#
+		where fid = #departmentId#
 	</update>
 </sqlMap>

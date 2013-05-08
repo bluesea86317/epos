@@ -13,12 +13,24 @@ public class DepartmentService {
 		getDepartmentDao().addDepartment(department);
 	}
 	
+	public void addDepartments(List<Department> departments){
+		getDepartmentDao().addDepartments(departments);
+	}
+	
 	public void deleteDepartment(int departmentId){
 		getDepartmentDao().deleteDepartment(departmentId);
 	}
 	
+	public void deleteDepartments(List<Integer> departmentIds){
+		getDepartmentDao().deleteDepartments(departmentIds);
+	}
+	
 	public void updateDepartment(Department department){
 		getDepartmentDao().updateDepartment(department);
+	}
+	
+	public void updateDepartments(List<Department> departments){
+		getDepartmentDao().updateDepartments(departments);
 	}
 	
 	public List<Department> listDepartment(){

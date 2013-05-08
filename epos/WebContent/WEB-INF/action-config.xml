@@ -17,8 +17,10 @@
 		</action>
 		
 		<!-- department -->
-		<action class="epos.main.java.action.AddDepartmentAction" path="addDepartment">
-		</action>
+		<action class="epos.main.java.action.AddDepartmentAction" path="addDepartment"></action>
+		<action class="epos.main.java.action.ListDepartmentAction" path="listDepartment"></action>
+		<action class="epos.main.java.action.DeleteDepartmentAction" path="deleteDepartment"></action>
+		<action class="epos.main.java.action.UpdateDepartmentAction" path="updateDepartment"></action>
 		<!-- department -->		
 	</action-mapping>
 </mvc-config>

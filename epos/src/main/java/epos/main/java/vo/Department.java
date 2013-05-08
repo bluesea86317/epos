@@ -2,19 +2,11 @@ package epos.main.java.vo;
 
 public class Department {
 
-	private int id;
+	private int departmentId;
 	
 	private String departmentName;
 	
 	private String printerInfo;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getDepartmentName() {
 		return departmentName;
@@ -30,6 +22,14 @@ public class Department {
 
 	public void setPrinterInfo(String printerInfo) {
 		this.printerInfo = printerInfo;
+	}
+
+	public int getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(int departmentId) {
+		this.departmentId = departmentId;
 	}
 	
 	

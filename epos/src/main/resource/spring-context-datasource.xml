@@ -39,8 +39,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="initialSize">
 			<value>3</value>
 		</property>
-		<property name="defaultAutoCommit">
+		<!-- <property name="defaultAutoCommit">
 			<value>false</value>
-		</property>
+		</property> -->
 	</bean>
 </beans>
