@@ -20,4 +20,12 @@
 	<bean id="userService" class="epos.main.java.service.UserService">
 		<property name="userDao" ref="userDao"></property>
 	</bean>
+	
+	<bean id="departmentDao" class="epos.main.java.dao.DepartmentDao">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	
+	<bean id="departmentService" class="epos.main.java.service.DepartmentService">
+		<property name="departmentDao" ref="departmentDao"></property>
+	</bean>
 </beans>

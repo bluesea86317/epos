@@ -14,6 +14,11 @@
 		<action class="epos.main.java.action.ActiveTableAction" path="activeTable">
 		</action>
 		<action class="epos.main.java.action.ListUserAction" path="listUser">
-		</action>		
+		</action>
+		
+		<!-- department -->
+		<action class="epos.main.java.action.AddDepartmentAction" path="addDepartment">
+		</action>
+		<!-- department -->		
 	</action-mapping>
 </mvc-config>

@@ -12,7 +12,6 @@ import net.sf.json.JSONObject;
 import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
-import epos.main.java.core.Return;
 import epos.main.java.service.UserService;
 import epos.main.java.vo.User;
 
@@ -22,14 +21,13 @@ public class ListUserAction extends Action {
 	private UserService userService = Env.getBean("userService");
 	
 	@Override
-	public String excute(HttpServletRequest request,
-			HttpServletResponse response, Return returnObj) throws IOException {
+	public JSONObject excute(HttpServletRequest request,
+			HttpServletResponse response,JSONObject jsonParam, JSONObject returnObj) throws IOException {
 		List<User> userList = userService.listUser();
 		JSONArray jsonArray = new JSONArray();
-		jsonArray.addAll(userList);
-		JSONObject returnJsonObj = returnObj.toJsonObj();
-		returnJsonObj.put("data", jsonArray.toString());
-		return returnJsonObj.toString();
+		jsonArray.addAll(userList);		
+		returnObj.put("data", jsonArray.toString());
+		return returnObj;
 	}
 
 }

@@ -91,7 +91,7 @@ public class ActionServlet extends HttpServlet {
 			authorizeAction(jsonParam);
 			
 //			将处理结果通过json字符串格式返回给客户端
-			returnResult(request, response, actionConfig);			
+			returnResult(request, response, actionConfig, jsonParam);			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,11 +130,11 @@ public class ActionServlet extends HttpServlet {
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
-	private void returnResult(HttpServletRequest request, HttpServletResponse response, ActionConfig actionConfig) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException{		
+	private void returnResult(HttpServletRequest request, HttpServletResponse response, ActionConfig actionConfig, JSONObject jsonParam) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException{		
 		String clzName = actionConfig.getActionclass();
 		Action action = (Action)Class.forName(clzName).newInstance();
 		Return returnObj = new Return(Return.PROCESS_RESULT_SUCCESS,"");
-		outPut(response, action.excute(request, response, returnObj));
+		outPut(response, action.excute(request, response, jsonParam, returnObj.toJsonObj()).toString());
 	}
 	
 	/**

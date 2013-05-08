@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Department">
+	<typeAlias alias="departmentClass" type="epos.main.java.vo.Department"/>
+	<resultMap class="departmentClass" id="departmentMap">
+		<result property="id" column="fid" javaType="int" jdbcType="number"/>
+		<result property="departmentName" column="fdepartmentName" javaType="string" jdbcType="varchar"/>
+		<result property="printerInfo" column="fprinterInfo" javaType="string" jdbcType="varchar"/>
+	</resultMap>
+	
+	<select id="listDepartment" resultMap="departmentMap">
+		select * from t_department
+	</select>
+	
+	<insert id="addDepartment" parameterClass="departmentClass">
+		insert into t_department (fdepartmentName,fprinterInfo) values (#departmentName#,#printerInfo#)
+	</insert>
+	
+	<delete id="deleteDepartment" parameterClass="int">
+		delete from t_department where fid = #departmentId#
+	</delete>
+	
+	<update id="updateDepartment" parameterClass="departmentClass">
+		update t_department set fdepartmentName = #departmentName#, fprinterInfo = #printerInfo#
+		where fid = #id#
+	</update>
+</sqlMap>

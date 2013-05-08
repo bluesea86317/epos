@@ -6,4 +6,6 @@
 
 	<sqlMap resource="epos/sql/Table.xml"/>
 	<sqlMap resource="epos/sql/User.xml"/>
+	<sqlMap resource="epos/sql/Department.xml"/>
+	
 </sqlMapConfig>

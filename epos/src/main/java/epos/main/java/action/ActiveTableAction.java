@@ -6,11 +6,10 @@ import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import epos.main.java.annotation.ActionAuthFilterConfig;
+import net.sf.json.JSONObject;
+
 import epos.main.java.core.Action;
-import epos.main.java.core.ActionForward;
 import epos.main.java.core.Env;
-import epos.main.java.core.Return;
 import epos.main.java.service.TableService;
 
 public class ActiveTableAction extends Action {
@@ -18,8 +17,8 @@ public class ActiveTableAction extends Action {
 	TableService tableService = Env.getBean("tableService");
 	
 	@Override
-	public String excute(HttpServletRequest request,
-			HttpServletResponse response, Return returnObj)
+	public JSONObject excute(HttpServletRequest request,
+			HttpServletResponse response,JSONObject jsonParam, JSONObject returnObj)
 			throws IOException {
 		try {
 			tableService.testActiveTble();
