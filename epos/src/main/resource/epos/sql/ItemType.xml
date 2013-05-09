@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ItemType">
+	<typeAlias alias="itemTypeClass" type="epos.main.java.vo.ItemType"/>
+	<resultMap class="itemTypeClass" id="itemTypeMap">
+		<result property="itemTypeId" column="fid" javaType="int" jdbcType="number"/>
+		<result property="itemType" column="fitemType" javaType="string" jdbcType="varchar"/>
+		<result property="departmentId" column="fdepartmentId" javaType="int" jdbcType="number"/>
+	</resultMap>
+	
+	<insert id="addItemType" parameterClass="itemTypeClass">
+		insert into t_item_type (fitemType, fdepartmentId) values (#itemType#, #departmentId#)
+	</insert>
+	
+	<delete id="deleteItemType" parameterClass="int">
+		delete from t_item_type where fid = #itemTypeId#
+	</delete>
+	
+	<update id="updateItemType" parameterClass="itemTypeClass">
+		update t_item_type set fitemType = #itemType#, fdepartmentId = #departmentId# where fid = #itemTypeId#
+	</update>
+	
+	<select id="listItemTypes" resultMap="itemTypeMap">
+		select * from t_item_type
+	</select>
+</sqlMap>

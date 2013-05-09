@@ -2,7 +2,7 @@ package epos.main.java.vo;
 
 public class User {
 	
-	private int id;
+	private int userId;
 	
 	private String userName;
 	
@@ -57,12 +57,12 @@ public class User {
 		this.isAdmin = isAdmin;
 	}
 
-	public int getId() {
-		return id;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}	
 	
 }

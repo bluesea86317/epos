@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 <sqlMap namespace="User">
 	<typeAlias alias="userClass" type="epos.main.java.vo.User"/>
 	<resultMap class="userClass" id="userMap">
-		<result property="id" column="fid" javaType="int" jdbcType="number"/>
+		<result property="userId" column="fid" javaType="int" jdbcType="number"/>
 		<result property="userName" column="fuserName" javaType="string" jdbcType="varchar"/>
 		<result property="password" column="fpassword" javaType="string" jdbcType="varchar"/>
 		<result property="realName" column="frealName" javaType="string" jdbcType="varchar"/>
@@ -22,4 +22,24 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		select * from t_user
 	</select>
 	
+	<insert id="addUser" parameterClass="userClass">
+		insert into t_user (fuserName,fpassword,frealName,fmobile,fisAdmin) values(#userName#,password(#password#),#realName#,#mobile#,#isAdmin# )
+	</insert>
+	
+	<update id="updateUser" parameterClass="userClass">
+		update t_user set 
+		fuserName = #userName#,
+		frealName = #realName#,
+		fmobile = #mobile#,
+		fmobile = #isAdmin#
+		where fid = #userId#
+	</update>
+	
+	<delete id="deleteUser" parameterClass="int">
+		delete from t_user where fid = #userId#
+	</delete>
+	
+	<update id="changePassword" parameterClass="java.util.Map">
+		update t_user set fpassword = password(#password#) where fid = #userID#
+	</update>
 </sqlMap>

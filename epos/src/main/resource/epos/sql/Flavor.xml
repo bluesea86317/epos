@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Flavor">
+	<typeAlias alias="flavorClass" type="epos.main.java.vo.Flavor"/>
+	<resultMap class="flavorClass" id="flavorMap">
+		<result property="flavorId" column="fid" javaType="int" jdbcType="number"/>
+		<result property="flavorType" column="fflavorType" javaType="string" jdbcType="varchar"/>
+	</resultMap>
+	
+	<insert id="addFlavor" parameterClass="flavorClass">
+		insert into t_flavor (fflavorType) values (#flavorType#)
+	</insert>
+	
+	<delete id="deleteFlavor" parameterClass="int">
+		delete from t_flavor where fid = #flavorId#
+	</delete>
+	
+	<update id="updateFlavor" parameterClass="flavorClass">
+		update t_flavor set fflavorType = #flavorType# where fid = #flavorId#
+	</update>
+	
+	<select id="listFlavors" resultMap="flavorMap">
+		select * from t_flavor
+	</select>
+</sqlMap>

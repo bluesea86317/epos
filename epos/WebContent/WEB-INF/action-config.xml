@@ -21,6 +21,20 @@
 		<action class="epos.main.java.action.ListDepartmentAction" path="listDepartment"></action>
 		<action class="epos.main.java.action.DeleteDepartmentAction" path="deleteDepartment"></action>
 		<action class="epos.main.java.action.UpdateDepartmentAction" path="updateDepartment"></action>
-		<!-- department -->		
+		<!-- department -->
+		
+		<!-- itemType -->
+		<action class="epos.main.java.action.AddItemTypeAction" path="addItemType"></action>
+		<action class="epos.main.java.action.ListItemTypeAction" path="listItemType"></action>
+		<action class="epos.main.java.action.DeleteItemTypeAction" path="deleteItemType"></action>
+		<action class="epos.main.java.action.UpdateItemTypeAction" path="updateItemType"></action>
+		<!-- itemType -->
+		
+		<!-- flavor -->
+		<action class="epos.main.java.action.AddFlavorAction" path="addFlavor"></action>
+		<action class="epos.main.java.action.ListFlavorAction" path="listFlavor"></action>
+		<action class="epos.main.java.action.DeleteFlavorAction" path="deleteFlavor"></action>
+		<action class="epos.main.java.action.UpdateFlavorAction" path="updateFlavor"></action>
+		<!-- flavor -->
 	</action-mapping>
 </mvc-config>
