@@ -1,6 +1,9 @@
 package epos.main.java.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import epos.main.java.utils.DBUtils;
@@ -35,5 +38,11 @@ public class DepartmentDao extends SqlMapClientDaoSupport {
 	@SuppressWarnings("unchecked")
 	public List<Department> listDepartment(){
 		return (List<Department>)getSqlMapClientTemplate().queryForList("Department.listDepartment");
+	}
+	
+	public Department getDepartment(int departmentId){
+		Map<String, Object> param = new HashMap<String,Object>();
+		param.put("departmentId", departmentId);
+		return (Department)getSqlMapClientTemplate().queryForObject("Department.listDepartment",param);
 	}
 }

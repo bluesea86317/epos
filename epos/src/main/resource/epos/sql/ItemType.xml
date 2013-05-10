@@ -22,7 +22,15 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		update t_item_type set fitemType = #itemType#, fdepartmentId = #departmentId# where fid = #itemTypeId#
 	</update>
 	
-	<select id="listItemTypes" resultMap="itemTypeMap">
+	<select id="listItemTypes" resultMap="itemTypeMap" parameterClass="java.util.Map">
 		select * from t_item_type
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="itemTypeId">
+				fid = #itemTypeId#
+			</isNotNull>
+			<isNotNull prepend="and" property="departmentId">
+				fdepartmentId = #departmentId#
+			</isNotNull>
+		</dynamic>
 	</select>
 </sqlMap>

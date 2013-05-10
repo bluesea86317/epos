@@ -24,7 +24,7 @@ private ItemTypeService itemTypeService = Env.getBean("itemTypeService");
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
-			JSONArray jsonArray = jsonParam.getJSONArray("data");
+			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
 			List<ItemType> itemTypes = new ArrayList<ItemType>();
 			for(Object obj : jsonArray){
 				JSONObject jsonObj =  JSONObject.fromObject(obj);
@@ -38,9 +38,9 @@ private ItemTypeService itemTypeService = Env.getBean("itemTypeService");
 				itemTypes.add(type);
 			}
 			itemTypeService.updateItemTypes(itemTypes);
-			returnObj.put("msg", "修改成功");
+			returnObj.put(MSG, UPDATE_SUCCESS);
 		} catch (Exception e) {
-			returnObj.put("msg", "修改失败,错误原因:" + e.getMessage());
+			returnObj.put(MSG, UPDATE_FAILURE + e.getMessage());
 			returnObj.put("resultCode", Return.PROCESS_RESULT_FAILURE);
 		}
 		return returnObj;

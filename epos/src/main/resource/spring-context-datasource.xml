@@ -7,6 +7,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
 	default-lazy-init="true">
 	
+	<bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:data-source-config.properties</value>				
+			</list>
+		</property>
+	</bean>
+	
 	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
 		<property name="configLocations">
 			<list>				
@@ -25,19 +33,19 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName">
-			<value>com.mysql.jdbc.Driver</value>
+			<value>${driverClassName}</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://localhost:3306/epos?useUnicode=true&amp;characterEncoding=utf-8</value>
+			<value>${url}</value>
 		</property>
 		<property name="username">
-			<value>root</value>
+			<value>${username}</value>
 		</property>
 		<property name="password">
-			<value>kingdee</value>
+			<value>${password}</value>
 		</property>
 		<property name="initialSize">
-			<value>3</value>
+			<value>${initialSize}</value>
 		</property>
 		<!-- <property name="defaultAutoCommit">
 			<value>false</value>

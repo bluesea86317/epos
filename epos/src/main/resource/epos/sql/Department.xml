@@ -10,8 +10,13 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="printerInfo" column="fprinterInfo" javaType="string" jdbcType="varchar"/>
 	</resultMap>
 	
-	<select id="listDepartment" resultMap="departmentMap">
+	<select id="listDepartment" resultMap="departmentMap" parameterClass="java.util.Map">
 		select * from t_department
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="departmentId">
+				fid = #departmentId#
+			</isNotNull>
+		</dynamic>
 	</select>
 	
 	<insert id="addDepartment" parameterClass="departmentClass">

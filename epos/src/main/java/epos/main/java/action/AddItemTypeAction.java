@@ -26,7 +26,7 @@ public class AddItemTypeAction extends Action {
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
-			JSONArray jsonArray = jsonParam.getJSONArray("data");
+			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
 			List<ItemType> itemTypes = new ArrayList<ItemType>();
 			for(Object obj : jsonArray){
 				JSONObject jsonObj =  JSONObject.fromObject(obj);

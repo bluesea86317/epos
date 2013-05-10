@@ -41,6 +41,7 @@ public class AddDepartmentAction extends Action {
 		}catch(Exception e){
 			returnObj.put(MSG, ADD_FAILURE + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
+			e.printStackTrace();
 		}		
 		return returnObj;
 	}

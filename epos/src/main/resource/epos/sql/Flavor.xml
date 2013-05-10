@@ -21,7 +21,12 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		update t_flavor set fflavorType = #flavorType# where fid = #flavorId#
 	</update>
 	
-	<select id="listFlavors" resultMap="flavorMap">
+	<select id="listFlavors" resultMap="flavorMap" parameterClass="java.util.Map">
 		select * from t_flavor
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="flavorIds">
+				fid in (#flavorIds#)
+			</isNotNull>
+		</dynamic>
 	</select>
 </sqlMap>

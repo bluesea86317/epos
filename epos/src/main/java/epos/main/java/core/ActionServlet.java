@@ -77,14 +77,14 @@ public class ActionServlet extends HttpServlet {
 	
 	private void process(HttpServletRequest request, HttpServletResponse response){
 		try {
-			JSONObject jsonParam = getJsonParam(request);
-//			设置请求和响应的编码规则
 			response.setCharacterEncoding("UTF-8");
 			request.setCharacterEncoding("UTF-8");
+			JSONObject jsonParam = getJsonParam(request);
+//			设置请求和响应的编码规则
 			String actionPath = jsonParam.getString("action");
 			ActionConfig actionConfig = configMap.get(actionPath);
 			if(null == actionConfig){
-				throw new NonActionForRequstException("This action name '" + actionPath + "' is wrong.");			
+				throw new NonActionForRequstException("找不多对应的请求, 请确认请求名'" + actionPath + "'是否正确");			
 			}
 			
 //			对需要验权的action进行用户名和密码的正确性验证
@@ -155,7 +155,7 @@ public class ActionServlet extends HttpServlet {
 				UserService userService = Env.getBean("userService");
 				User user = userService.getUserByNameAndPassword(userName, password);
 				if(StringUtils.isBlank(userName) || StringUtils.isBlank(password) || user == null){
-					throw new UserNameOrPasswordWrongException("Wrong username or password !");
+					throw new UserNameOrPasswordWrongException("用户名或者密码错误");
 				}else if(annotation.mustBeAdmin() && !user.isAdmin()){
 					throw new UnauthorizedException("该用户没有此操作权限");
 				}
@@ -172,7 +172,7 @@ public class ActionServlet extends HttpServlet {
 	private JSONObject getJsonParam(HttpServletRequest request) throws ParameterErrorException{		
 		String param = request.getParameter("json");
 		if(StringUtils.isBlank(param)){
-			throw new ParameterErrorException("There is no parameter named 'json'. ");
+			throw new ParameterErrorException("请确认是否有名为'json'的请求参数");
 		}
 		try{	
 			JSONObject jsonObj = new JSONObject();
@@ -180,7 +180,7 @@ public class ActionServlet extends HttpServlet {
 			jsonObj = jsonArray.getJSONObject(0);
 			return jsonObj;			
 		} catch (Exception e) {
-			throw new ParameterErrorException("The parameter is not a correct json type. ");
+			throw new ParameterErrorException("参数格式错误,不是合法的JSON字符串");
 		}
 //		return null;
 	}

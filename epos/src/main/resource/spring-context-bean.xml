@@ -27,6 +27,7 @@
 	
 	<bean id="departmentService" class="epos.main.java.service.DepartmentService">
 		<property name="departmentDao" ref="departmentDao"></property>
+		<property name="itemTypeService" ref="itemTypeService"></property>
 	</bean>
 	
 	<bean id="itemTypeDao" class="epos.main.java.dao.ItemTypeDao">
@@ -35,6 +36,7 @@
 	
 	<bean id="itemTypeService" class="epos.main.java.service.ItemTypeService">
 		<property name="itemTypeDao" ref="itemTypeDao"></property>
+		<property name="itemService" ref="itemService"></property>
 	</bean>
 	
 	<bean id="flavorDao" class="epos.main.java.dao.FlavorDao">
@@ -43,6 +45,15 @@
 	
 	<bean id="flavorService" class="epos.main.java.service.FlavorService">
 		<property name="flavorDao" ref="flavorDao"></property>
+	</bean>
+	
+	<bean id="itemDao" class="epos.main.java.dao.ItemDao">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	
+	<bean id="itemService" class="epos.main.java.service.ItemService">
+		<property name="flavorDao" ref="flavorDao"></property>
+		<property name="itemDao" ref="itemDao"></property>
 	</bean>
 	
 </beans>

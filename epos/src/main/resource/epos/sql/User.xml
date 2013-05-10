@@ -18,7 +18,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		select * from t_user where fuserName = #userName# and fpassword = password(#password#);
 	</select>
 	
-	<select id="getUsers" resultMap="userMap">
+	<select id="listUsers" resultMap="userMap">
 		select * from t_user
 	</select>
 	

@@ -25,7 +25,7 @@ public class UpdateDepartmentAction extends Action {
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try{
-			JSONArray jsonArray = jsonParam.getJSONArray("data");
+			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
 			List<Department> departments = new ArrayList<Department>();
 			for(Object obj : jsonArray){
 				JSONObject jsonObj =  JSONObject.fromObject(obj);
@@ -39,10 +39,10 @@ public class UpdateDepartmentAction extends Action {
 				departments.add(department);
 			}
 			departmentService.updateDepartments(departments);
-			returnObj.put("msg", "修改部门成功");
+			returnObj.put(MSG, UPDATE_SUCCESS);
 		}catch(Exception e){
-			returnObj.put("msg", "修改部门失败，错误原因：" + e.getMessage());
-			returnObj.put("resultCode", Return.PROCESS_RESULT_FAILURE);
+			returnObj.put(MSG, UPDATE_FAILURE + e.getMessage());
+			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
 		}		
 		return returnObj;
 	}

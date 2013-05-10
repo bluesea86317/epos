@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Item">
+	<typeAlias alias="itemClass" type="epos.main.java.vo.Item"/>
+	<resultMap class="itemClass" id="itemMap">
+		<result property="itemId" column="fid" javaType="int" jdbcType="number"/>
+		<result property="itemName" column="fitemName" javaType="string" jdbcType="varchar"/>
+		<result property="picName" column="fpicName" javaType="string" jdbcType="varchar"/>
+		<result property="imageUrl" column="fimageUrl" javaType="string" jdbcType="varchar"/>
+		<result property="price" column="fprice" javaType="java.math.BigDecimal" jdbcType="decimal"/>
+		<result property="itemTypeId" column="fitemTypeId" javaType="int" jdbcType="number"/>
+		<result property="itemType" column="fitemType" javaType="string" jdbcType="varchar"/>
+		<result property="ifCanOrderHalf" column="fifCanOrderHalf" javaType="boolean" jdbcType="number"/>
+		<result property="flavorIds" column="fflavorIds" javaType="string" jdbcType="varchar"/>		
+	</resultMap>
+	
+	<insert id="addItem" parameterClass="itemClass">
+		insert into t_item (fitemName, fpicName, fimageUrl, fprice, fitemTypeId, fifCanOrderHalf, fflavorIds)
+		values (#itemName#, #picName#, #imageUrl#, #price#, #itemTypeId#, #ifCanOrderHalf#, #flavorIds#)
+	</insert>
+	
+	<select id="listItems" parameterClass="java.util.Map" resultMap="itemMap">
+		select i.*, it.itemType from t_item i left join t_itemType it on i.fitemTypeId = it.fid
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="itemName">
+				fitemName like #itemName#
+			</isNotNull>
+			<isNotNull prepend="and" property="itemTypeId">
+				fitemTypeId = #itemTypeId#
+			</isNotNull>
+		</dynamic>		
+	</select>
+	
+	<delete id="deleteItem" parameterClass="int">
+		delete from t_item where fid = #itemId#
+	</delete>
+	
+	<update id="updateItem">
+		update t_item set 
+			fitemName = #itemName#, 
+			fpicName = #picName#, 
+			fimageUrl = #imageUrl#,
+			fprice = #price#,
+			fitemTypeId = #itemTypeId#,
+			fifCanOrderHalf = #ifCanOrderHalf#,
+			fflavorIds = #flavorIds#
+			where fid = #itemId#
+	</update>
+</sqlMap>

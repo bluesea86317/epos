@@ -1,6 +1,8 @@
 package epos.main.java.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
@@ -22,7 +24,7 @@ public class FlavorDao extends SqlMapClientDaoSupport {
 	}
 	
 	public void deleteFlavors(List<Integer> flavorIds){
-		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "Flavor.deleteFlavors", flavorIds);
+		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "Flavor.deleteFlavor", flavorIds);
 	}
 	
 	public void updateFlavor(Flavor flavor){
@@ -30,11 +32,18 @@ public class FlavorDao extends SqlMapClientDaoSupport {
 	}
 	
 	public void updateFlavors(List<Flavor> flavors){
-		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Flavor.updateFlavors", flavors);
+		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Flavor.updateFlavor", flavors);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Flavor> listFlavors(){
 		return (List<Flavor>)getSqlMapClientTemplate().queryForList("Flavor.listFlavors");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Flavor> listFlavorsByIds(String flavorIds){
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("flavorIds", flavorIds);
+		return (List<Flavor>)getSqlMapClientTemplate().queryForList("Flavor.listFlavors", param);
 	}
 }

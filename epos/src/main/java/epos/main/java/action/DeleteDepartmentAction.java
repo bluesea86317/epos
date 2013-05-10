@@ -31,10 +31,11 @@ public class DeleteDepartmentAction extends Action {
 				departmentIds.add(jsonObj.getInt("departmentId"));
 			}
 			departmentService.deleteDepartments(departmentIds);
-			returnObj.put("msg", "删除成功！");
+			returnObj.put(MSG, DELETE_SUCCESS);
 		} catch (Exception e) {
-			returnObj.put("resultCode", Return.PROCESS_RESULT_FAILURE);
-			returnObj.put("msg", "删除失败，错误原因：" + e.getMessage());
+			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
+			returnObj.put(MSG, DELETE_FAILURE + e.getMessage());
+			e.printStackTrace();
 		}
 		return returnObj;
 	}

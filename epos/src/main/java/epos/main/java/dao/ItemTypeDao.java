@@ -1,6 +1,8 @@
 package epos.main.java.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
@@ -36,5 +38,18 @@ public class ItemTypeDao extends SqlMapClientDaoSupport {
 	@SuppressWarnings("unchecked")
 	public List<ItemType> listItemTypes(){
 		return (List<ItemType>)getSqlMapClientTemplate().queryForList("ItemType.listItemTypes");
+	}
+
+	public ItemType getItemType(int itemTypeId) {
+		Map<String, Object> param = new HashMap<String,Object>();
+		param.put("itemTypeId", itemTypeId);
+		return (ItemType)getSqlMapClientTemplate().queryForObject("ItemType.listItemTypes",itemTypeId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ItemType> listItemTypesByDepartmentId(int departmentId) {
+		Map<String, Object> param = new HashMap<String,Object>();
+		param.put("departmentId", departmentId);
+		return (List<ItemType>)getSqlMapClientTemplate().queryForList("ItemType.listItemTypes",param);
 	}
 }

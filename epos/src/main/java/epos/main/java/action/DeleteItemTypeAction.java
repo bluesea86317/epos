@@ -25,7 +25,7 @@ public class DeleteItemTypeAction extends Action{
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
-			JSONArray jsonArray = jsonParam.getJSONArray("data");
+			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
 			List<Integer> itemTypeIds = new ArrayList<Integer>();
 			for(Object obj : jsonArray){
 				JSONObject jsonObj =  JSONObject.fromObject(obj);
@@ -33,10 +33,10 @@ public class DeleteItemTypeAction extends Action{
 				itemTypeIds.add(itemTypeId);
 			}
 			itemTypeService.deleteItemTypes(itemTypeIds);
-			returnObj.put("msg", "删除成功");
+			returnObj.put(MSG, DELETE_SUCCESS);
 		} catch (Exception e) {
-			returnObj.put("msg", "删除失败, 错误信息:"+e.getMessage());
-			returnObj.put("resultCode", Return.PROCESS_RESULT_FAILURE);
+			returnObj.put(MSG, DELETE_FAILURE +e.getMessage());
+			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
 		}
 		return returnObj;
 	}	

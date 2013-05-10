@@ -1,7 +1,7 @@
-
 package epos.main.java.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,27 +13,28 @@ import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
-import epos.main.java.service.DepartmentService;
-import epos.main.java.vo.Department;
+import epos.main.java.service.ItemService;
+import epos.main.java.vo.Item;
 
-@ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=false)
-public class ListDepartmentAction extends Action {
+@ActionAuthFilterConfig(mustBeAdmin=false,needAuthorize=false)
+public class ListItemAction extends Action {
 
-	private DepartmentService departmentService = Env.getBean("departmentService");
+	private ItemService itemService = Env.getBean("itemService");
 	
 	@Override
 	public JSONObject excute(HttpServletRequest request,
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
-			List<Department> departments = departmentService.listDepartment();
+			List<Item> items = new ArrayList<Item>();
+			items = itemService.listAllItems();
 			JSONArray jsonArray = new JSONArray();
-			jsonArray.addAll(departments);
+			jsonArray.addAll(items);
 			returnObj.put(DATA, jsonArray.toString());
 			returnObj.put(MSG, QUERY_SUCCESS);
 		} catch (Exception e) {
-			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);		
 			returnObj.put(MSG, QUERY_FAILURE + e.getMessage());
+			returnObj.put(RESULT_CODE,Return.PROCESS_RESULT_FAILURE);
 		}
 		return returnObj;
 	}
