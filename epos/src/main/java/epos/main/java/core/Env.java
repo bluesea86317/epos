@@ -29,7 +29,7 @@ public class Env {
 				long start = System.currentTimeMillis();
 				context = new ClassPathXmlApplicationContext(CONFIG_FILE);
 				long timespan = System.currentTimeMillis() - start;
-
+				System.out.println("spring context loaded. " + timespan + " millis");
 //				if (LOG.isInfoEnabled()) LOG.info("spring context loaded. " + timespan + " millis");
 			}
 		}

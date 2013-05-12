@@ -149,17 +149,15 @@ public class ActionServlet extends HttpServlet {
 		String clzName = actionConfig.getActionclass();
 		ActionAuthFilterConfig annotation  = Class.forName(clzName).getAnnotation(ActionAuthFilterConfig.class);
 		if(annotation != null && annotation.needAuthorize()){
-			
-				String userName = jsonParam.getString("userName");
-				String password = jsonParam.getString("password");
-				UserService userService = Env.getBean("userService");
-				User user = userService.getUserByNameAndPassword(userName, password);
-				if(StringUtils.isBlank(userName) || StringUtils.isBlank(password) || user == null){
-					throw new UserNameOrPasswordWrongException("用户名或者密码错误");
-				}else if(annotation.mustBeAdmin() && !user.isAdmin()){
-					throw new UnauthorizedException("该用户没有此操作权限");
-				}
-			
+			String userName = jsonParam.getString("userName");
+			String password = jsonParam.getString("password");
+			UserService userService = Env.getBean("userService");
+			User user = userService.getUserByNameAndPassword(userName, password);
+			if(StringUtils.isBlank(userName) || StringUtils.isBlank(password) || user == null){
+				throw new UserNameOrPasswordWrongException("用户名或者密码错误");
+			}else if(annotation.mustBeAdmin() && !user.isAdmin()){
+				throw new UnauthorizedException("该用户没有此操作权限");
+			}
 		}
 	}
 	

@@ -10,7 +10,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class LoginFilter implements Filter {
 	
@@ -25,7 +24,7 @@ public class LoginFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest)arg0;
 		HttpServletResponse response = (HttpServletResponse)arg1;
-		HttpSession session = request.getSession();
+//		HttpSession session = request.getSession();
 		String servletPath = request.getServletPath();
 		if(isExclude(servletPath)){
 			chain.doFilter(request, response);

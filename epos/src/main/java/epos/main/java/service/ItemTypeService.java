@@ -2,9 +2,7 @@ package epos.main.java.service;
 
 import java.util.List;
 
-import epos.main.java.dao.ItemDao;
 import epos.main.java.dao.ItemTypeDao;
-import epos.main.java.utils.DBUtils;
 import epos.main.java.vo.Item;
 import epos.main.java.vo.ItemType;
 

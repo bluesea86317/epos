@@ -10,7 +10,7 @@ import com.ibatis.sqlmap.client.SqlMapExecutor;
 
 public class DBUtils {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void excuteBatchInsert(SqlMapClientTemplate sqlMapClientTemplate,  final String statementName, final List list){
 		if(list != null){
 			sqlMapClientTemplate.execute(new SqlMapClientCallback() {
@@ -26,7 +26,7 @@ public class DBUtils {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void excuteBatchDelete(SqlMapClientTemplate sqlMapClientTemplate,  final String statementName, final List list){
 		if(list != null){
 			sqlMapClientTemplate.execute(new SqlMapClientCallback() {
@@ -42,7 +42,7 @@ public class DBUtils {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void excuteBatchUpdate(SqlMapClientTemplate sqlMapClientTemplate,  final String statementName, final List list){
 		if(list != null){
 			sqlMapClientTemplate.execute(new SqlMapClientCallback() {
