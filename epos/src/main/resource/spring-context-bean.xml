@@ -56,4 +56,12 @@
 		<property name="itemDao" ref="itemDao"></property>
 	</bean>
 	
+	<bean id="itemOrderDao" class="epos.main.java.dao.ItemOrderDao">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	
+	<bean id="itemOrderService" class="epos.main.java.service.ItemOrderService">
+		<property name="itemOrderDao" ref="itemOrderDao"></property>
+	</bean>
+	
 </beans>

@@ -1,6 +1,7 @@
 package epos.main.java.action;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,32 +14,39 @@ import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
-import epos.main.java.service.ItemTypeService;
+import epos.main.java.service.ItemService;
+import epos.main.java.vo.Item;
 
 @ActionAuthFilterConfig(mustBeAdmin=true, needAuthorize=true)
-public class DeleteItemTypeAction extends Action{
+public class AddItemAction extends Action {
 
-	private ItemTypeService itemTypeService = Env.getBean("itemTypeService");
-	
+	private final static String IMAGE_PATH = "/images/item/";
+	private ItemService itemService = Env.getBean("itemService");
 	@Override
 	public JSONObject excute(HttpServletRequest request,
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
+			List<Item> items = new ArrayList<Item>();
 			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
-			List<Integer> itemTypeIds = new ArrayList<Integer>();
 			for(Object obj : jsonArray){
 				JSONObject jsonObj =  JSONObject.fromObject(obj);
-				int itemTypeId = jsonObj.getInt("itemTypeId");
-				itemTypeIds.add(itemTypeId);
+				Item item = new Item();
+				item.setItemName(jsonObj.getString("itemName"));
+				item.setItemTypeId(jsonObj.getInt("itemTypeId"));
+				item.setPicName(jsonObj.getString("picName"));
+				item.setPrice(new BigDecimal(jsonObj.getString("price")));
+				item.setImageUrl(IMAGE_PATH + jsonObj.getString("picName"));
+				item.setFlavorIds(jsonObj.getString("flavorChoice"));
+				items.add(item);
 			}
-			itemTypeService.deleteItemTypes(itemTypeIds);
-			returnObj.put(MSG, DELETE_SUCCESS);
+			itemService.addItems(items);
+			returnObj.put(MSG, ADD_SUCCESS);
 		} catch (Exception e) {
-			returnObj.put(MSG, DELETE_FAILURE +e.getMessage());
+			returnObj.put(MSG, ADD_FAILURE + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
-			e.printStackTrace();
 		}
 		return returnObj;
-	}	
+	}
+
 }

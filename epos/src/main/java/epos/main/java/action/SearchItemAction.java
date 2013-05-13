@@ -15,7 +15,7 @@ import epos.main.java.core.Return;
 import epos.main.java.service.ItemService;
 import epos.main.java.vo.Item;
 
-public class ListItemAction extends Action {
+public class SearchItemAction extends Action {
 
 	private ItemService itemService = Env.getBean("itemService");
 	
@@ -26,13 +26,8 @@ public class ListItemAction extends Action {
 		try {
 			List<Item> items = new ArrayList<Item>();
 			JSONArray jsonArray = new JSONArray();
-			int itemTypeId = jsonParam.getInt("itemTypeId");
-//			通过菜品类型查询菜品, 如果输入的菜品类型为0, 则展示所有菜品
-			if(0 == itemTypeId){
-				items = itemService.listAllItems();
-			}else{
-				items = itemService.listItemsByItemType(itemTypeId);
-			}
+			String searchValue = jsonParam.getString("searchValue");
+			items = itemService.listItemsByItemName(searchValue);
 			jsonArray.addAll(items);
 			returnObj.put(DATA, jsonArray.toString());
 			returnObj.put(MSG, QUERY_SUCCESS);

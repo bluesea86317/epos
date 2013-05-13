@@ -41,7 +41,7 @@ public class FlavorDao extends SqlMapClientDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Flavor> listFlavorsByIds(String flavorIds){
+	public List<Flavor> listFlavorsByIds(Integer[] flavorIds){
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("flavorIds", flavorIds);
 		return (List<Flavor>)getSqlMapClientTemplate().queryForList("Flavor.listFlavors", param);

@@ -9,37 +9,32 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
 import epos.main.java.service.ItemService;
-import epos.main.java.vo.Item;
 
-public class ListItemAction extends Action {
+@ActionAuthFilterConfig(mustBeAdmin=true, needAuthorize=true)
+public class DeleteItemAction extends Action {
 
 	private ItemService itemService = Env.getBean("itemService");
-	
 	@Override
 	public JSONObject excute(HttpServletRequest request,
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
-			List<Item> items = new ArrayList<Item>();
-			JSONArray jsonArray = new JSONArray();
-			int itemTypeId = jsonParam.getInt("itemTypeId");
-//			通过菜品类型查询菜品, 如果输入的菜品类型为0, 则展示所有菜品
-			if(0 == itemTypeId){
-				items = itemService.listAllItems();
-			}else{
-				items = itemService.listItemsByItemType(itemTypeId);
+			List<Integer> itemIds = new ArrayList<Integer>();
+			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
+			for(Object obj : jsonArray){
+				JSONObject jsonObj =  JSONObject.fromObject(obj);
+				itemIds.add(jsonObj.getInt("itemId"));
 			}
-			jsonArray.addAll(items);
-			returnObj.put(DATA, jsonArray.toString());
-			returnObj.put(MSG, QUERY_SUCCESS);
+			itemService.deleteItems(itemIds);
+			returnObj.put(MSG, DELETE_SUCCESS);
 		} catch (Exception e) {
-			returnObj.put(MSG, QUERY_FAILURE + e.getMessage());
-			returnObj.put(RESULT_CODE,Return.PROCESS_RESULT_FAILURE);
-			e.printStackTrace();
+			returnObj.put(MSG, DELETE_FAILURE + e.getMessage());
+			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
 		}
 		return returnObj;
 	}

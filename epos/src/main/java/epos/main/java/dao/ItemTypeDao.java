@@ -43,7 +43,7 @@ public class ItemTypeDao extends SqlMapClientDaoSupport {
 	public ItemType getItemType(int itemTypeId) {
 		Map<String, Object> param = new HashMap<String,Object>();
 		param.put("itemTypeId", itemTypeId);
-		return (ItemType)getSqlMapClientTemplate().queryForObject("ItemType.listItemTypes",itemTypeId);
+		return (ItemType)getSqlMapClientTemplate().queryForObject("ItemType.listItemTypes",param);
 	}
 
 	@SuppressWarnings("unchecked")

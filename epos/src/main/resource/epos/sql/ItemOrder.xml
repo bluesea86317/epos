@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ItemOrder">
+	
+	<select id="querySysParam" parameterClass="java.util.Map" resultClass="string">
+		select fvalue from t_sys_param where fkey = #key#
+	</select>
+	
+	<update id="updateSysParam" parameterClass="java.util.Map">
+		update t_sys_param set fvalue = #value# where fkey = #key#
+	</update>
+	
+	<insert id="addSysParam" parameterClass="java.util.Map">
+		insert into t_sys_param (fkey, fvalue) values (#key#, #value#)
+	</insert>
+</sqlMap>

@@ -28,7 +28,7 @@ public class DepartmentService {
 	public void deleteDepartment(int departmentId) throws Exception{
 		List<ItemType> itemTypes = itemTypeService.listItemTypesByDepartmentId(departmentId);		
 		if(itemTypes != null && itemTypes.size() > 0){
-			throw new Exception("部门'"+ getDepartmentDao().getDepartment(departmentId).getDepartmentName() +"'已经指定了菜品分类, 不允许删除该部门");
+			throw new Exception("名为'"+ getDepartmentDao().getDepartment(departmentId).getDepartmentName() +"'的部门已经指定了菜品分类, 不允许删除");
 		}
 		getDepartmentDao().deleteDepartment(departmentId);
 	}
@@ -42,7 +42,7 @@ public class DepartmentService {
 		for(int departmentId : departmentIds){
 			List<ItemType> itemTypes = itemTypeService.listItemTypesByDepartmentId(departmentId);		
 			if(itemTypes != null && itemTypes.size() > 0){
-				throw new Exception("部门'"+ getDepartmentDao().getDepartment(departmentId).getDepartmentName() +"'已经指定了菜品分类, 不允许删除该部门");
+				throw new Exception("名为'"+ getDepartmentDao().getDepartment(departmentId).getDepartmentName() +"'的部门已经指定了菜品分类, 不允许删除");
 			}
 		}
 		getDepartmentDao().deleteDepartments(departmentIds);

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import epos.main.java.dao.FlavorDao;
 import epos.main.java.dao.ItemDao;
 import epos.main.java.vo.Flavor;
@@ -67,8 +69,15 @@ public class ItemService {
 	 */
 	private void setFlavorsToItem(List<Item> items){
 		for(Item item : items){
-			List<Flavor> flavors = flavorDao.listFlavorsByIds(item.getFlavorIds());
-			item.setFlavors(flavors);
+			if(StringUtils.isNotBlank(item.getFlavorIds())){
+				String[] itemIdstr = item.getFlavorIds().split(",");
+				Integer[] itemIds = new Integer[itemIdstr.length];
+				for(int i = 0; i < itemIdstr.length; i++){
+					itemIds[i] = Integer.parseInt(itemIdstr[i]);
+				}
+				List<Flavor> flavors = flavorDao.listFlavorsByIds(itemIds);
+				item.setFlavors(flavors);
+			}
 		}
 	}
 	

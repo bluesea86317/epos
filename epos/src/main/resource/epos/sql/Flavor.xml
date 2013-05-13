@@ -25,7 +25,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		select * from t_flavor
 		<dynamic prepend="where">
 			<isNotNull prepend="and" property="flavorIds">
-				fid in (#flavorIds#)
+				fid in 
+				<iterate property="flavorIds" conjunction="," open="(" close=")">
+					#flavorIds[]#	
+				</iterate>				
 			</isNotNull>
 		</dynamic>
 	</select>

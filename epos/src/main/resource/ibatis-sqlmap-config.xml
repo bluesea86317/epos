@@ -10,4 +10,5 @@
 	<sqlMap resource="epos/sql/ItemType.xml"/>
 	<sqlMap resource="epos/sql/Flavor.xml"/>
 	<sqlMap resource="epos/sql/Item.xml"/>
+	<sqlMap resource="epos/sql/ItemOrder.xml"/>
 </sqlMapConfig>

@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mvc-config>
-<!-- 	<data-sources>
-		<data-source type="org.apache.commons.dbcp.BasicDataSource">
-			<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-			<property name="url" value="jdbc:mysql://localhost:3306/scblog?useUnicode=true&amp;characterEncoding=utf-8"></property>
-			<property name="username" value="root"></property>
-			<property name="password" value="kingdee"></property>
-			<property name="loginTimeout" value="100"></property>
-			<property name="initialSize" value="3"></property>
-		</data-source>
-	</data-sources> -->
 	<action-mapping>
 		<action class="epos.main.java.action.ActiveTableAction" path="activeTable">
 		</action>
@@ -36,5 +26,19 @@
 		<action class="epos.main.java.action.DeleteFlavorAction" path="deleteFlavor"></action>
 		<action class="epos.main.java.action.UpdateFlavorAction" path="updateFlavor"></action>
 		<!-- flavor -->
+		
+		<!-- item -->
+		<action class="epos.main.java.action.AddItemAction" path="addItem"></action>
+		<action class="epos.main.java.action.ListItemAction" path="listItem"></action>
+		<action class="epos.main.java.action.DeleteItemAction" path="deleteItem"></action>
+		<action class="epos.main.java.action.UpdateItemAction" path="updateItem"></action>
+		
+		<action class="epos.main.java.action.SearchItemAction" path="searchItem"></action>
+		<!-- item -->
+		
+		<!-- sysParam -->
+		<action class="epos.main.java.action.SetIfCanOrderAction" path="setIfCanOrder"></action>
+		<action class="epos.main.java.action.QueryIfCanOrderAction" path="queryIfCanOrder"></action>
+		<!-- sysParam -->
 	</action-mapping>
 </mvc-config>

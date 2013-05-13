@@ -19,7 +19,7 @@ public class Item {
 	
 	private String itemType;
 	
-	private boolean ifCanOrderHalf;
+//	private boolean ifCanOrderHalf;
 	
 	/**
 	 * 菜品的口味对象
@@ -87,13 +87,13 @@ public class Item {
 		this.itemType = itemType;
 	}
 
-	public boolean isIfCanOrderHalf() {
-		return ifCanOrderHalf;
-	}
-
-	public void setIfCanOrderHalf(boolean ifCanOrderHalf) {
-		this.ifCanOrderHalf = ifCanOrderHalf;
-	}
+//	public boolean isIfCanOrderHalf() {
+//		return ifCanOrderHalf;
+//	}
+//
+//	public void setIfCanOrderHalf(boolean ifCanOrderHalf) {
+//		this.ifCanOrderHalf = ifCanOrderHalf;
+//	}
 
 	public List<Flavor> getFlavors() {
 		return flavors;

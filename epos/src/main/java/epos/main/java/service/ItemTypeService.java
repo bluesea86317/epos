@@ -28,7 +28,7 @@ public class ItemTypeService {
 	public void deleteItemType(int itemTypeId) throws Exception{
 		List<Item> items = itemService.listItemsByItemType(itemTypeId);
 		if(items != null && items.size() > 0){
-			throw new Exception("类型名为'"+ getItemTypeDao().getItemType(itemTypeId).getItemType()+"'已经指定了菜品,不允许删除该菜品类型");
+			throw new Exception("名为'"+ getItemTypeDao().getItemType(itemTypeId).getItemType()+"'的菜品类型已经指定了菜品,不允许删除");
 		}
 		getItemTypeDao().deleteItemType(itemTypeId);
 	}
@@ -42,7 +42,7 @@ public class ItemTypeService {
 		for(int itemTypeId : itemTypeIds){
 			List<Item> items = itemService.listItemsByItemType(itemTypeId);
 			if(items != null && items.size() > 0){
-				throw new Exception("类型名为'"+ getItemTypeDao().getItemType(itemTypeId).getItemType()+"'已经指定了菜品,不允许删除该菜品类型");
+				throw new Exception("名为'"+ getItemTypeDao().getItemType(itemTypeId).getItemType()+"'的菜品类型已经指定了菜品,不允许删除");
 			}
 		}
 		getItemTypeDao().deleteItemTypes(itemTypeIds);

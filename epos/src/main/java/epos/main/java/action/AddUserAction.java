@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.service.UserService;
 import epos.main.java.vo.User;
 
+@ActionAuthFilterConfig(mustBeAdmin=true, needAuthorize=true)
 public class AddUserAction extends Action {
 
 	private UserService userService = Env.getBean("userService");

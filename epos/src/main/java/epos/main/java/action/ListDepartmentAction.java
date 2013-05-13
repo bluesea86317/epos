@@ -9,14 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
 import epos.main.java.service.DepartmentService;
 import epos.main.java.vo.Department;
 
-@ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=false)
 public class ListDepartmentAction extends Action {
 
 	private DepartmentService departmentService = Env.getBean("departmentService");
