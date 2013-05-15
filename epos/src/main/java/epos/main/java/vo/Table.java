@@ -2,22 +2,21 @@ package epos.main.java.vo;
 
 public class Table {
 
-	private int id;
+	private int tableId;
 	
 	private int tableNo;
 	
 	private String tableName;
 	
+	private int seatingNum;
+	
+//	餐台状态
 	private int tableStatus;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+		public final static int STATUS_FREE = 0; //空闲
+		public final static int STATUS_ACTIVED = 1; //在用
+		public final static int STATUS_PAID = 2; //已买单
+		public final static int STATUS_ORDERED = 3; //已预订
+	
 	public int getTableNo() {
 		return tableNo;
 	}
@@ -40,6 +39,22 @@ public class Table {
 
 	public void setTableStatus(int tableStatus) {
 		this.tableStatus = tableStatus;
+	}
+
+	public int getSeatingNum() {
+		return seatingNum;
+	}
+
+	public void setSeatingNum(int seatingNum) {
+		this.seatingNum = seatingNum;
+	}
+
+	public int getTableId() {
+		return tableId;
+	}
+
+	public void setTableId(int tableId) {
+		this.tableId = tableId;
 	}
 	
 	

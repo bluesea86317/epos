@@ -3,9 +3,47 @@
 PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="Table">
-	<typeAlias alias="" type=""/>
+	<typeAlias alias="tableClass" type="epos.main.java.vo.Table"/>
+	<resultMap class="tableClass" id="tableClassMap">
+		<result property="tableId" column="ftableId" javaType="int" jdbcType="number"/>
+		<result property="tableNo" column="ftableNo" javaType="int" jdbcType="number"/>
+		<result property="tableName" column="ftableName" javaType="string" jdbcType="varchar"/>
+		<result property="seatingNum" column="fseatingNum" javaType="int" jdbcType="number"/>
+		<result property="tableStatus" column="ftableStatus" javaType="int" jdbcType="number"/>
+	</resultMap>
 	
-	<update id="testUpdate" parameterClass="java.util.Map">
-		update t_test set testName = #testName# where testId = #testId#		
+	<insert id="addTable" parameterClass="tableClass">
+		insert into t_table (ftableNo, ftableName, fseatingNum, ftableStatus ) values (#tableNo#, #tableName#, #seatingNum#,#tableStatus#)
+	</insert>
+	
+	<delete id="deleteTable">
+		delete from t_table where fid = #tableId#
+	</delete>
+		
+	<select id="listTables" parameterClass="java.util.Map" resultClass="tableClass">
+		select * from t_table
+		<dynamic prepend="where">
+			<isNotEmpty property="tableStatus" prepend="and">
+				ftableStatus = #tableStatus#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	<select id="getTableByTableNo" parameterClass="int" resultClass="tableClass">
+		select * from t_table where ftableNo = #tableNo#
+	</select>
+	
+	<update id="updateTable" parameterClass="tableClass">
+		update t_table 
+			set ftableNo = #tableNo#,
+				ftableName = #tableName#, 
+				fseatingNum = #seatingNum#
+			where ftableNo = #tableNo#
+	</update>
+	
+	<update id="changeTableStatus">
+		update t_table 
+			set ftableStatus = #tableStatus#
+			where ftableNo = #tableNo#
 	</update>
 </sqlMap>
