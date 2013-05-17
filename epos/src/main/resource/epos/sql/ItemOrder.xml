@@ -3,6 +3,76 @@
 PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="ItemOrder">
+	<typeAlias alias="itemOrderClass" type="epos.main.java.vo.ItemOrder"/>
+	<resultMap class="itemOrderClass" id="itemOrderMap">
+		<result property="itemOrderId" column="fid" javaType="int" jdbcType="number"/>
+		
+		<result property="itemId" column="fitemId" javaType="int" jdbcType="number"/>
+		<result property="itemName" column="fitemName" javaType="string" jdbcType="varchar"/>
+		<result property="itemType" column="fitemType" javaType="string" jdbcType="varchar"/>
+		<result property="departmentId" column="fdepartmentId" javaType="int" jdbcType="number"/>
+		<result property="departmentName" column="fdepartmentName" javaType="string" jdbcType="varchar"/>
+		<result property="printerInfo" column="fprinterInfo" javaType="string" jdbcType="varchar"/>
+		
+		<result property="itemCount" column="fitemCount" javaType="int" jdbcType="number"/>
+		<result property="price" column="fprice" javaType="java.math.BigDecimal" jdbcType="decimal"/>
+		<result property="printingStatus" column="fprintingStatus" javaType="int" jdbcType="number"/>
+		<result property="providingStatus" column="fprovidingStatus" javaType="int" jdbcType="number"/>
+		<result property="paymentStatus" column="fpaymentStatus" javaType="int" jdbcType="number"/>
+		<result property="tableNo" column="ftableNo" javaType="int" jdbcType="number"/>
+		<result property="billNo" column="fbillNo" javaType="string" jdbcType="varchar"/>
+		<result property="createTime" column="fcreateTime" javaType="java.util.Date" jdbcType="timestamp"/>		
+	</resultMap>
+	
+	<select id="queryItemOrderForPrint" resultMap="itemOrderMap">
+		select 
+			io.*, i.fitemName, it.fitemType, d.fid fdepartmentId, d.fdepartmentName, d.fprinterInfo 
+			from t_item_order io 
+			left join t_item i on io.fitemId = i.fid 
+			left join t_item_type it on i.fitemTypeId = it.fid 
+			left join t_department d on it.fdepartmentId = d.fid
+			where io.fprintingStatus = 0
+			order by fcreateTime asc
+	</select>
+	
+	<select id="queryItemOrder" resultMap="itemOrderMap" parameterClass="java.util.Map">
+		select 
+			io.*, i.fitemName, it.fitemType, d.fid fdepartmentId, d.fdepartmentName, d.fprinterInfo 
+			from t_item_order io 
+			left join t_item i on io.fitemId = i.fid 
+			left join t_item_type it on i.fitemTypeId = it.fid 
+			left join t_department d on it.fdepartmentId = d.fid
+			where fpaymentStatus = 0
+			<isNotEmpty property="tableNo" prepend="and">
+				ftableNo = #tableNo#
+			</isNotEmpty>
+			<isNotEmpty property="billNo" prepend="and">
+				fbillNo = #billNo#
+			</isNotEmpty>			 
+			order by fcreateTime asc
+	</select>
+	
+	<insert id="addItemOrder" parameterClass="itemOrderClass">
+		insert into t_item_order (fitemId,fitemCount,fprice,fprintingStatus,fprovidingStatus,fpaymentStatus,ftableNo,fbillNo,fcreateTime)
+		values (#itemId#,#itemCount#,#price#,#printingStatus#,#providingStatus#,#paymentStatus#,#tableNo#,#billNo#,#createTime#)
+	</insert>
+	
+	<update id="updatePrintingStatus" parameterClass="int">
+		update t_item_order set fprintingStatus = 1 where fid = #itemOrderId#
+	</update>
+	
+	<update id="updatePaymentStatus" parameterClass="java.util.Map">
+		update t_item_order set fpaymentStatus = 1 where ftableNo = #tableNo# and fbillNo = #billNo#
+	</update>
+	
+	<update id="updateProvidingStatus" parameterClass="java.util.Map">
+		update t_item_order set fprovidingStatus = 1 where fid = #itemOrderId#
+	</update>
+	
+	<update id="updateBillNo" parameterClass="java.util.Map">
+		update t_item_order set fbillNo = #newBillNo# where ftableNo = #tableNo# and fbillNo = #billNo#
+	</update>
+	
 	
 	<select id="querySysParam" parameterClass="java.util.Map" resultClass="string">
 		select fvalue from t_sys_param where fkey = #key#

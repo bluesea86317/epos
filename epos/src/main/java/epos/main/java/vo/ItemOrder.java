@@ -11,6 +11,14 @@ public class ItemOrder {
 	
 	private String itemName;
 	
+	private String itemType;
+	
+	private int departmentId;
+	
+	private String departmentName;
+	
+	private String printerInfo;
+	
 	private int itemCount;	
 	
 	private BigDecimal price;
@@ -30,7 +38,7 @@ public class ItemOrder {
 	
 	private int tableNo;
 	
-	private int billNo;
+	private String billNo;
 	
 	private Date createTime;
 
@@ -83,13 +91,6 @@ public class ItemOrder {
 		this.providingStatus = providingStatus;
 	}
 
-	public int getBillNo() {
-		return billNo;
-	}
-
-	public void setBillNo(int billNo) {
-		this.billNo = billNo;
-	}
 
 	public Date getCreateTime() {
 		return createTime;
@@ -121,6 +122,46 @@ public class ItemOrder {
 
 	public void setTableNo(int tableNo) {
 		this.tableNo = tableNo;
+	}
+
+	public String getBillNo() {
+		return billNo;
+	}
+
+	public void setBillNo(String billNo) {
+		this.billNo = billNo;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
+	}
+
+	public int getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(int departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getPrinterInfo() {
+		return printerInfo;
+	}
+
+	public void setPrinterInfo(String printerInfo) {
+		this.printerInfo = printerInfo;
 	}
 	
 	

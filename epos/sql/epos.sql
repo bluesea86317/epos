@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50520
 File Encoding         : 65001
 
-Date: 2013-05-10 19:33:56
+Date: 2013-05-17 18:14:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -62,10 +62,37 @@ CREATE TABLE `t_item` (
   `fifCanOrderHalf` int(2) DEFAULT NULL,
   `fflavorIds` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`fid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- ----------------------------
 -- Records of t_item
+-- ----------------------------
+INSERT INTO `t_item` VALUES ('2', '清炒随便update', '1368429920438.jpg', '/images/item/1368429920438.jpg', '20.88', '2', null, '2,3');
+INSERT INTO `t_item` VALUES ('3', '爆炒鱿鱼22', '1368429920438.jpg', '/images/item/1368429920438.jpg', '30.90', '1', null, '1,2,3');
+INSERT INTO `t_item` VALUES ('4', '清炒随便11', '1368429920438.jpg', '/images/item/1368429920438.jpg', '20.88', '2', null, '2,3');
+INSERT INTO `t_item` VALUES ('5', '洋葱炒蛋', '1368429920438.jpg', '/images/item/1368429920438.jpg', '30.90', '1', null, '');
+INSERT INTO `t_item` VALUES ('6', '蛋炒洋葱', '1368429920438.jpg', '/images/item/1368429920438.jpg', '20.88', '2', null, '');
+
+-- ----------------------------
+-- Table structure for `t_item_order`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_item_order`;
+CREATE TABLE `t_item_order` (
+  `fid` int(10) NOT NULL AUTO_INCREMENT,
+  `fitemId` int(4) DEFAULT NULL,
+  `fitemCount` int(2) DEFAULT NULL,
+  `fprice` decimal(5,2) DEFAULT NULL,
+  `fprintingStatus` int(2) DEFAULT NULL,
+  `fprovidingStatus` int(2) DEFAULT NULL,
+  `fpaymentStatus` int(2) DEFAULT NULL,
+  `ftableNo` int(2) DEFAULT NULL,
+  `fbillNo` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fcreateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`fid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of t_item_order
 -- ----------------------------
 
 -- ----------------------------
@@ -85,6 +112,39 @@ CREATE TABLE `t_item_type` (
 INSERT INTO `t_item_type` VALUES ('1', '海鲜update', '4');
 INSERT INTO `t_item_type` VALUES ('2', '炖品update', '4');
 INSERT INTO `t_item_type` VALUES ('3', '每日推荐update', '3');
+
+-- ----------------------------
+-- Table structure for `t_sys_param`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sys_param`;
+CREATE TABLE `t_sys_param` (
+  `fid` int(4) NOT NULL AUTO_INCREMENT,
+  `fkey` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fvalue` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`fid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of t_sys_param
+-- ----------------------------
+INSERT INTO `t_sys_param` VALUES ('1', 'ifCanOrder', '0');
+
+-- ----------------------------
+-- Table structure for `t_table`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_table`;
+CREATE TABLE `t_table` (
+  `fid` int(4) NOT NULL AUTO_INCREMENT,
+  `ftableNo` int(4) DEFAULT NULL,
+  `ftableName` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fseatingNum` int(2) DEFAULT NULL,
+  `ftableStatus` int(2) DEFAULT NULL,
+  PRIMARY KEY (`fid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- ----------------------------
+-- Records of t_table
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `t_user`

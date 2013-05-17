@@ -19,40 +19,41 @@ public class Bill {
 	
 		public final static int BILL_STATUS_NEW = 0;
 		public final static int BILL_STATUS_PAID = 1;
-		public int getBillId() {
-			return billId;
-		}
-		public void setBillId(int billId) {
-			this.billId = billId;
-		}
-		public String getBillNo() {
-			return billNo;
-		}
-		public void setBillNo(String billNo) {
-			this.billNo = billNo;
-		}
-		public BigDecimal getTotalPrice() {
-			return totalPrice;
-		}
-		public void setTotalPrice(BigDecimal totalPrice) {
-			this.totalPrice = totalPrice;
-		}
-		public int getTableNo() {
-			return tableNo;
-		}
-		public void setTableNo(int tableNo) {
-			this.tableNo = tableNo;
-		}
-		public Date getPaymentTime() {
-			return paymentTime;
-		}
-		public void setPaymentTime(Date paymentTime) {
-			this.paymentTime = paymentTime;
-		}
-		public int getBillStatus() {
-			return billStatus;
-		}
-		public void setBillStatus(int billStatus) {
-			this.billStatus = billStatus;
-		}
+		
+	public int getBillId() {
+		return billId;
+	}
+	public void setBillId(int billId) {
+		this.billId = billId;
+	}
+	public String getBillNo() {
+		return billNo;
+	}
+	public void setBillNo(String billNo) {
+		this.billNo = billNo;
+	}
+	public BigDecimal getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(BigDecimal totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	public int getTableNo() {
+		return tableNo;
+	}
+	public void setTableNo(int tableNo) {
+		this.tableNo = tableNo;
+	}
+	public Date getPaymentTime() {
+		return paymentTime;
+	}
+	public void setPaymentTime(Date paymentTime) {
+		this.paymentTime = paymentTime;
+	}
+	public int getBillStatus() {
+		return billStatus;
+	}
+	public void setBillStatus(int billStatus) {
+		this.billStatus = billStatus;
+	}
 }

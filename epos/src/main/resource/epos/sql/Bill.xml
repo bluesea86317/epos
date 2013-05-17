@@ -1,1 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Bill">
+	<typeAlias alias="billClass" type="epos.main.java.vo.Bill"/>
+	<resultMap class="billClass" id="billMap">
+		<result property="billId" column="fid" javaType="int" jdbcType="number"/>
+		<result property="billNo" column="fbillNo" javaType="string" jdbcType="varchar"/>
+		<result property="totalPrice" column="ftotalPrice" javaType="java.math.BigDecimal" jdbcType="decimal"/>
+		<result property="tableNo" column="ftableNo" javaType="int" jdbcType="number"/>
+		<result property="paymentTime" column="fpaymentTime" javaType="java.util.Date" jdbcType="timestamp"/>
+		<result property="billStatus" column="fbillStatus" javaType="int" jdbcType="number"/>
+	</resultMap>
+	
+	<insert id="addBill" parameterClass="billClass">
+		insert into t_bill (fbillNo, ftotalPrice, ftableNo, fpaymentTime, fbillStatus)
+		values(#billNo#, #totalPrice#, #tableNo#, #paymentTime#, #billStatus#);
+	</insert>
+	
+	<delete id="deleteBill" parameterClass="java.util.Map">
+		delete from t_bill where where fbillNo = #billNo#
+	</delete>
+	
+	<update id="updateTotalPrice" parameterClass="java.util.Map">
+		update t_bill set ftotalPrice = #totalPrice# where fbillNo = #billNo#
+	</update>
+	
+	<select id="queryUnPaidBillByTableNo" parameterClass="int">
+		select * from t_bill where ftableNo = #tableNo# and fbillStatus = 0
+	</select>
+	
+	<update id="updateTableNo" parameterClass="java.util.Map">
+		update t_bill set ftableNo = #tableNO# where fbillNo = #billNo#
+	</update>
+</sqlMap>
