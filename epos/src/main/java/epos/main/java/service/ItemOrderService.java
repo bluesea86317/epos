@@ -4,6 +4,9 @@ package epos.main.java.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import epos.main.java.dao.ItemOrderDao;
 import epos.main.java.vo.ItemOrder;
 
@@ -11,6 +14,7 @@ public class ItemOrderService {
 
 	private ItemOrderDao itemOrderDao;	
 	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void addItemOrders(List<ItemOrder> itemOrders){
 		itemOrderDao.addItemOrders(itemOrders);
 	}	
@@ -37,6 +41,11 @@ public class ItemOrderService {
 	
 	public void updateBillNo(Map<String,Object> param){
 		itemOrderDao.updateBillNo(param);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void updateTableNo(int tableNo, String billNo){
+		itemOrderDao.updateTableNo(tableNo, billNo);
 	}
 	
 	public void setIfCanOrder(boolean ifCanOrder){

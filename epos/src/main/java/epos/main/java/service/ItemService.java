@@ -81,6 +81,10 @@ public class ItemService {
 		}
 	}
 	
+	public Item getItemById(int itemId){
+		return itemDao.getItemById(itemId);
+	}
+	
 	public ItemDao getItemDao() {
 		return itemDao;
 	}

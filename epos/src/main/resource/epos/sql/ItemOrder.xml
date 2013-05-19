@@ -73,6 +73,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		update t_item_order set fbillNo = #newBillNo# where ftableNo = #tableNo# and fbillNo = #billNo#
 	</update>
 	
+	<update id="updateTableNo" parameterClass="java.util.Map">
+		update t_item_order set ftableNo = #tableNo# where fbillNo = #billNo#
+	</update>
 	
 	<select id="querySysParam" parameterClass="java.util.Map" resultClass="string">
 		select fvalue from t_sys_param where fkey = #key#

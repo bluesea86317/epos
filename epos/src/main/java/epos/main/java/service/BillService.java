@@ -1,9 +1,14 @@
 package epos.main.java.service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import epos.main.java.dao.BillDao;
 import epos.main.java.vo.Bill;
@@ -12,6 +17,7 @@ public class BillService {
 
 	private BillDao billDao;
 	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void addBill(Bill bill){
 		billDao.addBill(bill);
 	}
@@ -30,6 +36,7 @@ public class BillService {
 		billDao.updateTotalPrice(param);
 	}
 	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void updateTableNo(int tableNo, String billNo){
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("tableNo", tableNo);
@@ -41,7 +48,7 @@ public class BillService {
 		List<Bill> bills = billDao.queryUnPaidBillByTableNo(tableNo);
 		if(bills != null){
 			if(bills.size() > 1){
-				throw new Exception("该餐台还有没结账的菜单");
+				throw new Exception(tableNo + "号餐台还没有结账");
 			}else{
 				return bills.get(0);
 			}
@@ -51,11 +58,32 @@ public class BillService {
 		
 	}
 
+	public static String createBillNo(int tableNo){
+		StringBuffer sb = new StringBuffer();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		Date date = new Date();
+		String dateStr = sdf.format(date);
+		sb.append(dateStr.substring(0, 8));
+		String tableNoStr = String.valueOf(tableNo);
+		if(tableNo < 10){
+			tableNoStr = "00"+tableNoStr;
+		}else if(tableNo < 100){
+			tableNoStr = "0"+tableNoStr;
+		}
+		sb.append(tableNoStr);
+		sb.append(dateStr.substring(8, 14));
+		return sb.toString();
+	}
+	
 	public BillDao getBillDao() {
 		return billDao;
 	}
 
 	public void setBillDao(BillDao billDao) {
 		this.billDao = billDao;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(createBillNo(10));
 	}
 }

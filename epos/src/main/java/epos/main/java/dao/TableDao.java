@@ -1,5 +1,6 @@
 package epos.main.java.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,5 +36,12 @@ public class TableDao extends SqlMapClientDaoSupport {
 	
 	public Table getTableByTableNo(int tableNo){
 		return (Table)getSqlMapClientTemplate().queryForObject("Table.getTableByTableNo", tableNo);
+	}
+	
+	public void changeTableStatus(int tableNo, int tableStatus){
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("tableNo", tableNo);
+		param.put("tableStatus", tableStatus);
+		getSqlMapClientTemplate().update("Table.changeTableStatus", param);
 	}
 }

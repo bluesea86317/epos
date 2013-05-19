@@ -31,4 +31,8 @@ public class ItemDao extends SqlMapClientDaoSupport {
 	public List<Item> listItemsBySearch(Map<String,Object> param){
 		return (List<Item>)getSqlMapClientTemplate().queryForList("Item.listItems",param);
 	}
+	
+	public Item getItemById(int itemId){
+		return (Item)getSqlMapClientTemplate().queryForObject("Item.getItemById", itemId);
+	}
 }

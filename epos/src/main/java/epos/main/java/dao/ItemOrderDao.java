@@ -49,6 +49,12 @@ public class ItemOrderDao extends SqlMapClientDaoSupport {
 		getSqlMapClientTemplate().update("ItemOrder.updateBillNo", param);
 	}
 	
+	public void updateTableNo(int tableNo, String billNo) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("tableNo", tableNo);
+		param.put("billNo", billNo);
+		getSqlMapClientTemplate().update("ItemOrder.updateTableNo",param);		
+	}
 	
 	
 	
@@ -76,4 +82,5 @@ public class ItemOrderDao extends SqlMapClientDaoSupport {
 		param.put("value", value);
 		getSqlMapClientTemplate().update("ItemOrder.updateSysParam",param);
 	}
+
 }

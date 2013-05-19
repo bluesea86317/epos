@@ -46,4 +46,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 			fflavorIds = #flavorIds#
 			where fid = #itemId#
 	</update>
+	
+	<select id="getItemById" parameterClass="int" resultMap="itemMap">
+		select * from t_item where fid = #itemId#
+	</select>
 </sqlMap>
