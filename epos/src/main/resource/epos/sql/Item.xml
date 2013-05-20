@@ -48,6 +48,6 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</update>
 	
 	<select id="getItemById" parameterClass="int" resultMap="itemMap">
-		select * from t_item where fid = #itemId#
+		select i.*, it.fitemType from t_item i left join t_item_type it on i.fitemTypeId = it.fid where i.fid = #itemId#
 	</select>
 </sqlMap>

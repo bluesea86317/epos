@@ -36,16 +36,23 @@ public class TableService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void activeTable(int tableNo, int customerNum) throws Exception{
 		Table table = getTableByTableNo(tableNo);
+		if(table == null){
+			throw new Exception("编号为"+tableNo+"的桌台不存在");
+		}
 		if(table.getTableStatus() != Table.STATUS_FREE){
 			throw new Exception("该桌台还有顾客在使用,现在不能开台");
 		}
 		String billNo = BillService.createBillNo(tableNo);
 		
 		List<ItemOrder> deaultItemOrders = new ArrayList<ItemOrder>();
-		int defaultItemId = 0;
+		BigDecimal totalPrice = BigDecimal.ZERO; 
+		int defaultItemId = 6;
 		if(defaultItemId != 0){
 //			创建默认茶位费消费记录
 			Item item = itemService.getItemById(defaultItemId);
+			if(item == null){
+				throw new Exception("编号为"+defaultItemId+"的菜品不存在，无法开台");
+			}
 			ItemOrder itemOrder = new ItemOrder();
 			itemOrder.setBillNo(billNo);
 			itemOrder.setTableNo(tableNo);
@@ -54,7 +61,9 @@ public class TableService {
 			customerNum = (customerNum == 0) ? table.getSeatingNum() : customerNum;
 			itemOrder.setItemCount(customerNum);
 //			价格 = 茶位费单价 * 桌台座位数
-			itemOrder.setPrice(item.getPrice().multiply(new BigDecimal(table.getSeatingNum())));
+			BigDecimal price = item.getPrice().multiply(new BigDecimal(customerNum));
+			itemOrder.setPrice(price);
+			totalPrice = totalPrice.add(price);
 //			设置菜单初始状态
 			itemOrder.setPrintingStatus(ItemOrder.PRINTING_STATUS_NO);
 			itemOrder.setProvidingStatus(ItemOrder.PROVIDING_STATUS_NO);
@@ -67,6 +76,7 @@ public class TableService {
 		bill.setBillNo(billNo);
 		bill.setBillStatus(Bill.BILL_STATUS_NEW);
 		bill.setTableNo(tableNo);
+		bill.setTotalPrice(totalPrice);
 		
 //		创建默认的菜单项， 比如茶位费等
 		itemOrderService.addItemOrders(deaultItemOrders);

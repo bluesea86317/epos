@@ -41,6 +41,9 @@
 		<action class="epos.main.java.action.DeleteTableAction" path="deleteTable"></action>
 		<action class="epos.main.java.action.UpdateTableAction" path="updateTable"></action>
 		<action class="epos.main.java.action.ListTableAction" path="checkTable"></action>
+		
+		<action class="epos.main.java.action.ActiveTableAction" path="activeTable"></action>
+		<action class="epos.main.java.action.ChangeTableAction" path="changeTable"></action>
 		<!-- table -->
 		
 		<!-- sysParam -->

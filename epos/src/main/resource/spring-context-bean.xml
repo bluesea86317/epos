@@ -9,10 +9,6 @@
 		<property name="sqlMapClient" ref="sqlMapClient"></property>
 	</bean>
 	
-	<bean id="tableService" class="epos.main.java.service.TableService">
-		<property name="tableDao" ref="tableDao"></property>
-	</bean>
-	
 	<bean id="userDao" class="epos.main.java.dao.UserDao">
 		<property name="sqlMapClient" ref="sqlMapClient"></property>
 	</bean>
@@ -64,4 +60,18 @@
 		<property name="itemOrderDao" ref="itemOrderDao"></property>
 	</bean>
 	
+	<bean id="billDao" class="epos.main.java.dao.BillDao">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	
+	<bean id="billService" class="epos.main.java.service.BillService">
+		<property name="billDao" ref="billDao"></property>
+	</bean>
+	
+	<bean id="tableService" class="epos.main.java.service.TableService">
+		<property name="tableDao" ref="tableDao"></property>
+		<property name="itemOrderService" ref="itemOrderService"></property>
+		<property name="billService" ref="billService"></property>
+		<property name="itemService" ref="itemService"></property>
+	</bean>
 </beans>
