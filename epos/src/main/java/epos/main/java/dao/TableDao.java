@@ -21,7 +21,7 @@ public class TableDao extends SqlMapClientDaoSupport {
 	}
 	
 	public void updateTables(List<Table> tables){
-		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Table.addTable", tables);
+		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Table.updateTable", tables);
 	}
 	
 	@SuppressWarnings("unchecked")

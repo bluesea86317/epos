@@ -5,7 +5,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 <sqlMap namespace="Table">
 	<typeAlias alias="tableClass" type="epos.main.java.vo.Table"/>
 	<resultMap class="tableClass" id="tableClassMap">
-		<result property="tableId" column="ftableId" javaType="int" jdbcType="number"/>
+		<result property="tableId" column="fid" javaType="int" jdbcType="number"/>
 		<result property="tableNo" column="ftableNo" javaType="int" jdbcType="number"/>
 		<result property="tableName" column="ftableName" javaType="string" jdbcType="varchar"/>
 		<result property="seatingNum" column="fseatingNum" javaType="int" jdbcType="number"/>
@@ -17,10 +17,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</insert>
 	
 	<delete id="deleteTable">
-		delete from t_table where fid = #tableId#
+		delete from t_table where ftableNo = #tableNo#
 	</delete>
 		
-	<select id="listTables" parameterClass="java.util.Map" resultClass="tableClass">
+	<select id="listTables" parameterClass="java.util.Map" resultMap="tableClassMap">
 		select * from t_table
 		<dynamic prepend="where">
 			<isNotEmpty property="tableStatus" prepend="and">

@@ -7,8 +7,8 @@ create table t_item_order (
 	fprintingStatus int(2),
 	fprovidingStatus int(2),
 	fpaymentStatus int(2),
-	ftableNo int(2),
-	fbillNo int(10),
+	ftableNo int(4),
+	fbillNo VARCHAR(20), /*20130517001001*/
 	fcreateTime timestamp,
 	PRIMARY KEY(fid)
 ) AUTO_INCREMENT=1;

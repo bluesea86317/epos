@@ -123,7 +123,7 @@ public class TableService {
 	public void addTables(List<Table> tables) throws Exception{
 		for(Table table : tables){
 			if(getTableByTableNo(table.getTableNo()) != null){
-				throw new Exception("编号为:'" + table.getTableNo() +"'的餐台已经存在, 不能再添加同样编号的餐台");
+				throw new Exception("编号为'" + table.getTableNo() +"'的餐台已经存在, 不能再添加同样编号的餐台");
 			}
 		}
 		tableDao.addTables(tables);
@@ -138,7 +138,7 @@ public class TableService {
 	public void deleteTables(List<Integer> tableNOs) throws Exception{
 		for(int tableNo : tableNOs){
 			if(getTableByTableNo(tableNo) != null && getTableByTableNo(tableNo).getTableStatus() != Table.STATUS_FREE){
-				throw new Exception("编号为:'" + tableNo +"'的餐台已经在使用, 不允许删除");
+				throw new Exception("编号为'" + tableNo +"'的餐台已经在使用, 不允许删除");
 			}
 		}
 		tableDao.deleteTables(tableNOs);

@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
 import epos.main.java.service.TableService;
 import epos.main.java.vo.Table;
 
+@ActionAuthFilterConfig(mustBeAdmin=true, needAuthorize=true)
 public class UpdateTableAction extends Action {
 	
 	private TableService tableService = Env.getBean("tableService");
@@ -28,7 +30,7 @@ public class UpdateTableAction extends Action {
 			for(Object obj : jsonArray){
 				JSONObject jsonObj =  JSONObject.fromObject(obj);
 				Table table = new Table();
-				table.setTableNo(jsonObj.getInt("tableNO"));
+				table.setTableNo(jsonObj.getInt("tableNo"));
 				table.setTableName(jsonObj.getString("tableName"));
 				table.setSeatingNum(jsonObj.getInt("seatingNum"));
 				tables.add(table);

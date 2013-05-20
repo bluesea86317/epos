@@ -20,10 +20,10 @@ public abstract class Action {
 	public final static String UPDATE_SUCCESS = "更新成功";
 	public final static String QUERY_SUCCESS = "查询成功";
 	
-	public final static String ADD_FAILURE = "新增失败, 错误信息 :";
-	public final static String DELETE_FAILURE = "删除失败, 错误信息 :";
-	public final static String UPDATE_FAILURE = "更新失败, 错误信息 :";
-	public final static String QUERY_FAILURE = "查询失败, 错误信息 :";
+	public final static String ADD_FAILURE = "新增失败, 错误信息: ";
+	public final static String DELETE_FAILURE = "删除失败, 错误信息: ";
+	public final static String UPDATE_FAILURE = "更新失败, 错误信息: ";
+	public final static String QUERY_FAILURE = "查询失败, 错误信息: ";
 	
 	public abstract JSONObject excute(HttpServletRequest request, HttpServletResponse response,JSONObject jsonParam, JSONObject returnObj) throws IOException;	
 	

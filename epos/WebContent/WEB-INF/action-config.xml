@@ -36,6 +36,13 @@
 		<action class="epos.main.java.action.SearchItemAction" path="searchItem"></action>
 		<!-- item -->
 		
+		<!-- table -->
+		<action class="epos.main.java.action.AddTableAction" path="addTable"></action>
+		<action class="epos.main.java.action.DeleteTableAction" path="deleteTable"></action>
+		<action class="epos.main.java.action.UpdateTableAction" path="updateTable"></action>
+		<action class="epos.main.java.action.ListTableAction" path="checkTable"></action>
+		<!-- table -->
+		
 		<!-- sysParam -->
 		<action class="epos.main.java.action.SetIfCanOrderAction" path="setIfCanOrder"></action>
 		<action class="epos.main.java.action.QueryIfCanOrderAction" path="queryIfCanOrder"></action>
