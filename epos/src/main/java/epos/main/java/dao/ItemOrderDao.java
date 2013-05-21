@@ -22,9 +22,17 @@ public class ItemOrderDao extends SqlMapClientDaoSupport {
 		DBUtils.excuteBatchInsert(getSqlMapClientTemplate(), "ItemOrder.addItemOrder", itemOrders);
 	}
 	
+	public void addItemOrderForPrint(List<ItemOrder> itemOrders){
+		DBUtils.excuteBatchInsert(getSqlMapClientTemplate(), "ItemOrder.addItemOrderForPrint", itemOrders);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<ItemOrder> queryItemOrderForPrint(){
 		return (List<ItemOrder>)getSqlMapClientTemplate().queryForList("ItemOrder.queryItemOrderForPrint");
+	}
+	
+	public ItemOrder queryItemOrderByItemIdBillNoTableNo(Map<String,Object> param){
+		return (ItemOrder)getSqlMapClientTemplate().queryForObject("ItemOrder.queryItemOrder",param);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -56,8 +64,13 @@ public class ItemOrderDao extends SqlMapClientDaoSupport {
 		getSqlMapClientTemplate().update("ItemOrder.updateTableNo",param);		
 	}
 	
+	public void deleteItemOrderByItemIdAndBillNo(List<ItemOrder> itemOrders){
+		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "ItemOrder.deleteItemOrderByItemIdAndBillNo", itemOrders);
+	}
 	
-	
+	public void updateItemOrderPriceAndCount(List<ItemOrder> itemOrders){
+		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "ItemOrder.updateItemOrderPriceAndCount", itemOrders);
+	}
 	
 	public void setIfCanOrder(String value){
 		Map<String,Object> param = new HashMap<String,Object>();

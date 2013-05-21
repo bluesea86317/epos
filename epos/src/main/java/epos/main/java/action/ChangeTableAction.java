@@ -6,11 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
 import epos.main.java.service.TableService;
 
+@ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=false)
 public class ChangeTableAction extends Action {
 
 	TableService tableService = Env.getBean("tableService");

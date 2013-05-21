@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
+import epos.main.java.utils.DBUtils;
 import epos.main.java.vo.Bill;
 
 public class BillDao extends SqlMapClientDaoSupport {
@@ -13,8 +14,8 @@ public class BillDao extends SqlMapClientDaoSupport {
 		getSqlMapClientTemplate().insert("Bill.addBill", bill);
 	}
 	
-	public void deleteBill(Map<String, Object> param){		
-		getSqlMapClientTemplate().delete("Bill.deleteBill", param);
+	public void deleteBillByBillNo(String billNo){		
+		getSqlMapClientTemplate().delete("Bill.deleteBillByBillNo", billNo);
 	}
 	
 	public void updateTotalPrice(Map<String, Object> param){
@@ -28,6 +29,11 @@ public class BillDao extends SqlMapClientDaoSupport {
 	@SuppressWarnings("unchecked")
 	public List<Bill> queryUnPaidBillByTableNo(int tableNo){
 		return (List<Bill>)getSqlMapClientTemplate().queryForList("Bill.queryUnPaidBillByTableNo", tableNo);
+	}
+
+	public void deleteBillByBillNos(List<String> billNos) {
+		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "Bill.deleteBillByBillNo", billNos);
+		
 	}
 	
 }

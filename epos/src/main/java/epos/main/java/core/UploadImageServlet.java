@@ -56,16 +56,16 @@ public class UploadImageServlet extends HttpServlet {
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();
 				if (item.isFormField()) {
-                   throw new UploadImageException("It's not a file upload request !");
+                   throw new UploadImageException("不是有效的文件流请求");
 				} else {
 					if (!"".equals(item.getName())) {
 						if (item.getSize() == 0) {							
-							throw new UploadImageException("It does not exist any file in this request !");
+							throw new UploadImageException("该请求中没有任何文件");
 						} else {
 							destinationFileName = writeToFile(this, item);
-//							if (destinationFileName == null || destinationFileName.trim().length() == 0) {
-//								throw new UploadImageException("upload error !");
-//							}
+							if (destinationFileName == null || destinationFileName.trim().length() == 0) {
+								throw new UploadImageException("upload error !");
+							}
 						}
 					}
 				}
@@ -76,10 +76,13 @@ public class UploadImageServlet extends HttpServlet {
 			new UploadImageException("上传文件不能超过10M").outPrint(response);
 		}catch (FileUploadException e) {
 			e.printStackTrace();
-		} catch (UploadImageException e) {			
+			new UploadImageException(e.getMessage()).outPrint(response);
+		}catch (UploadImageException e) {			
 			e.printStackTrace();
 			e.outPrint(response);
-		} 
+		}catch (Exception e){
+			new UploadImageException(e.getMessage()).outPrint(response);
+		}
 		
 	}
 	
@@ -109,7 +112,7 @@ public class UploadImageServlet extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new UploadImageException("upload error! error msg is : " + e.getMessage());
+			throw new UploadImageException(e.getMessage());
 		}
 		return fileName;
 	}

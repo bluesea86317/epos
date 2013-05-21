@@ -3,6 +3,7 @@ create table t_item_order (
 	fid int(10) not null auto_increment,
 	fitemId int(4),
 	fitemCount int(2),
+	fflavorId int(4),
 	fprice DECIMAL(5,2),
 	fprintingStatus int(2),
 	fprovidingStatus int(2),

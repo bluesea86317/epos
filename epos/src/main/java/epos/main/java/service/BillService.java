@@ -22,13 +22,17 @@ public class BillService {
 		billDao.addBill(bill);
 	}
 	
-	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void deleteBillByBillNo(String billNo){
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("billNo", billNo);
-		billDao.deleteBill(param);
+		billDao.deleteBillByBillNo(billNo);
 	}
 	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void deleteBillByBillNos(List<String> billNos){		
+		billDao.deleteBillByBillNos(billNos);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void updateTotalPrice(BigDecimal totalPrice, String billNo){
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("totalPrice", totalPrice);
@@ -46,7 +50,7 @@ public class BillService {
 	
 	public Bill queryUnPaidBillByTableNo(int tableNo) throws Exception{
 		List<Bill> bills = billDao.queryUnPaidBillByTableNo(tableNo);
-		if(bills != null){
+		if(bills != null && bills.size() > 0){
 			if(bills.size() > 1){
 				throw new Exception(tableNo + "号餐台还没有结账");
 			}else{

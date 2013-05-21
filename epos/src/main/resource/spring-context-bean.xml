@@ -73,5 +73,6 @@
 		<property name="itemOrderService" ref="itemOrderService"></property>
 		<property name="billService" ref="billService"></property>
 		<property name="itemService" ref="itemService"></property>
+		<property name="defaultItemIds" value="${defaultItemIds}"></property>
 	</bean>
 </beans>

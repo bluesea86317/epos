@@ -18,7 +18,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		values(#billNo#, #totalPrice#, #tableNo#, #paymentTime#, #billStatus#);
 	</insert>
 	
-	<delete id="deleteBill" parameterClass="java.util.Map">
+	
+	<delete id="deleteBillByBillNo" parameterClass="string">
 		delete from t_bill where where fbillNo = #billNo#
 	</delete>
 	
@@ -26,11 +27,13 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		update t_bill set ftotalPrice = #totalPrice# where fbillNo = #billNo#
 	</update>
 	
-	<select id="queryUnPaidBillByTableNo" parameterClass="int">
-		select * from t_bill where ftableNo = #tableNo# and fbillStatus = 0
+	<select id="queryUnPaidBillByTableNo" parameterClass="int" resultMap="billMap">
+		<!-- select * from t_bill where ftableNo = #tableNo# and fbillStatus = 0 -->
+		select DISTINCT b.* from t_bill b left join t_item_order io on b.fbillNo = io.fbillNo
+		where io.ftableNo = #tableNo# and b.fbillStatus = 0
 	</select>
 	
 	<update id="updateTableNo" parameterClass="java.util.Map">
-		update t_bill set ftableNo = #tableNO# where fbillNo = #billNo#
+		update t_bill set ftableNo = #tableNo# where fbillNo = #billNo#
 	</update>
 </sqlMap>

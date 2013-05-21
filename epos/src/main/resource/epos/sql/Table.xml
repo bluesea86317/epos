@@ -29,7 +29,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		</dynamic>
 	</select>
 	
-	<select id="getTableByTableNo" parameterClass="int" resultClass="tableClass">
+	<select id="getTableByTableNo" parameterClass="int" resultMap="tableClassMap">
 		select * from t_table where ftableNo = #tableNo#
 	</select>
 	

@@ -22,6 +22,11 @@ public class ItemOrder {
 	private int itemCount;	
 	
 	private BigDecimal price;
+	
+	private int flavorId;
+	
+	private String flavorType;
+	
 //	菜品清单打印状态
 	private int printingStatus;
 		public final static int PRINTING_STATUS_NO = 0;
@@ -162,6 +167,22 @@ public class ItemOrder {
 
 	public void setPrinterInfo(String printerInfo) {
 		this.printerInfo = printerInfo;
+	}
+
+	public int getFlavorId() {
+		return flavorId;
+	}
+
+	public void setFlavorId(int flavorId) {
+		this.flavorId = flavorId;
+	}
+
+	public String getFlavorType() {
+		return flavorType;
+	}
+
+	public void setFlavorType(String flavorType) {
+		this.flavorType = flavorType;
 	}
 	
 	

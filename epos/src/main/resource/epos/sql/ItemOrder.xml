@@ -10,6 +10,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="itemId" column="fitemId" javaType="int" jdbcType="number"/>
 		<result property="itemName" column="fitemName" javaType="string" jdbcType="varchar"/>
 		<result property="itemType" column="fitemType" javaType="string" jdbcType="varchar"/>
+		
+		<result property="flavorId" column="fflavorId" javaType="int" jdbcType="number" nullValue="0"/>
+		<result property="flavorType" column="fflavorType" javaType="string" jdbcType="varchar"/>
+		
 		<result property="departmentId" column="fdepartmentId" javaType="int" jdbcType="number"/>
 		<result property="departmentName" column="fdepartmentName" javaType="string" jdbcType="varchar"/>
 		<result property="printerInfo" column="fprinterInfo" javaType="string" jdbcType="varchar"/>
@@ -26,39 +30,49 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	
 	<select id="queryItemOrderForPrint" resultMap="itemOrderMap">
 		select 
-			io.*, i.fitemName, it.fitemType, d.fid fdepartmentId, d.fdepartmentName, d.fprinterInfo 
-			from t_item_order io 
+			io.*, i.fitemName, it.fitemType, d.fid fdepartmentId, d.fdepartmentName, d.fprinterInfo, f.fflavorType
+			from t_item_order_forprint io 
 			left join t_item i on io.fitemId = i.fid 
 			left join t_item_type it on i.fitemTypeId = it.fid 
 			left join t_department d on it.fdepartmentId = d.fid
+			left join t_flavor f on io.fflavorId = f.fid
 			where io.fprintingStatus = 0
 			order by fcreateTime asc
 	</select>
 	
 	<select id="queryItemOrder" resultMap="itemOrderMap" parameterClass="java.util.Map">
 		select 
-			io.*, i.fitemName, it.fitemType, d.fid fdepartmentId, d.fdepartmentName, d.fprinterInfo 
+			io.*, i.fitemName, it.fitemType, d.fid fdepartmentId, d.fdepartmentName, d.fprinterInfo, f.fflavorType
 			from t_item_order io 
 			left join t_item i on io.fitemId = i.fid 
 			left join t_item_type it on i.fitemTypeId = it.fid 
 			left join t_department d on it.fdepartmentId = d.fid
+			left join t_flavor f on io.fflavorId = f.fid
 			where fpaymentStatus = 0
 			<isNotEmpty property="tableNo" prepend="and">
 				ftableNo = #tableNo#
 			</isNotEmpty>
 			<isNotEmpty property="billNo" prepend="and">
 				fbillNo = #billNo#
-			</isNotEmpty>			 
+			</isNotEmpty>
+			<isNotEmpty property="itemId" prepend="and">
+				fitemId = #itemId#
+			</isNotEmpty>
 			order by fcreateTime asc
 	</select>
 	
+	<insert id="addItemOrderForPrint" parameterClass="itemOrderClass">
+		insert into t_item_order_forprint (fitemId,fitemCount,fflavorId,fprice,fprintingStatus,fprovidingStatus,fpaymentStatus,ftableNo,fbillNo,fcreateTime)
+		values (#itemId#,#itemCount#,#flavorId#,#price#,#printingStatus#,#providingStatus#,#paymentStatus#,#tableNo#,#billNo#,#createTime#)
+	</insert>
+	
 	<insert id="addItemOrder" parameterClass="itemOrderClass">
-		insert into t_item_order (fitemId,fitemCount,fprice,fprintingStatus,fprovidingStatus,fpaymentStatus,ftableNo,fbillNo,fcreateTime)
-		values (#itemId#,#itemCount#,#price#,#printingStatus#,#providingStatus#,#paymentStatus#,#tableNo#,#billNo#,#createTime#)
+		insert into t_item_order (fitemId,fitemCount,fflavorId,fprice,fprintingStatus,fprovidingStatus,fpaymentStatus,ftableNo,fbillNo,fcreateTime)
+		values (#itemId#,#itemCount#,#flavorId#,#price#,#printingStatus#,#providingStatus#,#paymentStatus#,#tableNo#,#billNo#,#createTime#)
 	</insert>
 	
 	<update id="updatePrintingStatus" parameterClass="int">
-		update t_item_order set fprintingStatus = 1 where fid = #itemOrderId#
+		update t_item_order_forprint set fprintingStatus = 1 where fid = #itemOrderId#
 	</update>
 	
 	<update id="updatePaymentStatus" parameterClass="java.util.Map">
@@ -75,6 +89,14 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	
 	<update id="updateTableNo" parameterClass="java.util.Map">
 		update t_item_order set ftableNo = #tableNo# where fbillNo = #billNo#
+	</update>
+	
+	<delete id="deleteItemOrderByItemIdAndBillNo" parameterClass="itemOrderClass">
+		delete from t_item_order where fid = #itemOrderId#
+	</delete>
+	
+	<update id="updateItemOrderPriceAndCount" parameterClass="itemOrderClass">
+		update t_item_order set fitemCount = #itemCount# , fprice = #price# where fid = #itemOrderId#
 	</update>
 	
 	<select id="querySysParam" parameterClass="java.util.Map" resultClass="string">

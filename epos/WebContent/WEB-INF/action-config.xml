@@ -44,6 +44,10 @@
 		
 		<action class="epos.main.java.action.ActiveTableAction" path="activeTable"></action>
 		<action class="epos.main.java.action.ChangeTableAction" path="changeTable"></action>
+		
+		<action class="epos.main.java.action.OrderItemAction" path="orderItem"></action>
+		<action class="epos.main.java.action.AppendItemAction" path="appendItem"></action>
+		<action class="epos.main.java.action.CancelItemAction" path="cancelItem"></action>
 		<!-- table -->
 		
 		<!-- sysParam -->

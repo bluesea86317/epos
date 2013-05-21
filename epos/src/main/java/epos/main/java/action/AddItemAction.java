@@ -8,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import epos.main.java.annotation.ActionAuthFilterConfig;
@@ -36,7 +38,9 @@ public class AddItemAction extends Action {
 				item.setItemTypeId(jsonObj.getInt("itemTypeId"));
 				item.setPicName(jsonObj.getString("picName"));
 				item.setPrice(new BigDecimal(jsonObj.getString("price")));
-				item.setImageUrl(IMAGE_PATH + jsonObj.getString("picName"));
+				if(StringUtils.isNotBlank(jsonObj.getString("picName"))){
+					item.setImageUrl(IMAGE_PATH + jsonObj.getString("picName"));					
+				}
 				item.setFlavorIds(jsonObj.getString("flavorChoice"));
 				items.add(item);
 			}
