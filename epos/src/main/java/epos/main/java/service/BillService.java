@@ -41,10 +41,11 @@ public class BillService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void updateTableNo(int tableNo, String billNo){
+	public void updateTableNo(int toTableNo, String billNo, int fromTableNo){
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("tableNo", tableNo);
+		param.put("toTableNo", toTableNo);
 		param.put("billNo", billNo);
+		param.put("fromTableNo", fromTableNo);
 		billDao.updateTableNo(param);
 	}
 	

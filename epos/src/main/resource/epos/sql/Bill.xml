@@ -20,7 +20,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	
 	
 	<delete id="deleteBillByBillNo" parameterClass="string">
-		delete from t_bill where where fbillNo = #billNo#
+		delete from t_bill where fbillNo = #billNo#
 	</delete>
 	
 	<update id="updateTotalPrice" parameterClass="java.util.Map">
@@ -34,6 +34,6 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</select>
 	
 	<update id="updateTableNo" parameterClass="java.util.Map">
-		update t_bill set ftableNo = #tableNo# where fbillNo = #billNo#
+		update t_bill set ftableNo = #toTableNo# where fbillNo = #billNo# and ftableNo = #fromTableNo#
 	</update>
 </sqlMap>

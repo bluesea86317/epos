@@ -88,7 +88,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</update>
 	
 	<update id="updateTableNo" parameterClass="java.util.Map">
-		update t_item_order set ftableNo = #tableNo# where fbillNo = #billNo#
+		update t_item_order set ftableNo = #toTableNo# where fbillNo = #billNo# and ftableNo = #fromTable#
 	</update>
 	
 	<delete id="deleteItemOrderByItemIdAndBillNo" parameterClass="itemOrderClass">

@@ -76,8 +76,8 @@ public class ItemOrderService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void updateTableNo(int tableNo, String billNo){
-		itemOrderDao.updateTableNo(tableNo, billNo);
+	public void updateTableNo(int tableNo, String billNo, int fromTable){
+		itemOrderDao.updateTableNo(tableNo, billNo, fromTable);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)

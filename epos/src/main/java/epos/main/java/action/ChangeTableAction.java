@@ -24,7 +24,7 @@ public class ChangeTableAction extends Action {
 		try {
 			int fromTableNo = jsonParam.getInt("fromTableNo");
 			int toTableNo = jsonParam.getInt("toTableNo");
-			tableService.changeTble(fromTableNo, toTableNo);
+			tableService.changeTable(fromTableNo, toTableNo);
 			returnObj.put(MSG, "转台成功");
 		} catch (Exception e) {
 			returnObj.put(MSG, "转台失败，错误信息： " + e.getMessage());

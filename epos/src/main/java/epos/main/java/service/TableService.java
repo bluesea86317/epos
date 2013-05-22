@@ -35,7 +35,7 @@ public class TableService {
 	 * @param customerNum
 	 * @throws Exception
 	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void activeTable(int tableNo, int customerNum) throws Exception{
 		Table table = getTableByTableNo(tableNo);
 		if(table == null){
@@ -88,7 +88,7 @@ public class TableService {
 		itemOrderService.addItemOrders(deaultItemOrders);
 //		创建订单
 		billService.addBill(bill);
-//		修改餐台状态
+//		修改桌台状态
 		changeTableStatus(tableNo, Table.STATUS_ACTIVED);
 	}	
 	
@@ -97,11 +97,15 @@ public class TableService {
 	 * @param tableNo
 	 * @throws Exception 
 	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void nonActiveTable(int tableNo) throws Exception{
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
+	public void freeTable(int tableNo) throws Exception{
+		Table table = getTableByTableNo(tableNo);
+		if(table == null){
+			throw new Exception(tableNo + "号桌台不存在, 不能清台");
+		}
 		Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
-		if(bill != null){
-			throw new Exception("该餐台还没有结账,不能清台");
+		if(bill != null || table.getTableStatus() == Table.STATUS_ACTIVED){
+			throw new Exception(tableNo + "号桌台还没有结账,不能清台");
 		}
 		changeTableStatus(tableNo, Table.STATUS_FREE);
 	}
@@ -110,30 +114,30 @@ public class TableService {
 	 * 转台，顾客要求更换桌台
 	 * @throws Exception 
 	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void changeTble(int fromTableNo, int toTableNo) throws Exception{
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
+	public void changeTable(int fromTableNo, int toTableNo) throws Exception{
 		Table fromTable = getTableByTableNo(fromTableNo);
 		Table toTable = getTableByTableNo(toTableNo);
 		if(fromTable == null){
-			throw new Exception(fromTableNo + "号餐台不存在,不能转台");
+			throw new Exception(fromTableNo + "号桌台不存在,不能转台");
 		}
 		if(toTable == null){
-			throw new Exception(toTableNo + "号餐台不存在,不能转台");
+			throw new Exception(toTableNo + "号桌台不存在,不能转台");
 		}
 		if(fromTable.getTableStatus() != Table.STATUS_ACTIVED || billService.queryUnPaidBillByTableNo(fromTableNo) == null){
-			throw new Exception(fromTableNo + "号餐台未开台, 不能转台");
+			throw new Exception(fromTableNo + "号桌台未开台, 不能转台");
 		}
 		
 		if(toTable.getTableStatus() != Table.STATUS_FREE || billService.queryUnPaidBillByTableNo(toTableNo) != null){
-			throw new Exception(toTableNo + "号餐台正在使用中,不能转台");
+			throw new Exception(toTableNo + "号桌台正在使用中,不能转台");
 		}
 		if(toTable.getTableStatus() == Table.STATUS_ORDERED){
-			throw new Exception(toTableNo + "号餐台已经被预定,不能转台");
+			throw new Exception(toTableNo + "号桌台已经被预定,不能转台");
 		}
 				
 		Bill bill = billService.queryUnPaidBillByTableNo(fromTableNo);
-		billService.updateTableNo(toTableNo, bill.getBillNo());
-		itemOrderService.updateTableNo(toTableNo, bill.getBillNo());
+		billService.updateTableNo(toTableNo, bill.getBillNo(), fromTableNo);
+		itemOrderService.updateTableNo(toTableNo, bill.getBillNo(), fromTableNo);
 		changeTableStatus(fromTableNo, Table.STATUS_FREE);
 		changeTableStatus(toTableNo, Table.STATUS_ACTIVED);
 	}
@@ -144,14 +148,14 @@ public class TableService {
 	 * @param newTableNo
 	 * @throws Exception 
 	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void combineTable(List<Integer> combinedTableNos, int newTableNo) throws Exception{
 		Table newTable = getTableByTableNo(newTableNo);
 		if(newTable == null){
-			throw new Exception("编号为"+newTableNo+"的桌台不存在");
+			throw new Exception("编号为"+newTableNo+"的桌台不存在,不能并台");
 		}
 		if(newTable.getTableStatus() != Table.STATUS_ACTIVED){
-			throw new Exception("该桌台还未开台, 不能并台");
+			throw new Exception(newTableNo + "号桌台还未开台, 不能并台");
 		}
 		
 		Bill bill = billService.queryUnPaidBillByTableNo(newTableNo);
@@ -159,12 +163,18 @@ public class TableService {
 		for(int combinedTableNo : combinedTableNos){
 			Table combinedTable = getTableByTableNo(combinedTableNo);
 			if(combinedTable == null){
-				throw new Exception("编号为"+combinedTableNo+"的桌台不存在");
+				throw new Exception(combinedTableNo + "号桌台不存在, 不能并台");
 			}
 			if(combinedTable.getTableStatus() != Table.STATUS_ACTIVED){
-				throw new Exception("该桌台还未开台, 不能并台");
+				throw new Exception(combinedTableNo + "号桌台还未开台, 不能并台");
 			}
+			
+//			获取要并台的订单
 			Bill combineBill = billService.queryUnPaidBillByTableNo(combinedTableNo);
+			if(combinedTableNo == newTableNo || bill.getBillNo().equals(combineBill.getBillNo())){
+				continue;
+			}
+			
 			combineBillNos.add(combineBill.getBillNo());
 			
 			List<ItemOrder> itemOrders = itemOrderService.queryItemOrderByBillNoTableNo(combineBill.getBillNo(), combinedTableNo);
@@ -177,6 +187,8 @@ public class TableService {
 		}
 //		删除被合并桌台的原始订单
 		billService.deleteBillByBillNos(combineBillNos);
+//		修改并台后的订单价格
+		billService.updateTotalPrice(bill.getTotalPrice(), bill.getBillNo());
 	}
 	
 	/**
@@ -185,7 +197,7 @@ public class TableService {
 	 * @param tableNo
 	 * @throws Exception
 	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void orderItem1(List<ItemOrder> itemOrders, int tableNo) throws Exception{
 		Table table = getTableByTableNo(tableNo);
 		if(table == null){
@@ -226,7 +238,7 @@ public class TableService {
 	 * @param tableNo
 	 * @throws Exception
 	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void cancelItem(List<ItemOrder> cancelItemOrders, int tableNo) throws Exception{
 		Table table = getTableByTableNo(tableNo);
 		if(table == null){
@@ -275,7 +287,7 @@ public class TableService {
 	 * @param tableNo
 	 * @throws Exception
 	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void orderItem(List<ItemOrder> itemOrders, int tableNo) throws Exception{
 		Table table = getTableByTableNo(tableNo);
 		if(table == null){
@@ -326,7 +338,7 @@ public class TableService {
 	public void addTables(List<Table> tables) throws Exception{
 		for(Table table : tables){
 			if(getTableByTableNo(table.getTableNo()) != null){
-				throw new Exception("编号为'" + table.getTableNo() +"'的餐台已经存在, 不能再添加同样编号的餐台");
+				throw new Exception("编号为'" + table.getTableNo() +"'的桌台已经存在, 不能再添加同样编号的桌台");
 			}
 		}
 		tableDao.addTables(tables);
@@ -341,7 +353,7 @@ public class TableService {
 	public void deleteTables(List<Integer> tableNOs) throws Exception{
 		for(int tableNo : tableNOs){
 			if(getTableByTableNo(tableNo) != null && getTableByTableNo(tableNo).getTableStatus() != Table.STATUS_FREE){
-				throw new Exception("编号为'" + tableNo +"'的餐台已经在使用, 不允许删除");
+				throw new Exception("编号为'" + tableNo +"'的桌台已经在使用, 不允许删除");
 			}
 		}
 		tableDao.deleteTables(tableNOs);

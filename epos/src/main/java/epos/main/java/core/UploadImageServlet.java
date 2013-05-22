@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.StringUtils;
 
 import epos.main.java.exception.UploadImageException;
 
@@ -53,6 +54,7 @@ public class UploadImageServlet extends HttpServlet {
 		try {
 			List items = upload.parseRequest(request);
 			Iterator iter = items.iterator();
+			boolean flag = iter.hasNext();
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();
 				if (item.isFormField()) {
@@ -67,13 +69,20 @@ public class UploadImageServlet extends HttpServlet {
 								throw new UploadImageException("upload error !");
 							}
 						}
+					}else{
+						throw new UploadImageException("上传的文件名称不能为空!");
 					}
 				}
 			}
-			jonObj.put("imageFileName", destinationFileName);
-			response.getWriter().print(jonObj.toString());
+			if(flag){
+				jonObj.put("imageFileName", destinationFileName);
+				response.getWriter().print(jonObj.toString());				
+			}else{
+				throw new UploadImageException("请求中没有文件");
+			}
 		}catch (FileUploadBase.SizeLimitExceededException e) {
 			new UploadImageException("上传文件不能超过10M").outPrint(response);
+			e.printStackTrace();
 		}catch (FileUploadException e) {
 			e.printStackTrace();
 			new UploadImageException(e.getMessage()).outPrint(response);
@@ -82,6 +91,7 @@ public class UploadImageServlet extends HttpServlet {
 			e.outPrint(response);
 		}catch (Exception e){
 			new UploadImageException(e.getMessage()).outPrint(response);
+			e.printStackTrace();
 		}
 		
 	}
@@ -95,21 +105,19 @@ public class UploadImageServlet extends HttpServlet {
 				targetDir.mkdirs();
 			}
 			fileName = item.getName();
-			if (fileName != null && !fileName.equals("")) {
-				boolean flag = false;
-				String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-				for(String fileType : fileTypeString){
-					if(fileType.equals(suffix)){
-						flag = true;
-						break;
-					}					
-				}
-				if(!flag){
-					throw new UploadImageException("文件格式不正确, 只能上传图片文件!");
-				}
-				fileName = System.currentTimeMillis() + "."+ suffix;
-				item.write(new File(fileDir, fileName));
+			boolean flag = false;
+			String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+			for(String fileType : fileTypeString){
+				if(fileType.equals(suffix)){
+					flag = true;
+					break;
+				}					
 			}
+			if(!flag){
+				throw new UploadImageException("文件格式不正确, 只能上传图片文件!");
+			}
+			fileName = System.currentTimeMillis() + "."+ suffix;
+			item.write(new File(fileDir, fileName));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new UploadImageException(e.getMessage());

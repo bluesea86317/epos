@@ -1,8 +1,6 @@
 package epos.main.java.action;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +13,7 @@ import epos.main.java.core.Return;
 import epos.main.java.service.TableService;
 
 @ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=false)
-public class CombineTableAction extends Action {
+public class FreeTableAction extends Action {
 
 	private TableService tableService = Env.getBean("tableService");
 	
@@ -24,16 +22,11 @@ public class CombineTableAction extends Action {
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
-			List<Integer> combinedTableNos = new ArrayList<Integer>();
-			String[] tableNos = jsonParam.getString("combinedTableNos").split(",");
-			for(String tableNo : tableNos){
-				combinedTableNos.add(Integer.parseInt(tableNo));
-			}
-			int newTableNo = jsonParam.getInt("newTableNo");
-			tableService.combineTable(combinedTableNos, newTableNo);
-			returnObj.put(MSG, "并台成功");
+			int tableNo = jsonParam.getInt("tableNo");
+			tableService.freeTable(tableNo);
+			returnObj.put(MSG, "清台成功");
 		} catch (Exception e) {
-			returnObj.put(MSG, "并台失败, 错误信息: " + e.getMessage());
+			returnObj.put(MSG, "清台失败, 错误信息: " + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
 			e.printStackTrace();
 		}
