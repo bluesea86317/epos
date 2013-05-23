@@ -12,18 +12,33 @@ import net.sf.json.JSONObject;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
-import epos.main.java.service.TableService;
+import epos.main.java.service.ItemOrderService;
+import epos.main.java.service.OrderService;
+import epos.main.java.service.UserService;
 import epos.main.java.vo.ItemOrder;
 
 public class AppendItemAction extends Action {
 
-	private TableService tableService = Env.getBean("tableService");
+	private OrderService orderService = Env.getBean("orderService");
+	private ItemOrderService itemOrderService = Env.getBean("itemOrderService");
+	private UserService userSerivce = Env.getBean("userService");
 	
 	@Override
 	public JSONObject excute(HttpServletRequest request,
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
+			try {
+				if(!itemOrderService.queryIfCanOrder()){
+					String userName = jsonParam.getString("userName");
+					String password = jsonParam.getString("password");
+					if(!userSerivce.validateUserNameAndPassword(userName, password)){
+						throw new Exception("用户名或者密码错误");
+					}
+				}
+			} catch (Exception e) {
+				throw new Exception("用户名或者密码错误");
+			}
 			List<ItemOrder> itemOrders = new ArrayList<ItemOrder>();
 			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
 			for(Object obj : jsonArray){
@@ -35,7 +50,7 @@ public class AppendItemAction extends Action {
 				itemOrder.setFlavorId(jsonObj.getInt("flavorId"));
 				itemOrders.add(itemOrder);
 			}
-			tableService.orderItem(itemOrders,jsonParam.getInt("tableNo"));
+			orderService.orderItem(itemOrders,jsonParam.getInt("tableNo"));
 			returnObj.put(MSG, "加菜成功");
 		} catch (Exception e) {
 			returnObj.put(MSG, "加菜失败, 错误信息: " + e.getMessage());

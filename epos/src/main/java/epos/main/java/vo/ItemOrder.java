@@ -9,23 +9,11 @@ public class ItemOrder {
 	
 	private int itemId;
 	
-	private String itemName;
-	
-	private String itemType;
-	
-	private int departmentId;
-	
-	private String departmentName;
-	
-	private String printerInfo;
-	
 	private int itemCount;	
 	
 	private BigDecimal price;
 	
 	private int flavorId;
-	
-	private String flavorType;
 	
 //	菜品清单打印状态
 	private int printingStatus;
@@ -45,7 +33,7 @@ public class ItemOrder {
 	
 	private String billNo;
 	
-	private Date createTime;
+//	private Date createTime;
 
 	
 	public int getItemOrderId() {
@@ -62,15 +50,7 @@ public class ItemOrder {
 
 	public void setItemId(int itemId) {
 		this.itemId = itemId;
-	}
-
-	public String getItemName() {
-		return itemName;
-	}
-
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
+	}	
 
 	public BigDecimal getPrice() {
 		return price;
@@ -97,13 +77,13 @@ public class ItemOrder {
 	}
 
 
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+//	public Date getCreateTime() {
+//		return createTime;
+//	}
+//
+//	public void setCreateTime(Date createTime) {
+//		this.createTime = createTime;
+//	}
 
 	public int getPaymentStatus() {
 		return paymentStatus;
@@ -137,54 +117,12 @@ public class ItemOrder {
 		this.billNo = billNo;
 	}
 
-	public String getItemType() {
-		return itemType;
-	}
-
-	public void setItemType(String itemType) {
-		this.itemType = itemType;
-	}
-
-	public int getDepartmentId() {
-		return departmentId;
-	}
-
-	public void setDepartmentId(int departmentId) {
-		this.departmentId = departmentId;
-	}
-
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-
-	public String getPrinterInfo() {
-		return printerInfo;
-	}
-
-	public void setPrinterInfo(String printerInfo) {
-		this.printerInfo = printerInfo;
-	}
-
 	public int getFlavorId() {
 		return flavorId;
 	}
 
 	public void setFlavorId(int flavorId) {
 		this.flavorId = flavorId;
-	}
-
-	public String getFlavorType() {
-		return flavorType;
-	}
-
-	public void setFlavorType(String flavorType) {
-		this.flavorType = flavorType;
-	}
-	
-	
+	}	
 	
 }

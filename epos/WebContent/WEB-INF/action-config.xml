@@ -46,11 +46,23 @@
 		<action class="epos.main.java.action.ChangeTableAction" path="changeTable"></action>
 		<action class="epos.main.java.action.CombineTableAction" path="combineTable"></action>
 		<action class="epos.main.java.action.FreeTableAction" path="freeTable"></action>
-		
+		<!-- table -->
+
+		<!-- orderItem -->		
 		<action class="epos.main.java.action.OrderItemAction" path="orderItem"></action>
 		<action class="epos.main.java.action.AppendItemAction" path="appendItem"></action>
 		<action class="epos.main.java.action.CancelItemAction" path="cancelItem"></action>
-		<!-- table -->
+		<action class="epos.main.java.action.ProvidedItemAction" path="provideItem"></action>
+		<!-- orderItem -->
+		
+		<!-- queryItemOrder -->
+		<action class="epos.main.java.action.QueryItemOrderByTableAction" path="queryTableItem"></action>
+		<action class="epos.main.java.action.QueryItemOrderForPrintAction" path="queryTableItemForPrint"></action>
+		<!-- queryItemOrder -->
+		
+		<!-- pay -->
+		<action class="epos.main.java.action.PaymentAction" path="pay"></action>
+		<!-- pay -->
 		
 		<!-- sysParam -->
 		<action class="epos.main.java.action.SetIfCanOrderAction" path="setIfCanOrder"></action>

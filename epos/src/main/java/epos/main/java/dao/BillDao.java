@@ -32,8 +32,15 @@ public class BillDao extends SqlMapClientDaoSupport {
 	}
 
 	public void deleteBillByBillNos(List<String> billNos) {
-		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "Bill.deleteBillByBillNo", billNos);
-		
+		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "Bill.deleteBillByBillNo", billNos);		
+	}
+	
+	public void payForBill(String billNo){
+		getSqlMapClientTemplate().update("Bill.payForBill", billNo);
+	}
+
+	public Bill getBillByNo(String billNo) {		
+		return (Bill)getSqlMapClientTemplate().queryForObject("Bill.getBillByNo", billNo);
 	}
 	
 }

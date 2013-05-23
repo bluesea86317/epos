@@ -1,9 +1,7 @@
 package epos.main.java.service;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +59,7 @@ public class TableService {
 					ItemOrder itemOrder = new ItemOrder();
 					itemOrder.setBillNo(billNo);
 					itemOrder.setTableNo(tableNo);
-					itemOrder.setCreateTime(new Date());
+//					itemOrder.setCreateTime(new Date());
 					itemOrder.setItemId(defaultItemId);
 					customerNum = (customerNum == 0) ? table.getSeatingNum() : customerNum;
 					itemOrder.setItemCount(customerNum);
@@ -191,148 +189,7 @@ public class TableService {
 		billService.updateTotalPrice(bill.getTotalPrice(), bill.getBillNo());
 	}
 	
-	/**
-	 * 点菜
-	 * @param itemOrders
-	 * @param tableNo
-	 * @throws Exception
-	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
-	public void orderItem1(List<ItemOrder> itemOrders, int tableNo) throws Exception{
-		Table table = getTableByTableNo(tableNo);
-		if(table == null){
-			throw new Exception("编号为"+tableNo+"的桌台不存在");
-		}
-		if(table.getTableStatus() != Table.STATUS_ACTIVED){
-			throw new Exception("该桌台还未开台, 不能点菜");
-		}
-		Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
-//		if(bill.getBillStatus() == Bill.BILL_STATUS_PAID){
-//			throw new Exception("该桌台已经结账,不能点菜");
-//		}
-		String billNo = bill.getBillNo();
-		for(ItemOrder itemOrder : itemOrders){
-			Item item = itemService.getItemById(itemOrder.getItemId());
-			if(item == null){
-				throw new Exception("编号为"+itemOrder.getItemId()+"的菜品不存在，无法点菜");
-			}
-			BigDecimal price = item.getPrice().multiply(new BigDecimal(itemOrder.getItemCount()));
-			itemOrder.setPrice(price);
-			itemOrder.setBillNo(billNo);
-			itemOrder.setCreateTime(new Date());
-			itemOrder.setPrintingStatus(ItemOrder.PRINTING_STATUS_NO);
-			itemOrder.setProvidingStatus(ItemOrder.PROVIDING_STATUS_NO);
-			itemOrder.setPaymentStatus(ItemOrder.PAYMENT_STATUS_NO);
-			
-			bill.setTotalPrice(bill.getTotalPrice().add(price));
-		}
-		
-		itemOrderService.addItemOrders(itemOrders);
-		itemOrderService.addItemOrderForPrint(itemOrders);
-		billService.updateTotalPrice(bill.getTotalPrice(), bill.getBillNo());
-	}
 	
-	/**
-	 * 退菜
-	 * @param cancelItemOrders
-	 * @param tableNo
-	 * @throws Exception
-	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
-	public void cancelItem(List<ItemOrder> cancelItemOrders, int tableNo) throws Exception{
-		Table table = getTableByTableNo(tableNo);
-		if(table == null){
-			throw new Exception("编号为"+tableNo+"的桌台不存在");
-		}
-		if(table.getTableStatus() != Table.STATUS_ACTIVED){
-			throw new Exception("该桌台还未开台, 不能退菜");
-		}
-		Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
-//		if(bill.getBillStatus() == Bill.BILL_STATUS_PAID){
-//			throw new Exception("该桌台已经结账,不能退菜");
-//		}
-		List<ItemOrder> removeItemOrders = new ArrayList<ItemOrder>();
-		List<ItemOrder> updateItemOrders = new ArrayList<ItemOrder>();
-		for(ItemOrder cancelItemOrder : cancelItemOrders){
-			Item item = itemService.getItemById(cancelItemOrder.getItemId());
-			if(item == null){
-				throw new Exception("编号为"+cancelItemOrder.getItemId()+"的菜品不存在，无法退菜");
-			}
-			ItemOrder itemOrder = itemOrderService.queryItemOrderByItemIdBillNoTableNo(cancelItemOrder.getItemId(), bill.getBillNo(), tableNo);
-			if(itemOrder == null){
-				throw new Exception(tableNo + "号桌台没有点'" + item.getItemName() + "'这道菜");
-			}
-			if(cancelItemOrder.getItemCount() > itemOrder.getItemCount()){
-				throw new Exception(tableNo + "号桌台的'" + itemOrder.getItemName() + "'只点了" + itemOrder.getItemCount() + "份, 不能退订" + cancelItemOrder.getItemCount() +"份");
-			}else if(cancelItemOrder.getItemCount() == itemOrder.getItemCount()){
-				removeItemOrders.add(itemOrder);
-			}else{
-				int itemCount = itemOrder.getItemCount() - cancelItemOrder.getItemCount();
-				itemOrder.setItemCount(itemCount);
-				itemOrder.setPrice(item.getPrice().multiply(new BigDecimal(itemCount)));
-				updateItemOrders.add(itemOrder);
-			}			
-			bill.setTotalPrice(bill.getTotalPrice().subtract(item.getPrice().multiply(new BigDecimal(cancelItemOrder.getItemCount()))));			
-		}
-//		删除已点菜, 或者就该已点的多份菜
-		itemOrderService.deleteItemOrderByItemIdAndBillNo(removeItemOrders);
-		itemOrderService.updateItemOrderPriceAndCount(updateItemOrders);
-//		修改订单总价格
-		billService.updateTotalPrice(bill.getTotalPrice(), bill.getBillNo());
-	}
-	
-	/**
-	 * 点菜
-	 * @param appendItemOrders
-	 * @param tableNo
-	 * @throws Exception
-	 */
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
-	public void orderItem(List<ItemOrder> itemOrders, int tableNo) throws Exception{
-		Table table = getTableByTableNo(tableNo);
-		if(table == null){
-			throw new Exception("编号为"+tableNo+"的桌台不存在");
-		}
-		if(table.getTableStatus() != Table.STATUS_ACTIVED){
-			throw new Exception("该桌台还未开台, 不能点菜");
-		}
-		Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
-		if(bill.getBillStatus() == Bill.BILL_STATUS_PAID){
-			throw new Exception("该桌台已经结账,不能点菜");
-		}
-		List<ItemOrder> addItemOrders = new ArrayList<ItemOrder>();
-		List<ItemOrder> updateItemOrders = new ArrayList<ItemOrder>();
-		List<ItemOrder> addItemOrdersForPrint = new ArrayList<ItemOrder>();
-		for(ItemOrder appendItemOrder : itemOrders){
-			Item item = itemService.getItemById(appendItemOrder.getItemId());
-			if(item == null){
-				throw new Exception("编号为"+appendItemOrder.getItemId()+"的菜品不存在，无法点菜");
-			}
-			BigDecimal price = item.getPrice().multiply(new BigDecimal(appendItemOrder.getItemCount()));
-			appendItemOrder.setPrice(price);
-			appendItemOrder.setBillNo(bill.getBillNo());
-			appendItemOrder.setCreateTime(new Date());
-			appendItemOrder.setPrintingStatus(ItemOrder.PRINTING_STATUS_NO);
-			appendItemOrder.setProvidingStatus(ItemOrder.PROVIDING_STATUS_NO);
-			appendItemOrder.setPaymentStatus(ItemOrder.PAYMENT_STATUS_NO);		
-			addItemOrdersForPrint.add(appendItemOrder);
-			ItemOrder itemOrder = itemOrderService.queryItemOrderByItemIdBillNoTableNo(appendItemOrder.getItemId(), bill.getBillNo(), tableNo);
-//			如果当前所点菜品该桌还未点过, 就是新点的菜品, 否则就是加菜
-			if(itemOrder == null){
-				bill.setTotalPrice(bill.getTotalPrice().add(price));
-				addItemOrders.add(appendItemOrder);
-			}else{
-				itemOrder.setPrice(itemOrder.getPrice().add(price));
-				itemOrder.setItemCount(itemOrder.getItemCount() + appendItemOrder.getItemCount());
-				bill.setTotalPrice(bill.getTotalPrice().add(price));
-				updateItemOrders.add(itemOrder);				
-			}
-		}
-		itemOrderService.updateItemOrderPriceAndCount(updateItemOrders);
-		itemOrderService.addItemOrders(addItemOrders);
-		itemOrderService.addItemOrderForPrint(addItemOrdersForPrint);
-		billService.updateTotalPrice(bill.getTotalPrice(), bill.getBillNo());
-	} 
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void addTables(List<Table> tables) throws Exception{
@@ -381,6 +238,16 @@ public class TableService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void changeTableStatus(int tableNo, int tableStatus){
 		tableDao.changeTableStatus(tableNo, tableStatus);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
+	public List<Table> getTableByBillNo(String billNo){
+		return tableDao.getTableByBillNo(billNo);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void changeTableStatusToPaid(List<Table> tables){
+		tableDao.changeTableStatusToPaid(tables);
 	}
 	
 	public TableDao getTableDao() {

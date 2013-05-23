@@ -75,4 +75,18 @@
 		<property name="itemService" ref="itemService"></property>
 		<property name="defaultItemIds" value="${defaultItemIds}"></property>
 	</bean>
+	
+	<bean id="paymentService" class="epos.main.java.service.PaymentService">
+		<property name="itemOrderService" ref="itemOrderService"></property>
+		<property name="billService" ref="billService"></property>
+		<property name="tableService" ref="tableService"></property>
+	</bean>
+	
+	<bean id="orderService" class="epos.main.java.service.OrderService">
+		<property name="itemOrderService" ref="itemOrderService"></property>
+		<property name="billService" ref="billService"></property>
+		<property name="itemService" ref="itemService"></property>
+		<property name="tableService" ref="tableService"></property>
+	</bean>
+	
 </beans>

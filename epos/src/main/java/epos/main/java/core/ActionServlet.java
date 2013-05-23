@@ -25,7 +25,6 @@ import epos.main.java.exception.NonActionForRequstException;
 import epos.main.java.exception.ParameterErrorException;
 import epos.main.java.exception.UnauthorizedException;
 import epos.main.java.exception.UserNameOrPasswordWrongException;
-import epos.main.java.service.TableService;
 import epos.main.java.service.UserService;
 import epos.main.java.vo.User;
 
@@ -57,7 +56,8 @@ public class ActionServlet extends HttpServlet {
 		String contextPath = this.getServletContext().getRealPath("");
 		String fileName = this.getInitParameter("config");
 		String configPath = contextPath + fileName;
-		TableService tableService = Env.getBean("tableService");
+//		此处为了在启动是加载spring配置项
+		Env.getBean("tableService");
 //		初始化数据库连接		
 		try {
 			SAXReader reader = new SAXReader();

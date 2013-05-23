@@ -63,6 +63,14 @@ public class BillService {
 		
 	}
 
+	public void payForBill(String billNo){
+		billDao.payForBill(billNo);
+	}
+	
+	public Bill getBillByNo(String billNo){
+		return billDao.getBillByNo(billNo);
+	}
+	
 	public static String createBillNo(int tableNo){
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -88,7 +96,4 @@ public class BillService {
 		this.billDao = billDao;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(createBillNo(10));
-	}
 }

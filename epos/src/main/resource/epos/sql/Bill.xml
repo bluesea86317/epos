@@ -36,4 +36,12 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<update id="updateTableNo" parameterClass="java.util.Map">
 		update t_bill set ftableNo = #toTableNo# where fbillNo = #billNo# and ftableNo = #fromTableNo#
 	</update>
+	
+	<update id="payForBill" parameterClass="string">
+		update t_bill set fbillStatus = 1, fpaymentTime = now() where fbillNo = #billNo#
+	</update>
+	
+	<select id="getBillByNo" parameterClass="string" resultMap="billMap">
+		select * from t_bill where fbillNo = #billNo#
+	</select>
 </sqlMap>

@@ -9,6 +9,7 @@ import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import epos.main.java.utils.DBUtils;
 import epos.main.java.vo.ItemOrder;
+import epos.main.java.vo.ItemOrderVo;
 
 public class ItemOrderDao extends SqlMapClientDaoSupport {
 	
@@ -27,8 +28,8 @@ public class ItemOrderDao extends SqlMapClientDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ItemOrder> queryItemOrderForPrint(){
-		return (List<ItemOrder>)getSqlMapClientTemplate().queryForList("ItemOrder.queryItemOrderForPrint");
+	public List<ItemOrderVo> queryItemOrderVoForPrint(){
+		return (List<ItemOrderVo>)getSqlMapClientTemplate().queryForList("ItemOrder.queryItemOrderVoForPrint");
 	}
 	
 	public ItemOrder queryItemOrderByItemIdBillNoTableNo(Map<String,Object> param){
@@ -36,21 +37,26 @@ public class ItemOrderDao extends SqlMapClientDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<ItemOrderVo> queryItemOrderVo(Map<String,Object> param){
+		return (List<ItemOrderVo>)getSqlMapClientTemplate().queryForList("ItemOrder.queryItemOrderVo",param);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<ItemOrder> queryItemOrder(Map<String,Object> param){
 		return (List<ItemOrder>)getSqlMapClientTemplate().queryForList("ItemOrder.queryItemOrder",param);
 	}
 	
-	public void updatePrintingStatus(List<Integer> itemOrderIds){
-		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "ItemOrder.updatePrintingStatus", itemOrderIds);
+	public void updatePrintingStatus(List<ItemOrderVo> itemOrderVos){
+		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "ItemOrder.updatePrintingStatus", itemOrderVos);
 	}
 	
 	
-	public void updatePaymentStatus(Map<String,Object> param){
-		getSqlMapClientTemplate().update("ItemOrder.updatePaymentStatus", param);
+	public void updatePaymentStatus(String billNo){
+		getSqlMapClientTemplate().update("ItemOrder.updatePaymentStatus", billNo);
 	}
 	
-	public void updateProvidingStatus(Map<String,Object> param){
-		getSqlMapClientTemplate().update("ItemOrder.updateProvidingStatus", param);
+	public void updateProvidingStatus(int itemOrderId){
+		getSqlMapClientTemplate().update("ItemOrder.updateProvidingStatus", itemOrderId);
 	}
 	
 	public void updateBillNo(Map<String,Object> param){

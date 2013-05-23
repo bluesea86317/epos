@@ -1,6 +1,5 @@
 package epos.main.java.service;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +8,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import epos.main.java.dao.ItemOrderDao;
-import epos.main.java.utils.DBUtils;
 import epos.main.java.vo.ItemOrder;
+import epos.main.java.vo.ItemOrderVo;
 
 public class ItemOrderService {
 
@@ -28,10 +27,11 @@ public class ItemOrderService {
 		itemOrderDao.addItemOrderForPrint(itemOrders);
 	}
 	
-	public List<ItemOrder> queryItemOrderForPrint(){
-		return itemOrderDao.queryItemOrderForPrint();
+	public List<ItemOrderVo> queryItemOrderVoForPrint(){
+		return itemOrderDao.queryItemOrderVoForPrint();
 	}
 	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
 	public ItemOrder queryItemOrderByItemIdBillNoTableNo(int itemId, String billNo, int tableNo){
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("itemId", itemId);
@@ -40,30 +40,34 @@ public class ItemOrderService {
 		return itemOrderDao.queryItemOrderByItemIdBillNoTableNo(param);
 	}
 	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
 	public List<ItemOrder> queryItemOrderByBillNoTableNo(String billNo, int tableNo){
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("billNo", billNo);
 		param.put("tableNo", tableNo);
 		return itemOrderDao.queryItemOrder(param);
-	}
+	}	
 	
-	public List<ItemOrder> queryItemOrder(Map<String,Object> param){
-		return itemOrderDao.queryItemOrder(param);
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
+	public List<ItemOrderVo> queryItemOrderVoByBillNo(String billNo){
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("billNo", billNo);
+		return itemOrderDao.queryItemOrderVo(param);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void updatePrintingStatus(List<Integer> itemOrderIds){
-		itemOrderDao.updatePrintingStatus(itemOrderIds);
+	public void updatePrintingStatus(List<ItemOrderVo> itemOrderVos){
+		itemOrderDao.updatePrintingStatus(itemOrderVos);
 	}	
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void updatePaymentStatus(Map<String,Object> param){
-		itemOrderDao.updatePaymentStatus(param);
+	public void updatePaymentStatus(String billNo){
+		itemOrderDao.updatePaymentStatus(billNo);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void updateProvidingStatus(Map<String,Object> param){
-		itemOrderDao.updateProvidingStatus(param);
+	public void updateProvidingStatus(int itemOrderId){
+		itemOrderDao.updateProvidingStatus(itemOrderId);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)

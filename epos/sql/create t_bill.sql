@@ -5,6 +5,6 @@ create table t_bill (
 	ftableNo int(4),	
 	ftotalPrice DECIMAL(5,2),
 	fbillStatus int(2),
-	fpaymentTime timestamp,
+	fpaymentTime datetime,
 	PRIMARY KEY(fid)
 ) AUTO_INCREMENT=1;

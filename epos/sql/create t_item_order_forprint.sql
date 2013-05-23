@@ -10,6 +10,6 @@ create table t_item_order_forprint (
 	fpaymentStatus int(2),
 	ftableNo int(4),
 	fbillNo VARCHAR(20), /*20130517001001*/
-	fcreateTime timestamp,
+	fcreateTime datetime,
 	PRIMARY KEY(fid)
 ) AUTO_INCREMENT=1;

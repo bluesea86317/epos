@@ -46,4 +46,16 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 			set ftableStatus = #tableStatus#
 			where ftableNo = #tableNo#
 	</update>
+	
+	<update id="changeTableStatusToPaid" parameterClass="tableClass">
+		update t_table 
+			set ftableStatus = 2
+			where ftableNo = #tableNo#
+	</update>
+	
+	<select id="getTableByBillNo" resultMap="tableClassMap" parameterClass="string">
+		select * from t_table where ftableNo in (
+			select ftableNo from t_item_order where fbillNo = #billNo#
+		)
+	</select>
 </sqlMap>

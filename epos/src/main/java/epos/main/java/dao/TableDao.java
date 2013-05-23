@@ -44,4 +44,13 @@ public class TableDao extends SqlMapClientDaoSupport {
 		param.put("tableStatus", tableStatus);
 		getSqlMapClientTemplate().update("Table.changeTableStatus", param);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Table> getTableByBillNo(String billNo){
+		return (List<Table>)getSqlMapClientTemplate().queryForList("Table.getTableByBillNo", billNo);
+	}
+	
+	public void changeTableStatusToPaid(List<Table> tables){
+		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Table.changeTableStatusToPaid", tables);
+	}
 }
