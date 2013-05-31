@@ -1,7 +1,6 @@
 package epos.main.java.vo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class ItemOrder {
 	

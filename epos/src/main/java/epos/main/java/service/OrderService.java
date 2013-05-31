@@ -176,16 +176,4 @@ public class OrderService {
 		this.tableService = tableService;
 	} 
 	
-	public static void main(String[] args) {
-		List a = new ArrayList();
-		List b = new ArrayList();
-		ItemOrder itemOrder = new ItemOrder();
-		itemOrder.setPrintingStatus(ItemOrder.PRINTING_STATUS_NO);
-		a.add(itemOrder);
-		itemOrder.setPrintingStatus(ItemOrder.PRINTING_STATUS_NO);
-//		s = "2";
-		b.add(itemOrder);
-		System.out.println(((ItemOrder)a.get(0)).getPrintingStatus());
-		System.out.println(((ItemOrder)b.get(0)).getPrintingStatus());
-	}
 }

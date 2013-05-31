@@ -12,7 +12,6 @@ import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
 import epos.main.java.service.ItemOrderService;
-import epos.main.java.vo.ItemOrder;
 import epos.main.java.vo.ItemOrderVo;
 
 public class QueryItemOrderForPrintAction extends Action {
