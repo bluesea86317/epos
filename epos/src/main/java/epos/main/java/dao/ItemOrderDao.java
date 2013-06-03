@@ -71,8 +71,12 @@ public class ItemOrderDao extends SqlMapClientDaoSupport {
 		getSqlMapClientTemplate().update("ItemOrder.updateTableNo",param);		
 	}
 	
-	public void deleteItemOrderByItemIdAndBillNo(List<ItemOrder> itemOrders){
-		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "ItemOrder.deleteItemOrderByItemIdAndBillNo", itemOrders);
+	public void deleteItemOrderByItemOrderId(List<ItemOrder> itemOrders){
+		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "ItemOrder.deleteItemOrderByItemOrderId", itemOrders);
+	}
+	
+	public void deleteItemOrderByBillNo(String billNo){
+		getSqlMapClientTemplate().delete("ItemOrder.deleteItemOrderByBillNo", billNo);
 	}
 	
 	public void updateItemOrderPriceAndCount(List<ItemOrder> itemOrders){

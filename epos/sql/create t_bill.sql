@@ -4,6 +4,7 @@ create table t_bill (
 	fbillNo VARCHAR(20), /*20130517001001*/
 	ftableNo int(4),	
 	ftotalPrice DECIMAL(5,2),
+  fdiscountPrice DECIMAL(5,2),
 	fbillStatus int(2),
 	fpaymentTime datetime,
 	PRIMARY KEY(fid)

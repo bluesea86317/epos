@@ -8,14 +8,15 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="billId" column="fid" javaType="int" jdbcType="number"/>
 		<result property="billNo" column="fbillNo" javaType="string" jdbcType="varchar"/>
 		<result property="totalPrice" column="ftotalPrice" javaType="java.math.BigDecimal" jdbcType="decimal"/>
+		<result property="discountPrice" column="fdiscountPrice" javaType="java.math.BigDecimal" jdbcType="decimal"/>
 		<result property="tableNo" column="ftableNo" javaType="int" jdbcType="number"/>
 		<result property="paymentTime" column="fpaymentTime" javaType="java.util.Date" jdbcType="timestamp"/>
 		<result property="billStatus" column="fbillStatus" javaType="int" jdbcType="number"/>
 	</resultMap>
 	
 	<insert id="addBill" parameterClass="billClass">
-		insert into t_bill (fbillNo, ftotalPrice, ftableNo, fpaymentTime, fbillStatus)
-		values(#billNo#, #totalPrice#, #tableNo#, #paymentTime#, #billStatus#);
+		insert into t_bill (fbillNo, ftotalPrice, fdiscountPrice, ftableNo, fpaymentTime, fbillStatus)
+		values(#billNo#, #totalPrice#, #discountPrice#, #tableNo#, #paymentTime#, #billStatus#);
 	</insert>
 	
 	
@@ -24,7 +25,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</delete>
 	
 	<update id="updateTotalPrice" parameterClass="java.util.Map">
-		update t_bill set ftotalPrice = #totalPrice# where fbillNo = #billNo#
+		update t_bill set ftotalPrice = #totalPrice#, fdiscountPrice = #totalPrice# where fbillNo = #billNo#
 	</update>
 	
 	<select id="queryUnPaidBillByTableNo" parameterClass="int" resultMap="billMap">
@@ -35,6 +36,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	
 	<update id="updateTableNo" parameterClass="java.util.Map">
 		update t_bill set ftableNo = #toTableNo# where fbillNo = #billNo# and ftableNo = #fromTableNo#
+	</update>
+	
+	<update id="changeDiscountPrice" parameterClass="java.util.Map">
+		update t_bill set fdiscountPrice = #discountPrice# where fbillNo = #billNo#
 	</update>
 	
 	<update id="payForBill" parameterClass="string">

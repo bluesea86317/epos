@@ -85,8 +85,13 @@ public class ItemOrderService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void deleteItemOrderByItemIdAndBillNo(List<ItemOrder> itemOrders){
-		itemOrderDao.deleteItemOrderByItemIdAndBillNo(itemOrders);
+	public void deleteItemOrders(List<ItemOrder> itemOrders){
+		itemOrderDao.deleteItemOrderByItemOrderId(itemOrders);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void deleteItemOrderByBillNo(String billNo){
+		itemOrderDao.deleteItemOrderByBillNo(billNo);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)

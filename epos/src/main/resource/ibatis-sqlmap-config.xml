@@ -12,4 +12,5 @@
 	<sqlMap resource="epos/sql/Item.xml"/>
 	<sqlMap resource="epos/sql/ItemOrder.xml"/>
 	<sqlMap resource="epos/sql/Bill.xml"/>
+	<sqlMap resource="epos/sql/Statistics.xml"/>
 </sqlMapConfig>

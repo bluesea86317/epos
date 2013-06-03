@@ -19,7 +19,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<!-- <result property="createTime" column="fcreateTime" javaType="java.util.Date" jdbcType="timestamp"/>	 -->	
 	</resultMap>
 	
-	<resultMap class="itemOrderVoClass" id="itemOrderForPrintMap" extends="itemOrderMap">
+	<resultMap class="itemOrderVoClass" id="itemOrderVoMap" extends="itemOrderMap">
 		<result property="itemName" column="fitemName" javaType="string" jdbcType="varchar"/>
 		<result property="itemType" column="fitemType" javaType="string" jdbcType="varchar"/>
 		<result property="flavorType" column="fflavorType" javaType="string" jdbcType="varchar"/>
@@ -29,7 +29,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="createTime" column="fcreateTime" javaType="java.util.Date" jdbcType="timestamp"/>
 	</resultMap>
 	
-	<select id="queryItemOrderVoForPrint" resultMap="itemOrderForPrintMap">
+	<select id="queryItemOrderVoForPrint" resultMap="itemOrderVoMap">
 		select 
 			io.*, i.fitemName, it.fitemType, d.fid fdepartmentId, d.fdepartmentName, d.fprinterInfo, f.fflavorType
 			from t_item_order_forprint io 
@@ -41,7 +41,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 			order by fcreateTime asc
 	</select>
 	
-	<select id="queryItemOrderVo" parameterClass="java.util.Map" resultMap="itemOrderForPrintMap">
+	<select id="queryItemOrderVo" parameterClass="java.util.Map" resultMap="itemOrderVoMap">
 		select 
 			io.*, i.fitemName, it.fitemType, d.fid fdepartmentId, d.fdepartmentName, d.fprinterInfo, f.fflavorType
 			from t_item_order io 
@@ -114,8 +114,12 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		update t_item_order set ftableNo = #toTableNo# where fbillNo = #billNo# and ftableNo = #fromTable#
 	</update>
 	
-	<delete id="deleteItemOrderByItemIdAndBillNo" parameterClass="itemOrderClass">
+	<delete id="deleteItemOrderByItemOrderId" parameterClass="itemOrderClass">
 		delete from t_item_order where fid = #itemOrderId#
+	</delete>
+	
+	<delete id="deleteItemOrderByBillNo" parameterClass="string">
+		delete from t_item_order where fbillNo = #billNo#
 	</delete>
 	
 	<update id="updateItemOrderPriceAndCount" parameterClass="itemOrderClass">

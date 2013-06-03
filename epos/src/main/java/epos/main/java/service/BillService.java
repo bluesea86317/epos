@@ -63,6 +63,10 @@ public class BillService {
 		
 	}
 
+	public void changeDiscountPrice(String billNo,BigDecimal discountPrice){
+		billDao.changeDiscountPrice(billNo, discountPrice);
+	}
+	
 	public void payForBill(String billNo){
 		billDao.payForBill(billNo);
 	}

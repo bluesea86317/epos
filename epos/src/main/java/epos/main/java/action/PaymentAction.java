@@ -1,10 +1,13 @@
 package epos.main.java.action;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -30,14 +33,19 @@ public class PaymentAction extends Action {
 			JSONObject returnObj) throws IOException {
 		try {
 			int tableNo = jsonParam.getInt("tableNo");
-			String billNo = paymentService.paymentForBill(tableNo);
-			List<ItemOrderVo> itemOrders = itemOrderService.queryItemOrderVoByBillNo(billNo);
+			BigDecimal discountRate = new BigDecimal(jsonParam.getString("discountRate"));
+			String billNo = paymentService.paymentForBill(tableNo,discountRate);
 			JSONArray jsonArray = new JSONArray();
-			jsonArray.addAll(itemOrders);
-			returnObj.put(DATA, jsonArray);
-			returnObj.put("billNo", billNo);
-			returnObj.put("totalPrice", billService.getBillByNo(billNo).getTotalPrice());
-			returnObj.put(MSG, "结账成功");
+			if(!StringUtils.isBlank(billNo)){
+				List<ItemOrderVo> itemOrders = itemOrderService.queryItemOrderVoByBillNo(billNo);			
+				jsonArray.addAll(itemOrders);				
+				returnObj.put(DATA, jsonArray);
+				returnObj.put("billNo", billNo);
+				returnObj.put("totalPrice", billService.getBillByNo(billNo).getTotalPrice());				
+				returnObj.put(MSG, "结账成功");
+			}else{
+				returnObj.put(MSG, "顾客未点菜下单,此桌自动转入结账状态");
+			}
 		} catch (Exception e) {
 			returnObj.put(MSG, "结账失败, 错误信息: " + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);

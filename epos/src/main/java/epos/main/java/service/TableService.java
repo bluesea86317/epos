@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import epos.main.java.core.Env;
 import epos.main.java.dao.TableDao;
 import epos.main.java.vo.Bill;
 import epos.main.java.vo.Item;
@@ -26,7 +27,9 @@ public class TableService {
 	
 	private ItemService itemService;
 	
-	private String defaultItemIds; 
+//	private String defaultItemIds;
+	
+	private EposConfigService eposConfigService = Env.getBean("eposConfigService");
 	/**
 	 * 开台
 	 * @param tableNo
@@ -45,7 +48,8 @@ public class TableService {
 		String billNo = BillService.createBillNo(tableNo);
 		
 		List<ItemOrder> deaultItemOrders = new ArrayList<ItemOrder>();
-		BigDecimal totalPrice = BigDecimal.ZERO;
+		BigDecimal totalPrice = BigDecimal.ZERO;		
+		String defaultItemIds = eposConfigService.getProperty("defaultItemIds");
 		if(StringUtils.isNotBlank(defaultItemIds)){
 			String[] itemIds = defaultItemIds.split(",");
 			for(String itemId : itemIds){
@@ -81,7 +85,7 @@ public class TableService {
 		bill.setBillStatus(Bill.BILL_STATUS_NEW);
 		bill.setTableNo(tableNo);
 		bill.setTotalPrice(totalPrice);
-		
+		bill.setDiscountPrice(totalPrice);
 //		创建默认的菜单项， 比如茶位费等
 		itemOrderService.addItemOrders(deaultItemOrders);
 //		创建订单
@@ -282,11 +286,19 @@ public class TableService {
 		this.itemService = itemService;
 	}
 
-	public String getDefaultItemIds() {
-		return defaultItemIds;
+//	public String getDefaultItemIds() {
+//		return defaultItemIds;
+//	}
+//
+//	public void setDefaultItemIds(String defaultItemIds) {
+//		this.defaultItemIds = defaultItemIds;
+//	}
+
+	public EposConfigService getEposConfigService() {
+		return eposConfigService;
 	}
 
-	public void setDefaultItemIds(String defaultItemIds) {
-		this.defaultItemIds = defaultItemIds;
+	public void setEposConfigService(EposConfigService eposConfigService) {
+		this.eposConfigService = eposConfigService;
 	}
 }

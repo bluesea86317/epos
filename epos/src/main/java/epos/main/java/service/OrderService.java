@@ -121,7 +121,7 @@ public class OrderService {
 			bill.setTotalPrice(bill.getTotalPrice().subtract(item.getPrice().multiply(new BigDecimal(cancelItemOrder.getItemCount()))));			
 		}
 //		删除已点菜, 或者就该已点的多份菜
-		getItemOrderService().deleteItemOrderByItemIdAndBillNo(removeItemOrders);
+		getItemOrderService().deleteItemOrders(removeItemOrders);
 		getItemOrderService().updateItemOrderPriceAndCount(updateItemOrders);
 //		修改订单总价格
 		getBillService().updateTotalPrice(bill.getTotalPrice(), bill.getBillNo());

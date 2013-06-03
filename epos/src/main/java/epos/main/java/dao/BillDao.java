@@ -1,5 +1,7 @@
 package epos.main.java.dao;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +35,13 @@ public class BillDao extends SqlMapClientDaoSupport {
 
 	public void deleteBillByBillNos(List<String> billNos) {
 		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "Bill.deleteBillByBillNo", billNos);		
+	}
+	
+	public void changeDiscountPrice(String billNo, BigDecimal discountPrice){
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("billNo", billNo);
+		param.put("discountPrice", discountPrice);
+		getSqlMapClientTemplate().update("Bill.changeDiscountPrice", param);
 	}
 	
 	public void payForBill(String billNo){

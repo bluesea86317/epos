@@ -1,44 +1,39 @@
 package epos.main.java.service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
-
 public class EposConfigService {
+
+	private String configPath;
+	private static Properties properties;
 	
-	private Properties properties;
-	
-	public EposConfigService(String propFileDir) {
-		File file = new File(propFileDir);
-		if (file.isFile() && propFileDir.endsWith(".properties")) {
-			FileInputStream in = null;
+	public String getProperty(String key){
+		if(properties == null){
+			properties = new Properties();
 			try {
-				in = new FileInputStream(file);
-				this.properties.load(in);
+				ClassLoader cl = Thread.currentThread().getContextClassLoader();
+				InputStream in=cl.getResourceAsStream(configPath);
+				properties.load(in);	
+				in.close();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-				
 			}
 		}
-	}
-	
-	public String getProperty(String key) {
-		return getProperties().getProperty(key);
+		return properties.getProperty(key);
 	}
 
-	public Properties getProperties() {
-		return properties;
+	public String getConfigPath() {
+		return configPath;
 	}
 
-	public void setProperties(Properties properties) {
-		this.properties = properties;
+	public void setConfigPath(String configPath) {
+		this.configPath = configPath;
 	}
 }

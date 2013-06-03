@@ -64,6 +64,12 @@
 		<action class="epos.main.java.action.PaymentAction" path="pay"></action>
 		<!-- pay -->
 		
+		<!-- statistics -->
+		<action class="epos.main.java.action.QuerySumDiscountedPriceAction" path="querySumMoney"></action>
+		<action class="epos.main.java.action.QuerySumConsumedTableAction" path="querySumConsumedTable"></action>
+		<action class="epos.main.java.action.QueryItemSumCountAction" path="querySumItemCount"></action>
+		<!-- statistics -->
+		
 		<!-- sysParam -->
 		<action class="epos.main.java.action.SetIfCanOrderAction" path="setIfCanOrder"></action>
 		<action class="epos.main.java.action.QueryIfCanOrderAction" path="queryIfCanOrder"></action>

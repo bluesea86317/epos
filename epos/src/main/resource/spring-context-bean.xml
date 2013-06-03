@@ -68,12 +68,16 @@
 		<property name="billDao" ref="billDao"></property>
 	</bean>
 	
+	<bean id="eposConfigService" class="epos.main.java.service.EposConfigService">
+		<property name="configPath" value="data-source-config.properties"></property>
+	</bean>
+	
 	<bean id="tableService" class="epos.main.java.service.TableService">
 		<property name="tableDao" ref="tableDao"></property>
 		<property name="itemOrderService" ref="itemOrderService"></property>
 		<property name="billService" ref="billService"></property>
 		<property name="itemService" ref="itemService"></property>
-		<property name="defaultItemIds" value="${defaultItemIds}"></property>
+		<!-- <property name="defaultItemIds" value="${defaultItemIds}"></property> -->
 	</bean>
 	
 	<bean id="paymentService" class="epos.main.java.service.PaymentService">
@@ -89,4 +93,11 @@
 		<property name="tableService" ref="tableService"></property>
 	</bean>
 	
+	<bean id="statisticsDao" class="epos.main.java.dao.StatisticsDao">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	
+	<bean id="statisticsService" class="epos.main.java.service.StatisticsService">
+		<property name="statisticsDao" ref="statisticsDao"></property>
+	</bean>
 </beans>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Statistics">
+	<typeAlias alias="itemSumCountClass" type="epos.main.java.vo.ItemSumCountVo"/>
+	<resultMap class="itemSumCountClass" id="itemSumCountMap">
+		<result property="itemId" column="fitemId" javaType="int" jdbcType="number"/>
+		<result property="itemName" column="fitemName" javaType="string" jdbcType="varchar"/>
+		<result property="sumCount" column="fsumCount" javaType="int" jdbcType="number"/>
+	</resultMap>
+	
+	<select id="queryItemSumCountByTime" parameterClass="java.util.Map" resultMap="itemSumCountMap">
+		select fitemId,fitemName,sum(fitemCount) fsumCount from t_item_order io inner join t_item i on io.fitemId = i.fid
+		where fpaymentStatus = 1
+		<isNotEmpty prepend="and" property="itemId">
+			 fitemId != #itemId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="beginDate">
+			  fcreateTime <![CDATA[>=]]> #beginDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endDate">
+			 fcreateTime <![CDATA[<]]> #endDate#
+		</isNotEmpty>
+		group by fitemId order by sum(fitemCount) desc
+	</select>
+	
+	<select id="querySumConsumedTable" parameterClass="java.util.Map" resultClass="int">
+		select count(ftableNo) ftableCount from 
+		(select  distinct fbillNo, ftableNo from t_item_order where fpaymentStatus = 1
+			<isNotEmpty prepend="and" property="beginDate">
+			  fcreateTime <![CDATA[>=]]> #beginDate#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="endDate">
+				 fcreateTime <![CDATA[<]]> #endDate#
+			</isNotEmpty>
+		) a
+	</select>
+	
+	<select id="querySumDiscountedPrice" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+		select sum(fdiscountPrice) fsumTotalPrice from t_bill where fbillStatus = 1
+		<isNotEmpty prepend="and" property="beginDate">
+			 fpaymentTime <![CDATA[>=]]> #beginDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="endDate">
+			 fpaymentTime <![CDATA[<]]> #endDate#
+		</isNotEmpty>
+	</select>
+</sqlMap>
