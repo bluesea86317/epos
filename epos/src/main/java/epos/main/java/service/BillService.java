@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,10 +76,22 @@ public class BillService {
 		return billDao.getBillByNo(billNo);
 	}
 	
-	public static String createBillNo(int tableNo){
+	/**
+	 * 创建流水单号, 年月日+桌台号+时分秒
+	 * @param tableNo
+	 * @return
+	 */
+	public String createBillNo(int tableNo){
+		String billNo = createBillNoByTime(tableNo, new Date());
+		if(getBillByNo(billNo) != null){
+			billNo = createBillNoByTime(tableNo, DateUtils.addSeconds(new Date(), 10));
+		}
+		return billNo;
+	}
+	
+	public static String createBillNoByTime(int tableNo, Date date){
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		Date date = new Date();
 		String dateStr = sdf.format(date);
 		sb.append(dateStr.substring(0, 8));
 		String tableNoStr = String.valueOf(tableNo);

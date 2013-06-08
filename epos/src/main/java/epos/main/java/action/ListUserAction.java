@@ -28,7 +28,7 @@ public class ListUserAction extends Action {
 			List<User> userList = userService.listUser();
 			JSONArray jsonArray = new JSONArray();
 			jsonArray.addAll(userList);		
-			returnObj.put("data", jsonArray.toString());
+			returnObj.put(DATA, jsonArray.toString());
 			returnObj.put(MSG,QUERY_SUCCESS);			
 		} catch (Exception e) {
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
