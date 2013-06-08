@@ -2,6 +2,9 @@ package epos.main.java.service;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import epos.main.java.dao.DepartmentDao;
 import epos.main.java.vo.Department;
 import epos.main.java.vo.ItemType;
@@ -25,6 +28,7 @@ public class DepartmentService {
 	 * @param departmentId
 	 * @throws Exception
 	 */
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void deleteDepartment(int departmentId) throws Exception{
 		List<ItemType> itemTypes = itemTypeService.listItemTypesByDepartmentId(departmentId);		
 		if(itemTypes != null && itemTypes.size() > 0){
@@ -38,6 +42,7 @@ public class DepartmentService {
 	 * @param departmentIds
 	 * @throws Exception
 	 */
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void deleteDepartments(List<Integer> departmentIds) throws Exception{
 		for(int departmentId : departmentIds){
 			List<ItemType> itemTypes = itemTypeService.listItemTypesByDepartmentId(departmentId);		

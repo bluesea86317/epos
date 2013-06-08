@@ -2,6 +2,9 @@ package epos.main.java.service;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import epos.main.java.dao.UserDao;
 import epos.main.java.vo.User;
 
@@ -18,6 +21,10 @@ public class UserService {
 		return userDao.getUserByNameAndPsw(userName, password);
 	}
 	
+	public User getUserByName(String userName){
+		return userDao.getUserByName(userName);
+	}
+	
 	public List<User> listUser(){
 		return userDao.listUsers();
 	}
@@ -26,7 +33,13 @@ public class UserService {
 		userDao.addUser(user);
 	}
 	
-	public void addUsers(List<User> users){
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
+	public void addUsers(List<User> users) throws Exception{
+		for(User user : users){
+			if(this.getUserByName(user.getUserName()) != null){
+				throw new Exception("已经存在账号为'" + user.getUserName() + "'的用户, 不能重复添加");
+			}
+		}
 		userDao.addUsers(users);
 	}
 	
@@ -34,7 +47,14 @@ public class UserService {
 		userDao.updateUser(user);
 	}
 	
-	public void updateUsers(List<User> users){
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
+	public void updateUsers(List<User> users) throws Exception{
+		for(User user : users){
+			User existUser = this.getUserByName(user.getUserName());
+			if(existUser != null && user.getUserId() != existUser.getUserId()){
+				throw new Exception("已经存在账号为'" + user.getUserName() + "'的用户, 不能修改成与其同名的账号");
+			}
+		}
 		userDao.updateUsers(users);
 	}
 	
@@ -42,6 +62,7 @@ public class UserService {
 		userDao.deleteUser(userId);
 	}
 	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void deleteUsers(List<Integer> userIds){
 		userDao.deleteUsers(userIds);
 	}

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mvc-config>
 	<action-mapping>
-		<action class="epos.main.java.action.ActiveTableAction" path="activeTable">
-		</action>
-		<action class="epos.main.java.action.ListUserAction" path="listUser">
-		</action>
+		<!-- user -->
+		<action class="epos.main.java.action.UserLoginAction" path="userLogin"></action>
+		<action class="epos.main.java.action.ListUserAction" path="listUser"></action>
+		<action class="epos.main.java.action.AddUserAction" path="addUser"></action>
+		<action class="epos.main.java.action.UpdateUserAction" path="updateUser"></action>
+		<action class="epos.main.java.action.DeleteUserAction" path="deleteUser"></action>
+		<!-- user -->
 		
 		<!-- department -->
 		<action class="epos.main.java.action.AddDepartmentAction" path="addDepartment"></action>

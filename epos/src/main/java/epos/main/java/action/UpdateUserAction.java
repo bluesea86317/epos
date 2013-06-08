@@ -17,7 +17,7 @@ import epos.main.java.service.UserService;
 import epos.main.java.vo.User;
 
 @ActionAuthFilterConfig(mustBeAdmin=true, needAuthorize=true)
-public class AddUserAction extends Action {
+public class UpdateUserAction extends Action {
 
 	private UserService userService = Env.getBean("userService");
 	@Override
@@ -29,12 +29,14 @@ public class AddUserAction extends Action {
 			List<User> users = new ArrayList<User>();
 			for(Object obj : jsonArray){
 				JSONObject jsonObj =  JSONObject.fromObject(obj);
+				int userId = jsonObj.getInt("userId");
 				String userName = jsonObj.getString("userName");
 				String password = jsonObj.getString("password");
 				String realName = jsonObj.getString("realName");
 				String mobile = jsonObj.getString("mobile");
 				boolean isAdmin = jsonObj.getBoolean("isAdmin");
 				User user = new User();
+				user.setUserId(userId);
 				user.setUserName(userName);
 				user.setPassword(password);
 				user.setRealName(realName);
@@ -42,14 +44,13 @@ public class AddUserAction extends Action {
 				user.setAdmin(isAdmin);
 				users.add(user);
 			}
-			userService.addUsers(users);
-			returnObj.put(MSG, ADD_SUCCESS);
+			userService.updateUsers(users);
+			returnObj.put(MSG, UPDATE_SUCCESS);
 		} catch (Exception e) {
-			returnObj.put(MSG, ADD_FAILURE + e.getMessage());
+			returnObj.put(MSG, UPDATE_FAILURE + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
 			e.printStackTrace();
 		}
 		return returnObj;
 	}
-
 }

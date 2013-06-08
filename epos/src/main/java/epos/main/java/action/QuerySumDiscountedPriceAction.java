@@ -12,11 +12,13 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.time.DateUtils;
 
+import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
 import epos.main.java.service.StatisticsService;
 
+@ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=true)
 public class QuerySumDiscountedPriceAction extends Action {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	

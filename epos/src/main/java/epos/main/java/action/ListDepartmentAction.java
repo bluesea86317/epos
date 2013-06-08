@@ -32,6 +32,7 @@ public class ListDepartmentAction extends Action {
 		} catch (Exception e) {
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);		
 			returnObj.put(MSG, QUERY_FAILURE + e.getMessage());
+			e.printStackTrace();
 		}
 		return returnObj;
 	}

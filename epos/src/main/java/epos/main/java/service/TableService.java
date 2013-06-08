@@ -58,7 +58,7 @@ public class TableService {
 		//			创建默认茶位费消费记录
 					Item item = itemService.getItemById(defaultItemId);
 					if(item == null){
-						throw new Exception("编号为"+defaultItemId+"的菜品不存在，无法开台");
+						throw new Exception("编号为"+defaultItemId+"的默认菜品不存在,无法开台,请修改配置中的默认菜品");
 					}
 					ItemOrder itemOrder = new ItemOrder();
 					itemOrder.setBillNo(billNo);
@@ -206,7 +206,13 @@ public class TableService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
-	public void updateTables(List<Table> tables){
+	public void updateTables(List<Table> tables) throws Exception{
+		for(Table table : tables){
+			Table existTable = getTableByTableNo(table.getTableNo());
+			if(existTable != null && existTable.getTableId() != table.getTableId()){
+				throw new Exception("编号为'" + table.getTableNo() +"'的桌台已经存在, 不能修改成与其相同的编号");
+			}
+		}
 		tableDao.updateTables(tables);
 	}
 	

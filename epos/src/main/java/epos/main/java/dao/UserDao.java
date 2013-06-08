@@ -36,7 +36,7 @@ public class UserDao extends SqlMapClientDaoSupport {
 	}
 	
 	public void deleteUsers(List<Integer> userIds){
-		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "User.deleteUsers", userIds);
+		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "User.deleteUser", userIds);
 	}
 	
 	public void addUser(User user){
@@ -45,6 +45,10 @@ public class UserDao extends SqlMapClientDaoSupport {
 	
 	public void addUsers(List<User> users){
 		DBUtils.excuteBatchInsert(getSqlMapClientTemplate(), "User.addUser", users);
+	}
+
+	public User getUserByName(String userName) {
+		return (User)getSqlMapClientTemplate().queryForObject("User.getUserByName",userName);
 	}
 	
 }
