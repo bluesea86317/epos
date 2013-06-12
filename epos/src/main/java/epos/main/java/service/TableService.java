@@ -78,6 +78,8 @@ public class TableService {
 					deaultItemOrders.add(itemOrder);
 				}
 			}
+		}else{
+			throw new Exception("默认的茶位费菜品不能为空,请修改配置中的默认菜品设置");
 		}
 //		默认开单，记录茶位费等
 		Bill bill = new Bill();
@@ -93,6 +95,25 @@ public class TableService {
 //		修改桌台状态
 		changeTableStatus(tableNo, Table.STATUS_ACTIVED);
 	}	
+	
+	/**
+	 * 批量清台
+	 * @param tableNos
+	 * @throws Exception
+	 */
+	public void freaaTables(List<Integer> tableNos) throws Exception{
+		for(int tableNo : tableNos){
+			Table table = getTableByTableNo(tableNo);
+			if(table == null){
+				throw new Exception(tableNo + "号桌台不存在, 不能清台");
+			}
+			Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
+			if(bill != null || table.getTableStatus() == Table.STATUS_ACTIVED){
+				throw new Exception(tableNo + "号桌台还没有结账,不能清台");
+			}
+		}
+		changeTableStatusToFree(tableNos);
+	}
 	
 	/**
 	 * 清台
@@ -246,6 +267,11 @@ public class TableService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void changeTableStatusToFree(List<Integer> tableNos){
+		tableDao.freeTables(tableNos);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void changeTableStatus(int tableNo, int tableStatus){
 		tableDao.changeTableStatus(tableNo, tableStatus);
 	}
@@ -258,6 +284,11 @@ public class TableService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public void changeTableStatusToPaid(List<Table> tables){
 		tableDao.changeTableStatusToPaid(tables);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void changeTableStatusToChecked(List<Table> tables) {
+		tableDao.changeTableStatusToChecked(tables);	
 	}
 	
 	public TableDao getTableDao() {
@@ -307,4 +338,6 @@ public class TableService {
 	public void setEposConfigService(EposConfigService eposConfigService) {
 		this.eposConfigService = eposConfigService;
 	}
+
+	
 }

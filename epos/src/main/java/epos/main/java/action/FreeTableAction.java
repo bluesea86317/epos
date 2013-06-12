@@ -1,10 +1,13 @@
 package epos.main.java.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
@@ -22,8 +25,13 @@ public class FreeTableAction extends Action {
 			HttpServletResponse response, JSONObject jsonParam,
 			JSONObject returnObj) throws IOException {
 		try {
-			int tableNo = jsonParam.getInt("tableNo");
-			tableService.freeTable(tableNo);
+			List<Integer> tableNos = new ArrayList<Integer>();
+			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
+			for(Object object : jsonArray){
+				JSONObject jsonObject = JSONObject.fromObject(object);
+				tableNos.add(jsonObject.getInt("tableNo"));
+			}
+			tableService.freaaTables(tableNos);
 			returnObj.put(MSG, "清台成功");
 		} catch (Exception e) {
 			returnObj.put(MSG, "清台失败, 错误信息: " + e.getMessage());

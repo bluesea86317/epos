@@ -10,6 +10,7 @@ import epos.main.java.core.Action;
 import epos.main.java.core.Env;
 import epos.main.java.core.Return;
 import epos.main.java.service.UserService;
+import epos.main.java.vo.User;
 
 public class UserLoginAction extends Action {
 
@@ -22,8 +23,10 @@ public class UserLoginAction extends Action {
 			
 			String userName = jsonParam.getString("userName");
 			String password = jsonParam.getString("password");
-			if(userService.validateUserNameAndPassword(userName, password)){
+			User user = userService.getUserByNameAndPassword(userName, password);
+			if(user != null){
 				returnObj.put(MSG, "登录成功");
+				returnObj.put("isAdmin",user.isAdmin());
 			}else{
 				throw new Exception("用户名或者密码错误");
 			}

@@ -24,22 +24,51 @@ public class PaymentService {
 	private EposConfigService eposConfigService = Env.getBean("eposConfigService");
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
-	public String paymentForBill(int tableNo, BigDecimal discountRate) throws Exception{
+	public String checkBill(int tableNo, BigDecimal discountRate) throws Exception{
 		Table table = tableService.getTableByTableNo(tableNo);
 		if(table == null){
 			throw new Exception("编号为"+tableNo+"的桌台不存在");
 		}
+		if(table.getTableStatus() == Table.STATUS_CHECKED){
+			throw new Exception("该桌台已经买单");
+		}
+		if(table.getTableStatus() == Table.STATUS_PAID){
+			throw new Exception("该桌台已经付款");
+		}
 		if(table.getTableStatus() != Table.STATUS_ACTIVED){
-			throw new Exception("该桌台还未开台或者已经买单");
+			throw new Exception("该桌台还未开台");
 		}
 		Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
 		if(bill == null){
-			throw new Exception("该桌台已经买单");
+			throw new Exception("该桌台已经结账");
 		}
-
 		if(discountRate.compareTo(BigDecimal.ZERO) == -1 || discountRate.compareTo(BigDecimal.ONE) == 1){
 			throw new Exception("折扣率错误");
 		}
+		List<Table> tables = tableService.getTableByBillNo(bill.getBillNo());
+		tableService.changeTableStatusToChecked(tables);
+		billService.changeDiscountPrice(bill.getBillNo(), bill.getTotalPrice().multiply(discountRate));
+		return bill.getBillNo();
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
+	public String paymentForBill(int tableNo) throws Exception{
+		Table table = tableService.getTableByTableNo(tableNo);
+		if(table == null){
+			throw new Exception("编号为"+tableNo+"的桌台不存在");
+		}
+		if(table.getTableStatus() == Table.STATUS_PAID){
+			throw new Exception("该桌台已经付款");
+		}
+		if(table.getTableStatus() != Table.STATUS_CHECKED){
+			throw new Exception("该桌台顾客还未提出买单,不能结账");
+		}
+		Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
+		if(bill == null){
+			throw new Exception("该桌台已经结账");
+		}
+
+		
 		List<Table> tables = tableService.getTableByBillNo(bill.getBillNo());
 		tableService.changeTableStatusToPaid(tables);
 		
@@ -69,7 +98,7 @@ public class PaymentService {
 		}
 		itemOrderService.updatePaymentStatus(bill.getBillNo());
 		billService.payForBill(bill.getBillNo());
-		billService.changeDiscountPrice(bill.getBillNo(), bill.getTotalPrice().multiply(discountRate));
+
 		return bill.getBillNo();
 		
 	}

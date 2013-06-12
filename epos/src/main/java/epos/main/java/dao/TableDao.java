@@ -52,5 +52,13 @@ public class TableDao extends SqlMapClientDaoSupport {
 	
 	public void changeTableStatusToPaid(List<Table> tables){
 		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Table.changeTableStatusToPaid", tables);
+	}	
+
+	public void freeTables(List<Integer> tableNos) {
+		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Table.changeTableStatusToFree", tableNos);		
+	}
+
+	public void changeTableStatusToChecked(List<Table> tables) {
+		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Table.changeTableStatusToChecked", tables);
 	}
 }

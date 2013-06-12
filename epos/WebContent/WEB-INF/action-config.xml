@@ -65,6 +65,7 @@
 		
 		<!-- pay -->
 		<action class="epos.main.java.action.PaymentAction" path="pay"></action>
+		<action class="epos.main.java.action.CheckBillAction" path="checkBill"></action>
 		<!-- pay -->
 		
 		<!-- statistics -->

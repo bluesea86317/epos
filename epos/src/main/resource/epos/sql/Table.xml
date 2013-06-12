@@ -47,7 +47,19 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 			where ftableNo = #tableNo#
 	</update>
 	
+	<update id="changeTableStatusToFree" parameterClass="int">
+		update t_table 
+			set ftableStatus = 0
+			where ftableNo = #tableNo#
+	</update>
+	
 	<update id="changeTableStatusToPaid" parameterClass="tableClass">
+		update t_table 
+			set ftableStatus = 3
+			where ftableNo = #tableNo#
+	</update>
+	
+	<update id="changeTableStatusToChecked" parameterClass="tableClass">
 		update t_table 
 			set ftableStatus = 2
 			where ftableNo = #tableNo#

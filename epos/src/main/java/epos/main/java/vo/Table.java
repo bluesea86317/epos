@@ -14,8 +14,9 @@ public class Table {
 	private int tableStatus;
 		public final static int STATUS_FREE = 0; //空闲
 		public final static int STATUS_ACTIVED = 1; //在用
-		public final static int STATUS_PAID = 2; //已买单
-		public final static int STATUS_ORDERED = 3; //已预订
+		public final static int STATUS_CHECKED = 2; //已买单
+		public final static int STATUS_PAID = 3; //已付款
+		public final static int STATUS_ORDERED = 4; //已预订
 	
 	public int getTableNo() {
 		return tableNo;
