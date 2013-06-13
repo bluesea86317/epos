@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import epos.main.java.annotation.ActionAuthFilterConfig;
@@ -19,6 +21,7 @@ import epos.main.java.vo.User;
 @ActionAuthFilterConfig(mustBeAdmin=true, needAuthorize=true)
 public class UpdateUserAction extends Action {
 
+	public static Logger log = Logger.getLogger(UpdateUserAction.class);
 	private UserService userService = Env.getBean("userService");
 	@Override
 	public JSONObject excute(HttpServletRequest request,
@@ -49,7 +52,7 @@ public class UpdateUserAction extends Action {
 		} catch (Exception e) {
 			returnObj.put(MSG, UPDATE_FAILURE + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}

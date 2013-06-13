@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import epos.main.java.core.Action;
@@ -19,6 +21,7 @@ import epos.main.java.vo.ItemOrder;
 
 public class AppendItemAction extends Action {
 
+	public static Logger log = Logger.getLogger(AppendItemAction.class);
 	private OrderService orderService = Env.getBean("orderService");
 	private ItemOrderService itemOrderService = Env.getBean("itemOrderService");
 	private UserService userSerivce = Env.getBean("userService");
@@ -55,7 +58,7 @@ public class AppendItemAction extends Action {
 		} catch (Exception e) {
 			returnObj.put(MSG, "加菜失败, 错误信息: " + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}

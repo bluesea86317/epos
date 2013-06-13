@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import epos.main.java.annotation.ActionAuthFilterConfig;
@@ -19,6 +21,7 @@ import epos.main.java.vo.Flavor;
 @ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=true)
 public class UpdateFlavorAction extends Action {
 
+	public static Logger log = Logger.getLogger(UpdateFlavorAction.class);
 	private FlavorService flavorService = Env.getBean("flavorService");
 	@Override
 	public JSONObject excute(HttpServletRequest request,
@@ -41,6 +44,7 @@ public class UpdateFlavorAction extends Action {
 		} catch (Exception e) {
 			returnObj.put(MSG, ADD_FAILURE + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}

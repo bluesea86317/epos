@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import epos.main.java.annotation.ActionAuthFilterConfig;
@@ -19,6 +21,7 @@ import epos.main.java.vo.ItemOrder;
 @ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=false)
 public class CancelItemAction extends Action {
 
+	public static Logger log = Logger.getLogger(CancelItemAction.class);
 	private OrderService orderService = Env.getBean("orderService");
 	
 	@Override
@@ -41,7 +44,7 @@ public class CancelItemAction extends Action {
 		} catch (Exception e) {
 			returnObj.put(MSG, "退菜失败, 错误信息: " + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}

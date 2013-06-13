@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import epos.main.java.annotation.ActionAuthFilterConfig;
@@ -21,6 +23,8 @@ public class UpdateItemTypeAction extends Action {
 
 private ItemTypeService itemTypeService = Env.getBean("itemTypeService");
 	
+	public static Logger log = Logger.getLogger(UpdateItemTypeAction.class);
+
 	@Override
 	public JSONObject excute(HttpServletRequest request,
 			HttpServletResponse response, JSONObject jsonParam,
@@ -44,6 +48,7 @@ private ItemTypeService itemTypeService = Env.getBean("itemTypeService");
 		} catch (Exception e) {
 			returnObj.put(MSG, UPDATE_FAILURE + e.getMessage());
 			returnObj.put("resultCode", Return.PROCESS_RESULT_FAILURE);
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}

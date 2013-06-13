@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Logger;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -22,6 +23,7 @@ import epos.main.java.vo.ItemSumCountVo;
 @ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=true)
 public class QueryItemSumCountAction extends Action {
 
+	public static Logger log = Logger.getLogger(QueryItemSumCountAction.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
 	private StatisticsService statisticsService = Env.getBean("statisticsService");
 	@Override
@@ -41,7 +43,7 @@ public class QueryItemSumCountAction extends Action {
 		} catch (Exception e) {
 			returnObj.put(MSG, QUERY_FAILURE + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}

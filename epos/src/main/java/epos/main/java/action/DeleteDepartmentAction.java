@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import epos.main.java.annotation.ActionAuthFilterConfig;
@@ -18,6 +20,7 @@ import epos.main.java.service.DepartmentService;
 @ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=true)
 public class DeleteDepartmentAction extends Action {
 
+	public static Logger log = Logger.getLogger(DeleteDepartmentAction.class);
 	private DepartmentService departmentService = Env.getBean("departmentService");
 	@Override
 	public JSONObject excute(HttpServletRequest request,
@@ -35,7 +38,7 @@ public class DeleteDepartmentAction extends Action {
 		} catch (Exception e) {
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
 			returnObj.put(MSG, DELETE_FAILURE + e.getMessage());
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}

@@ -15,6 +15,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -30,6 +31,8 @@ import epos.main.java.vo.User;
 
 public class ActionServlet extends HttpServlet {
 
+	public static Logger log = Logger.getLogger(ActionServlet.class);
+	
 	private static final long serialVersionUID = 1L;
 	
 	Map<String,ActionConfig> configMap = new HashMap<String,ActionConfig>();
@@ -66,8 +69,6 @@ public class ActionServlet extends HttpServlet {
 			Element rootNode = doc.getRootElement();
 //			初始化actionConfig		
 			this.initializeActionConfig(rootNode);
-//			初始化数据库连接
-//			this.initializeDataSource(rootNode);
 			
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
@@ -94,30 +95,26 @@ public class ActionServlet extends HttpServlet {
 //			将处理结果通过json字符串格式返回给客户端
 			returnResult(request, response, actionConfig, jsonParam);			
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NonActionForRequstException e) {
 //			直接将错误日志通过response返回给客户端
 			e.outPrint(response);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		} catch (ParameterErrorException e) {			
 			e.outPrint(response);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		} catch (UserNameOrPasswordWrongException e) {
 			e.outPrint(response);
-			e.printStackTrace();
+			log.error(e.getMessage());			
 		} catch (UnauthorizedException e) {
 			e.outPrint(response);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 	
@@ -205,7 +202,7 @@ public class ActionServlet extends HttpServlet {
 	 */
 	private void initializeActionConfig(Element rootNode){
 		List<?> nodesList = rootNode.selectNodes("action-mapping/action");
-		System.out.println("初始化actionConfig开始");
+		log.info("初始化actionConfig开始");
 		for(Object node : nodesList){
 //			加载actionConfig
 			ActionConfig actionConfig = new ActionConfig();
@@ -228,7 +225,7 @@ public class ActionServlet extends HttpServlet {
 			actionConfig.setActionForward(forward);
 			configMap.put(actionPath,actionConfig);
 		}
-		System.out.println("初始化actionConfig结束");
+		log.info("初始化actionConfig结束");
 	}
 	
 }

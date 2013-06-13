@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONObject;
 import epos.main.java.core.Action;
 import epos.main.java.core.Env;
@@ -14,6 +16,7 @@ import epos.main.java.vo.User;
 
 public class UserLoginAction extends Action {
 
+	public static Logger log = Logger.getLogger(UserLoginAction.class);
 	private UserService userService = Env.getBean("userService");
 	@Override
 	public JSONObject excute(HttpServletRequest request,
@@ -31,9 +34,9 @@ public class UserLoginAction extends Action {
 				throw new Exception("用户名或者密码错误");
 			}
 		} catch (Exception e) {
-			returnObj.put(MSG, "登录失败,错误信息" + e.getMessage());
+			returnObj.put(MSG, "登录失败,错误信息: " + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}

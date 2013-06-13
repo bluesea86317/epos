@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Logger;
 
 import epos.main.java.annotation.ActionAuthFilterConfig;
 import epos.main.java.core.Action;
@@ -21,6 +22,7 @@ import epos.main.java.service.StatisticsService;
 @ActionAuthFilterConfig(needAuthorize=true, mustBeAdmin=true)
 public class QuerySumDiscountedPriceAction extends Action {
 
+	public static Logger log = Logger.getLogger(QuerySumDiscountedPriceAction.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");	
 	private StatisticsService statisticsService = Env.getBean("statisticsService");
 	@Override
@@ -38,7 +40,7 @@ public class QuerySumDiscountedPriceAction extends Action {
 		} catch (Exception e) {
 			returnObj.put(MSG, QUERY_FAILURE + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return returnObj;
 	}
