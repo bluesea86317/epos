@@ -2,11 +2,13 @@ package epos.main.java.core;
 
 import java.io.Serializable;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class Env {
+	public static Logger log = Logger.getLogger(Env.class);
 	
 	public final static String CONFIG_FILE = "spring-context.xml";
 	
@@ -29,8 +31,7 @@ public class Env {
 				long start = System.currentTimeMillis();
 				context = new ClassPathXmlApplicationContext(CONFIG_FILE);
 				long timespan = System.currentTimeMillis() - start;
-				System.out.println("spring context loaded. " + timespan + " millis");
-//				if (LOG.isInfoEnabled()) LOG.info("spring context loaded. " + timespan + " millis");
+				log.info("spring context loaded. " + timespan + " millis");
 			}
 		}
 	}
