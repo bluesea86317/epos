@@ -216,25 +216,25 @@ public class TableService {
 	
 	
 	
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void addTables(List<Table> tables) throws Exception{
 		for(Table table : tables){
 			if(getTableByTableNo(table.getTableNo()) != null){
 				throw new Exception("编号为'" + table.getTableNo() +"'的桌台已经存在, 不能再添加同样编号的桌台");
 			}
+			tableDao.addTable(table);
 		}
-		tableDao.addTables(tables);
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	public void updateTables(List<Table> tables) throws Exception{
 		for(Table table : tables){
 			Table existTable = getTableByTableNo(table.getTableNo());
 			if(existTable != null && existTable.getTableId() != table.getTableId()){
 				throw new Exception("编号为'" + table.getTableNo() +"'的桌台已经存在, 不能修改成与其相同的编号");
 			}
+			tableDao.updateTables(table);
 		}
-		tableDao.updateTables(tables);
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)

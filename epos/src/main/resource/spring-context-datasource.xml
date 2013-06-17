@@ -44,11 +44,41 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="password">
 			<value>${password}</value>
 		</property>
+		<property name="minIdle">
+			<value>5</value>
+		</property>
+		<property name="maxActive">
+			<value>30</value>
+		</property>
 		<property name="initialSize">
 			<value>${initialSize}</value>
 		</property>
-		<!-- <property name="defaultAutoCommit">
-			<value>false</value>
-		</property> -->
+		<!--removeAbandoned: 是否自动回收超时连接-->    
+        <property name="removeAbandoned">
+        	<value>true</value>
+        </property>
+        <!--removeAbandonedTimeout: 超时时间(以秒数为单位)-->    
+        <property name="removeAbandonedTimeout">
+        	<value>30</value>
+        </property>  
+        <property name="logAbandoned">
+        	<value>true</value>
+        </property>
+        <property name="timeBetweenEvictionRunsMillis">
+        	<value>10000</value>
+        </property> 
+        <property name="minEvictableIdleTimeMillis">
+        	<value>10000</value>
+        </property> 
+        <property name="testWhileIdle">
+        	<value>true</value>
+        </property> 
+        <property name="validationQuery">
+        	<value>select 1</value>
+        </property>
+        <!--maxWait: 超时等待时间以毫秒为单位 1000等于60秒-->  
+        <!-- <property name="maxWait">
+        	<value>1000</value>
+        </property> -->
 	</bean>
 </beans>

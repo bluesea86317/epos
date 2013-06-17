@@ -12,11 +12,8 @@ public class User {
 	
 	private String mobile;
 	
-	private boolean isAdmin;
+	private boolean adminFlag;
 	
-
-	
-
 	public String getUserName() {
 		return userName;
 	}
@@ -49,20 +46,20 @@ public class User {
 		this.mobile = mobile;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-
 	public int getUserId() {
 		return userId;
 	}
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public boolean isAdminFlag() {
+		return adminFlag;
+	}
+
+	public void setAdminFlag(boolean adminFlag) {
+		this.adminFlag = adminFlag;
 	}	
 	
 }

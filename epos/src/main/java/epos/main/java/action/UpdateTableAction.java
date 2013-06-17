@@ -33,6 +33,7 @@ public class UpdateTableAction extends Action {
 			for(Object obj : jsonArray){
 				JSONObject jsonObj =  JSONObject.fromObject(obj);
 				Table table = new Table();
+				table.setTableId(jsonObj.getInt("tableId"));
 				table.setTableNo(jsonObj.getInt("tableNo"));
 				table.setTableName(jsonObj.getString("tableName"));
 				table.setSeatingNum(jsonObj.getInt("seatingNum"));

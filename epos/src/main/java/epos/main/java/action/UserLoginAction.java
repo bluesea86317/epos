@@ -29,7 +29,7 @@ public class UserLoginAction extends Action {
 			User user = userService.getUserByNameAndPassword(userName, password);
 			if(user != null){
 				returnObj.put(MSG, "登录成功");
-				returnObj.put("isAdmin",user.isAdmin());
+				returnObj.put("adminFlag",user.isAdminFlag());
 			}else{
 				throw new Exception("用户名或者密码错误");
 			}

@@ -56,11 +56,10 @@ public class UploadImageServlet extends HttpServlet {
 			boolean flag = iter.hasNext();
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();
-				if (item.isFormField()) {
-                   throw new UploadImageException("不是有效的文件流请求");
-				} else {
+				if (!item.isFormField()) {
+//                   
 					if (!"".equals(item.getName())) {
-						if (item.getSize() == 0) {							
+						if (item.getSize() == 0) {
 							throw new UploadImageException("该请求中没有任何文件");
 						} else {
 							destinationFileName = writeToFile(this, item);

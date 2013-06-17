@@ -9,6 +9,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="itemName" column="fitemName" javaType="string" jdbcType="varchar"/>
 		<result property="picName" column="fpicName" javaType="string" jdbcType="varchar"/>
 		<result property="imageUrl" column="fimageUrl" javaType="string" jdbcType="varchar"/>
+		<result property="smallPicName" column="fsmallPicName" javaType="string" jdbcType="varchar"/>
+		<result property="smallImageUrl" column="fsmallImageUrl" javaType="string" jdbcType="varchar"/>
 		<result property="price" column="fprice" javaType="java.math.BigDecimal" jdbcType="decimal"/>
 		<result property="itemTypeId" column="fitemTypeId" javaType="int" jdbcType="number"/>
 		<result property="itemType" column="fitemType" javaType="string" jdbcType="varchar"/>
@@ -16,8 +18,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</resultMap>
 	
 	<insert id="addItem" parameterClass="itemClass">
-		insert into t_item (fitemName, fpicName, fimageUrl, fprice, fitemTypeId, fflavorIds)
-		values (#itemName#, #picName#, #imageUrl#, #price#, #itemTypeId#, #flavorIds#)
+		insert into t_item (fitemName, fpicName, fimageUrl,fsmallPicName,fsmallImageUrl, fprice, fitemTypeId, fflavorIds)
+		values (#itemName#, #picName#, #imageUrl#,#smallPicName#,#smallImageUrl#, #price#, #itemTypeId#, #flavorIds#)
 	</insert>
 	
 	<select id="listItems" parameterClass="java.util.Map" resultMap="itemMap">
@@ -41,6 +43,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 			fitemName = #itemName#, 
 			fpicName = #picName#, 
 			fimageUrl = #imageUrl#,
+			fsmallPicName = #smallPicName#,
+			fsmallImageUrl = #smallImageUrl#,
 			fprice = #price#,
 			fitemTypeId = #itemTypeId#,
 			fflavorIds = #flavorIds#

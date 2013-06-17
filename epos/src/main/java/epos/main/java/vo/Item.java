@@ -13,6 +13,10 @@ public class Item {
 	
 	private String imageUrl;
 	
+	private String smallPicName;
+	
+	private String smallImageUrl;
+	
 	private BigDecimal price;
 	
 	private int itemTypeId;
@@ -109,6 +113,22 @@ public class Item {
 
 	public void setFlavorIds(String flavorIds) {
 		this.flavorIds = flavorIds;
+	}
+
+	public String getSmallPicName() {
+		return smallPicName;
+	}
+
+	public void setSmallPicName(String smallPicName) {
+		this.smallPicName = smallPicName;
+	}
+
+	public String getSmallImageUrl() {
+		return smallImageUrl;
+	}
+
+	public void setSmallImageUrl(String smallImageUrl) {
+		this.smallImageUrl = smallImageUrl;
 	}	
 	
 }

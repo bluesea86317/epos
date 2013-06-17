@@ -12,12 +12,20 @@ import epos.main.java.vo.Table;
 
 public class TableDao extends SqlMapClientDaoSupport {
 	
+	public void addTable(Table table){
+		getSqlMapClientTemplate().insert("Table.addTable", table);
+	}
+	
 	public void addTables(List<Table> tables){
 		DBUtils.excuteBatchInsert(getSqlMapClientTemplate(), "Table.addTable", tables);
 	}
 	
 	public void deleteTables(List<Integer> tableNOs){
 		DBUtils.excuteBatchDelete(getSqlMapClientTemplate(), "Table.deleteTable", tableNOs);
+	}
+	
+	public void updateTables(Table table){
+		getSqlMapClientTemplate().update("Table.updateTable", table);
 	}
 	
 	public void updateTables(List<Table> tables){

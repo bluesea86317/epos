@@ -153,7 +153,7 @@ public class ActionServlet extends HttpServlet {
 			User user = userService.getUserByNameAndPassword(userName, password);
 			if(StringUtils.isBlank(userName) || StringUtils.isBlank(password) || user == null){
 				throw new UserNameOrPasswordWrongException("用户名或者密码错误");
-			}else if(annotation.mustBeAdmin() && !user.isAdmin()){
+			}else if(annotation.mustBeAdmin() && !user.isAdminFlag()){
 				throw new UnauthorizedException("该用户没有此操作权限");
 			}
 		}

@@ -10,7 +10,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="password" column="fpassword" javaType="string" jdbcType="varchar"/>
 		<result property="realName" column="frealName" javaType="string" jdbcType="varchar"/>
 		<result property="mobile" column="fmobile" javaType="string" jdbcType="varchar"/>
-		<result property="isAdmin" column="fisAdmin" javaType="boolean" jdbcType="number"/>
+		<result property="adminFlag" column="fisAdmin" javaType="boolean" jdbcType="number"/>
 	</resultMap>
 	
 	
@@ -27,7 +27,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</select>
 	
 	<insert id="addUser" parameterClass="userClass">
-		insert into t_user (fuserName,fpassword,frealName,fmobile,fisAdmin) values(#userName#,password(#password#),#realName#,#mobile#,#isAdmin# )
+		insert into t_user (fuserName,fpassword,frealName,fmobile,fisAdmin) values(#userName#,password(#password#),#realName#,#mobile#,#adminFlag# )
 	</insert>
 	
 	<update id="updateUser" parameterClass="userClass">
@@ -35,7 +35,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		fuserName = #userName#,
 		frealName = #realName#,
 		fmobile = #mobile#,
-		fmobile = #isAdmin#
+		fisAdmin = #adminFlag#
 		where fid = #userId#
 	</update>
 	

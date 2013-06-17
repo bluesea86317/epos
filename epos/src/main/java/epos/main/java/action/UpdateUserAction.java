@@ -37,14 +37,14 @@ public class UpdateUserAction extends Action {
 				String password = jsonObj.getString("password");
 				String realName = jsonObj.getString("realName");
 				String mobile = jsonObj.getString("mobile");
-				boolean isAdmin = jsonObj.getBoolean("isAdmin");
+				boolean adminFlag = jsonObj.getBoolean("adminFlag");
 				User user = new User();
 				user.setUserId(userId);
 				user.setUserName(userName);
 				user.setPassword(password);
 				user.setRealName(realName);
 				user.setMobile(mobile);
-				user.setAdmin(isAdmin);
+				user.setAdminFlag(adminFlag);
 				users.add(user);
 			}
 			userService.updateUsers(users);

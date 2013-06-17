@@ -38,7 +38,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 			set ftableNo = #tableNo#,
 				ftableName = #tableName#, 
 				fseatingNum = #seatingNum#
-			where ftableNo = #tableNo#
+			where fid = #tableId#
 	</update>
 	
 	<update id="changeTableStatus" parameterClass="java.util.Map">

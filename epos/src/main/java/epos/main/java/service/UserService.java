@@ -39,8 +39,8 @@ public class UserService {
 			if(this.getUserByName(user.getUserName()) != null){
 				throw new Exception("已经存在账号为'" + user.getUserName() + "'的用户, 不能重复添加");
 			}
+			userDao.addUser(user);
 		}
-		userDao.addUsers(users);
 	}
 	
 	public void updateUser(User user){
@@ -54,8 +54,8 @@ public class UserService {
 			if(existUser != null && user.getUserId() != existUser.getUserId()){
 				throw new Exception("已经存在账号为'" + user.getUserName() + "'的用户, 不能修改成与其同名的账号");
 			}
+			userDao.updateUser(user);
 		}
-		userDao.updateUsers(users);
 	}
 	
 	public void deleteUser(int userId){

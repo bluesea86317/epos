@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import net.sf.json.JSONArray;
@@ -40,8 +41,14 @@ public class UpdateItemAction extends Action{
 				item.setItemName(jsonObj.getString("itemName"));
 				item.setItemTypeId(jsonObj.getInt("itemTypeId"));
 				item.setPicName(jsonObj.getString("picName"));
+				item.setSmallPicName(jsonObj.getString("smallPicName"));
+				if(StringUtils.isNotBlank(jsonObj.getString("picName"))){
+					item.setImageUrl(IMAGE_PATH + jsonObj.getString("picName"));					
+				}
+				if(StringUtils.isNotBlank(jsonObj.getString("smallPicName"))){
+					item.setSmallImageUrl(IMAGE_PATH + jsonObj.getString("smallPicName"));					
+				}
 				item.setPrice(new BigDecimal(jsonObj.getString("price")));
-				item.setImageUrl(IMAGE_PATH + jsonObj.getString("picName"));
 				item.setFlavorIds(jsonObj.getString("flavorChoice"));
 				items.add(item);
 			}
