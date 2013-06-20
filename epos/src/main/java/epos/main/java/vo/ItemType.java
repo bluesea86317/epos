@@ -7,6 +7,8 @@ public class ItemType {
 	private String itemType;
 	
 	private int departmentId;
+	
+	private String departmentName;
 
 	public int getItemTypeId() {
 		return itemTypeId;
@@ -30,6 +32,14 @@ public class ItemType {
 
 	public void setDepartmentId(int departmentId) {
 		this.departmentId = departmentId;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 	
 	

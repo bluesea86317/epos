@@ -45,6 +45,10 @@ public class TableService {
 		if(table.getTableStatus() != Table.STATUS_FREE){
 			throw new Exception("该桌台还有顾客在使用,现在不能开台");
 		}
+		if(null != getBillService().queryUnPaidBillByTableNo(tableNo)){
+			throw new Exception("该桌台还有菜单未结账,现在不能开台");
+		}
+		
 		String billNo = billService.createBillNo(tableNo);
 		
 		List<ItemOrder> deaultItemOrders = new ArrayList<ItemOrder>();

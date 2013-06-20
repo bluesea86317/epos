@@ -54,7 +54,7 @@ public class BillService {
 		List<Bill> bills = billDao.queryUnPaidBillByTableNo(tableNo);
 		if(bills != null && bills.size() > 0){
 			if(bills.size() > 1){
-				throw new Exception(tableNo + "号餐台还没有结账");
+				throw new Exception("数据异常，" + tableNo + "号桌台存在两笔以上的菜单未结账");
 			}else{
 				return bills.get(0);
 			}
