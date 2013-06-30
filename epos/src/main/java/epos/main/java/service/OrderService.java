@@ -49,6 +49,9 @@ public class OrderService {
 			if(item == null){
 				throw new Exception("编号为"+appendItemOrder.getItemId()+"的菜品不存在，无法点菜");
 			}
+			if(appendItemOrder.getItemCount() < 1){
+				throw new Exception(item.getItemName() + "这道菜不能小于1份");
+			}
 			BigDecimal price = item.getPrice().multiply(new BigDecimal(appendItemOrder.getItemCount()));
 			appendItemOrder.setPrice(price);
 			appendItemOrder.setBillNo(bill.getBillNo());

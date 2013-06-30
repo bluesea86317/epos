@@ -77,6 +77,7 @@
 		<!-- sysParam -->
 		<action class="epos.main.java.action.SetIfCanOrderAction" path="setIfCanOrder"></action>
 		<action class="epos.main.java.action.QueryIfCanOrderAction" path="queryIfCanOrder"></action>
+		<action class="epos.main.java.action.SetDefaultItemPriceAction" path="setDefaultItemPrice"></action>
 		<!-- sysParam -->
 	</action-mapping>
 </mvc-config>

@@ -26,12 +26,15 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		select i.*, it.fitemType from t_item i left join t_item_type it on i.fitemTypeId = it.fid
 		<dynamic prepend="where">
 			<isNotNull prepend="and" property="itemName">
-				fitemName like #itemName#
+				i.fitemName like #itemName#
 			</isNotNull>
 			<isNotNull prepend="and" property="itemTypeId">
-				fitemTypeId = #itemTypeId#
+				i.fitemTypeId = #itemTypeId#
 			</isNotNull>
-		</dynamic>		
+			<isNotNull prepend="and" property="excludeItemId">
+				i.fid != #excludeItemId#
+			</isNotNull>
+		</dynamic>
 	</select>
 	
 	<delete id="deleteItem" parameterClass="int">

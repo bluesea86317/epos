@@ -22,6 +22,8 @@ public class Bill {
 		public final static int BILL_STATUS_NEW = 0;
 		public final static int BILL_STATUS_PAID = 1;
 		
+	private int customerNum;
+		
 	public int getBillId() {
 		return billId;
 	}
@@ -63,5 +65,11 @@ public class Bill {
 	}
 	public void setBillStatus(int billStatus) {
 		this.billStatus = billStatus;
+	}
+	public int getCustomerNum() {
+		return customerNum;
+	}
+	public void setCustomerNum(int customerNum) {
+		this.customerNum = customerNum;
 	}
 }

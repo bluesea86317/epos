@@ -23,8 +23,8 @@ public class ItemDao extends SqlMapClientDaoSupport {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Item> listItems(){
-		return (List<Item>)getSqlMapClientTemplate().queryForList("Item.listItems");
+	public List<Item> listItems(Map<String,Object> param){
+		return (List<Item>)getSqlMapClientTemplate().queryForList("Item.listItems",param);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import epos.main.java.core.Env;
 import epos.main.java.dao.FlavorDao;
 import epos.main.java.dao.ItemDao;
 import epos.main.java.vo.Flavor;
@@ -15,6 +16,7 @@ public class ItemService {
 
 	private ItemDao itemDao;
 	private FlavorDao flavorDao;
+	private EposConfigService eposConfigService = Env.getBean("eposConfigService");
 	
 	public void addItems(List<Item> items){
 		getItemDao().addItems(items);
@@ -29,7 +31,10 @@ public class ItemService {
 	}
 	
 	public List<Item> listAllItems(){
-		List<Item> items = getItemDao().listItems();
+		Map<String,Object> param = new HashMap<String,Object>();
+		int excludeItemId = Integer.parseInt(eposConfigService.getProperty("defaultItemIds"));
+		param.put("excludeItemId", excludeItemId);
+		List<Item> items = getItemDao().listItems(param);
 //		设置菜品的口味类型
 		setFlavorsToItem(items);
 		return items;
@@ -43,6 +48,8 @@ public class ItemService {
 	public List<Item> listItemsByItemType(int itemTypeId){
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("itemTypeId", itemTypeId);
+		int excludeItemId = Integer.parseInt(eposConfigService.getProperty("defaultItemIds"));
+		param.put("excludeItemId", excludeItemId);
 		List<Item> items = getItemDao().listItemsBySearch(param);
 //		设置菜品的口味类型
 		setFlavorsToItem(items);
@@ -57,6 +64,8 @@ public class ItemService {
 	public List<Item> listItemsByItemName(String itemName){
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("itemName", "%"+itemName+"%");
+		int excludeItemId = Integer.parseInt(eposConfigService.getProperty("defaultItemIds"));
+		param.put("excludeItemId", excludeItemId);
 		List<Item> items = getItemDao().listItemsBySearch(param);
 //		设置菜品的口味类型
 		setFlavorsToItem(items);

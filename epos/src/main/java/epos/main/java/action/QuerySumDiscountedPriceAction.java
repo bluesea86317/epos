@@ -34,7 +34,8 @@ public class QuerySumDiscountedPriceAction extends Action {
 			String endDateStr = jsonParam.getString("endDate");
 			Date beginDate = sdf.parse(beginDateStr);
 			Date endDate = DateUtils.addDays(sdf.parse(endDateStr), 1);
-			BigDecimal totalMoney = statisticsService.querySumDiscountedPrice(beginDate, endDate);			
+			BigDecimal totalMoney = statisticsService.querySumDiscountedPrice(beginDate, endDate);
+			totalMoney = totalMoney == null ? BigDecimal.ZERO : totalMoney;
 			returnObj.put("totalMoney", totalMoney);
 			returnObj.put(MSG, QUERY_SUCCESS);
 		} catch (Exception e) {

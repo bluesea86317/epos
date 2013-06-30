@@ -1,5 +1,6 @@
 package epos.main.java.vo;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,6 +19,8 @@ public class ItemOrderVo extends ItemOrder{
 	private String printerInfo;
 	
 	private String flavorType;
+	
+	private BigDecimal itemPrice;
 
 	private Date createTime;
 	
@@ -76,6 +79,14 @@ public class ItemOrderVo extends ItemOrder{
 
 	public void setFlavorType(String flavorType) {
 		this.flavorType = flavorType;
+	}
+	
+	public BigDecimal getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(BigDecimal itemPrice) {
+		this.itemPrice = itemPrice;
 	}
 	
 	public static void main(String[] args) {

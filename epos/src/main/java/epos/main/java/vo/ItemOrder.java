@@ -123,5 +123,4 @@ public class ItemOrder {
 	public void setFlavorId(int flavorId) {
 		this.flavorId = flavorId;
 	}	
-	
 }

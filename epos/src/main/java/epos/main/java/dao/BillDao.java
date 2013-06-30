@@ -51,5 +51,9 @@ public class BillDao extends SqlMapClientDaoSupport {
 	public Bill getBillByNo(String billNo) {		
 		return (Bill)getSqlMapClientTemplate().queryForObject("Bill.getBillByNo", billNo);
 	}
+
+	public void updateCustomerNum(Map<String, Object> param) {
+		getSqlMapClientTemplate().update("Bill.updateCustomerNum", param);		
+	}
 	
 }

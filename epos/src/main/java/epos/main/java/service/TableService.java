@@ -92,6 +92,7 @@ public class TableService {
 		bill.setTableNo(tableNo);
 		bill.setTotalPrice(totalPrice);
 		bill.setDiscountPrice(totalPrice);
+		bill.setCustomerNum(customerNum);
 //		创建默认的菜单项， 比如茶位费等
 		itemOrderService.addItemOrders(deaultItemOrders);
 //		创建订单
@@ -209,6 +210,7 @@ public class TableService {
 			for(ItemOrder itemOrder : itemOrders){
 				bill.setTotalPrice(bill.getTotalPrice().add(itemOrder.getPrice()));
 			}
+			bill.setCustomerNum(bill.getCustomerNum() + combineBill.getCustomerNum());
 //			修改被合并桌台的订单号
 			itemOrderService.updateBillNo(combinedTableNo,combineBill.getBillNo(),bill.getBillNo());
 		}
@@ -216,6 +218,8 @@ public class TableService {
 		billService.deleteBillByBillNos(combineBillNos);
 //		修改并台后的订单价格
 		billService.updateTotalPrice(bill.getTotalPrice(), bill.getBillNo());
+//		修改桌台总人数
+		billService.updateCustomerNum(bill.getCustomerNum(), bill.getBillNo());
 	}
 	
 	
