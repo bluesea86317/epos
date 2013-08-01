@@ -27,10 +27,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		select it.*,d.fdepartmentName from t_item_type it left join t_department d on it.fdepartmentId = d.fid
 		<dynamic prepend="where">
 			<isNotNull prepend="and" property="itemTypeId">
-				fid = #itemTypeId#
+				it.fid = #itemTypeId#
 			</isNotNull>
 			<isNotNull prepend="and" property="departmentId">
-				fdepartmentId = #departmentId#
+				it.fdepartmentId = #departmentId#
 			</isNotNull>
 		</dynamic>
 	</select>

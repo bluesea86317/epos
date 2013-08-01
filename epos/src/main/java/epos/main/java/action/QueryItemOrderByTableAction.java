@@ -1,6 +1,7 @@
 package epos.main.java.action;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,15 +31,28 @@ public class QueryItemOrderByTableAction extends Action {
 			JSONObject returnObj) throws IOException {
 		try {
 			int tableNo = jsonParam.getInt("tableNo");
+			boolean listAll = true;
+			try {
+				listAll = jsonParam.getBoolean("listAll");				
+			} catch (Exception e) {
+				log.debug(e.getMessage());
+			}
 			Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
 			if(bill == null){
 				throw new Exception("该桌台还未点菜,或者已经买单");
 			}
-			List<ItemOrderVo> itemOrderVos = itemOrderService.queryItemOrderVoByBillNo(bill.getBillNo());
+			List<ItemOrderVo> itemOrderVos = new ArrayList<ItemOrderVo>();
+			if(listAll){
+				itemOrderVos = itemOrderService.queryItemOrderVoByBillNo(bill.getBillNo());
+			}else{
+				itemOrderVos = itemOrderService.queryItemOrderVoByBillNoTableNo(bill.getBillNo(), tableNo);
+			}
 			JSONArray jsonArray = new JSONArray();
-			jsonArray.addAll(itemOrderVos);
-			returnObj.put(DATA, jsonArray);
 			returnObj.put(MSG, QUERY_SUCCESS);
+			returnObj.put("totalPrice", bill.getTotalPrice());
+			returnObj.put("discountPrice", bill.getDiscountPrice());
+			jsonArray.addAll(itemOrderVos);			
+			returnObj.put(DATA, jsonArray);
 		} catch (Exception e) {
 			returnObj.put(MSG, QUERY_FAILURE + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);

@@ -199,6 +199,10 @@ public class TableService {
 			
 //			获取要并台的订单
 			Bill combineBill = billService.queryUnPaidBillByTableNo(combinedTableNo);
+			if(combineBill.getTableNo() != combinedTableNo){
+				throw new Exception(combinedTableNo + "号已经合并到了" + combineBill.getTableNo() + "号台，不能再做并台操作");
+			}
+			
 			if(combinedTableNo == newTableNo || bill.getBillNo().equals(combineBill.getBillNo())){
 				continue;
 			}

@@ -32,7 +32,10 @@ public class ItemOrder {
 	
 	private String billNo;
 	
-//	private Date createTime;
+//	菜单类型， 1代表点菜或者加菜   0代表退菜
+	private int orderType = ORDER_TYPE_BOOK;
+		public final static int ORDER_TYPE_BOOK = 1;
+		public final static int ORDER_TYPE_CANCEL = 0;
 
 	
 	public int getItemOrderId() {
@@ -74,16 +77,6 @@ public class ItemOrder {
 	public void setProvidingStatus(int providingStatus) {
 		this.providingStatus = providingStatus;
 	}
-
-
-//	public Date getCreateTime() {
-//		return createTime;
-//	}
-//
-//	public void setCreateTime(Date createTime) {
-//		this.createTime = createTime;
-//	}
-
 	public int getPaymentStatus() {
 		return paymentStatus;
 	}
@@ -122,5 +115,13 @@ public class ItemOrder {
 
 	public void setFlavorId(int flavorId) {
 		this.flavorId = flavorId;
+	}
+
+	public int getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(int orderType) {
+		this.orderType = orderType;
 	}	
 }

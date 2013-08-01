@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import epos.main.java.core.Env;
 import epos.main.java.dao.FlavorDao;
@@ -76,6 +78,7 @@ public class ItemService {
 	 * 设置菜品口味对象
 	 * @param items
 	 */
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
 	private void setFlavorsToItem(List<Item> items){
 		for(Item item : items){
 			if(StringUtils.isNotBlank(item.getFlavorIds())){
@@ -88,6 +91,15 @@ public class ItemService {
 				item.setFlavors(flavors);
 			}
 		}
+	}
+	
+	/**
+	 * 更新菜品库存状态
+	 * @param items
+	 */
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false, rollbackForClassName={"java.lang.Exception"})
+	public void updateItemReserveStatus(List<Item> items) {
+		itemDao.updateItemReserveStatus(items);
 	}
 	
 	public Item getItemById(int itemId){
@@ -109,5 +121,7 @@ public class ItemService {
 	public void setFlavorDao(FlavorDao flavorDao) {
 		this.flavorDao = flavorDao;
 	}
+
+	
 	
 }

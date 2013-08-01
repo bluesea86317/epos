@@ -26,8 +26,9 @@ public class ProvidedItemAction extends Action {
 			JSONObject returnObj) throws IOException {
 		try {
 			int tableNo = jsonParam.getInt("tableNo");
-			int itemId = jsonParam.getInt("itemId");			
-			orderService.provideItem(tableNo, itemId);
+			int itemId = jsonParam.getInt("itemId");
+			int flavorId = jsonParam.getInt("flavorId");
+			orderService.provideItem(tableNo, itemId, flavorId);
 			returnObj.put(MSG, "上菜成功");
 		} catch (Exception e) {
 			returnObj.put(MSG, "上菜失败, 错误信息: " + e.getMessage());

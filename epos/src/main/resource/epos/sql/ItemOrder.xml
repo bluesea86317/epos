@@ -27,10 +27,14 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="departmentId" column="fdepartmentId" javaType="int" jdbcType="number"/>
 		<result property="departmentName" column="fdepartmentName" javaType="string" jdbcType="varchar"/>
 		<result property="printerInfo" column="fprinterInfo" javaType="string" jdbcType="varchar"/>
-		<result property="createTime" column="fcreateTime" javaType="java.util.Date" jdbcType="timestamp"/>
+		<result property="createTime" column="fcreateTime" javaType="java.util.Date" jdbcType="timestamp"/>		
 	</resultMap>
 	
-	<select id="queryItemOrderVoForPrint" resultMap="itemOrderVoMap">
+	<resultMap class="itemOrderVoClass" id="itemOrderVoMapSub" extends="itemOrderVoMap">
+		<result property="orderType" column="forderType" javaType="int" jdbcType="number"/>
+	</resultMap>
+	
+	<select id="queryItemOrderVoForPrint" resultMap="itemOrderVoMapSub">
 		select 
 			io.*, i.fitemName,i.fprice fitemPrice, it.fitemType, ifnull(d.fid,0) fdepartmentId, d.fdepartmentName, d.fprinterInfo, f.fflavorType
 			from t_item_order_forprint io 
@@ -81,13 +85,16 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 				<isNotEmpty property="itemId" prepend="and">
 					fitemId = #itemId#
 				</isNotEmpty>
+				<isNotEmpty property="flavorId" prepend="and">
+					fflavorId = #flavorId#
+				</isNotEmpty>
 			</dynamic>
 			order by fcreateTime asc
 	</select>
 	
 	<insert id="addItemOrderForPrint" parameterClass="itemOrderClass">
-		insert into t_item_order_forprint (fitemId,fitemCount,fflavorId,fprice,fprintingStatus,fprovidingStatus,fpaymentStatus,ftableNo,fbillNo,fcreateTime)
-		values (#itemId#,#itemCount#,#flavorId#,#price#,#printingStatus#,#providingStatus#,#paymentStatus#,#tableNo#,#billNo#,now())
+		insert into t_item_order_forprint (fitemId,fitemCount,fflavorId,fprice,fprintingStatus,fprovidingStatus,fpaymentStatus,ftableNo,fbillNo,fcreateTime, forderType)
+		values (#itemId#,#itemCount#,#flavorId#,#price#,#printingStatus#,#providingStatus#,#paymentStatus#,#tableNo#,#billNo#,now(),#orderType#)
 	</insert>
 	
 	<insert id="addItemOrder" parameterClass="itemOrderClass">

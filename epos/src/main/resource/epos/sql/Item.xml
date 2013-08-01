@@ -15,11 +15,12 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="itemTypeId" column="fitemTypeId" javaType="int" jdbcType="number"/>
 		<result property="itemType" column="fitemType" javaType="string" jdbcType="varchar"/>
 		<result property="flavorIds" column="fflavorIds" javaType="string" jdbcType="varchar"/>
+		<result property="itemReserveStatus" column="fitemReserveStatus" javaType="int" jdbcType="number"/>		
 	</resultMap>
 	
 	<insert id="addItem" parameterClass="itemClass">
-		insert into t_item (fitemName, fpicName, fimageUrl,fsmallPicName,fsmallImageUrl, fprice, fitemTypeId, fflavorIds)
-		values (#itemName#, #picName#, #imageUrl#,#smallPicName#,#smallImageUrl#, #price#, #itemTypeId#, #flavorIds#)
+		insert into t_item (fitemName, fpicName, fimageUrl,fsmallPicName,fsmallImageUrl, fprice, fitemTypeId, fflavorIds,fitemReserveStatus)
+		values (#itemName#, #picName#, #imageUrl#,#smallPicName#,#smallImageUrl#, #price#, #itemTypeId#, #flavorIds#, #itemReserveStatus#)
 	</insert>
 	
 	<select id="listItems" parameterClass="java.util.Map" resultMap="itemMap">
@@ -41,7 +42,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		delete from t_item where fid = #itemId#
 	</delete>
 	
-	<update id="updateItem">
+	<update id="updateItem" parameterClass="itemClass">
 		update t_item set 
 			fitemName = #itemName#, 
 			fpicName = #picName#, 
@@ -50,8 +51,13 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 			fsmallImageUrl = #smallImageUrl#,
 			fprice = #price#,
 			fitemTypeId = #itemTypeId#,
-			fflavorIds = #flavorIds#
+			fflavorIds = #flavorIds#,
+			fitemReserveStatus = #itemReserveStatus#
 			where fid = #itemId#
+	</update>
+	
+	<update id="updateItemReserveStatus" parameterClass="itemClass">
+		update t_item set fitemReserveStatus = #itemReserveStatus# where fid = #itemId#
 	</update>
 	
 	<select id="getItemById" parameterClass="int" resultMap="itemMap">

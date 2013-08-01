@@ -35,6 +35,7 @@
 		<action class="epos.main.java.action.ListItemAction" path="listItem"></action>
 		<action class="epos.main.java.action.DeleteItemAction" path="deleteItem"></action>
 		<action class="epos.main.java.action.UpdateItemAction" path="updateItem"></action>
+		<action class="epos.main.java.action.ChangeItemReserveStatusAction" path="changeItemReserveStatus"></action>
 		
 		<action class="epos.main.java.action.SearchItemAction" path="searchItem"></action>
 		<!-- item -->

@@ -37,6 +37,7 @@ public class CancelItemAction extends Action {
 				itemOrder.setTableNo(jsonParam.getInt("tableNo"));
 				itemOrder.setItemId(jsonObj.getInt("itemId"));
 				itemOrder.setItemCount(jsonObj.getInt("itemCount"));
+				itemOrder.setFlavorId(jsonObj.getInt("flavorId"));
 				itemOrders.add(itemOrder);
 			}
 			orderService.cancelItem(itemOrders,jsonParam.getInt("tableNo"));

@@ -23,6 +23,11 @@ public class Item {
 	
 	private String itemType;
 	
+	private int itemReserveStatus;
+	
+		public final static int ITEM_RESERVE_STATUS_ENOUGH = 1;
+		public final static int ITEM_RESERVE_STATUS_LACK = 0;
+	
 //	private boolean ifCanOrderHalf;
 	
 	/**
@@ -129,6 +134,14 @@ public class Item {
 
 	public void setSmallImageUrl(String smallImageUrl) {
 		this.smallImageUrl = smallImageUrl;
+	}
+
+	public int getItemReserveStatus() {
+		return itemReserveStatus;
+	}
+
+	public void setItemReserveStatus(int itemReserveStatus) {
+		this.itemReserveStatus = itemReserveStatus;
 	}	
 	
 }

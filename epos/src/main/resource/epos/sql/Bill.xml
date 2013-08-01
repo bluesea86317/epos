@@ -12,7 +12,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="tableNo" column="ftableNo" javaType="int" jdbcType="number"/>
 		<result property="paymentTime" column="fpaymentTime" javaType="java.util.Date" jdbcType="timestamp"/>
 		<result property="billStatus" column="fbillStatus" javaType="int" jdbcType="number"/>
-		<result property="customerNum" column="fcustomerNum" javaType="int" jdbcType="number"/>
+		<result property="customerNum" column="fcustomerNum" javaType="int" jdbcType="number" nullValue="0"/>
 	</resultMap>
 	
 	<insert id="addBill" parameterClass="billClass">

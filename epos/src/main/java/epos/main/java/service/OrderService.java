@@ -49,6 +49,9 @@ public class OrderService {
 			if(item == null){
 				throw new Exception("编号为"+appendItemOrder.getItemId()+"的菜品不存在，无法点菜");
 			}
+			if(item.getItemReserveStatus() == Item.ITEM_RESERVE_STATUS_LACK){
+				throw new Exception("对不起，菜品'"+ item.getItemName() +"'已估清，请选择其他菜品");
+			}
 			if(appendItemOrder.getItemCount() < 1){
 				throw new Exception(item.getItemName() + "这道菜不能小于1份");
 			}
@@ -57,9 +60,10 @@ public class OrderService {
 			appendItemOrder.setBillNo(bill.getBillNo());
 			appendItemOrder.setPrintingStatus(ItemOrder.PRINTING_STATUS_NO);
 			appendItemOrder.setProvidingStatus(ItemOrder.PROVIDING_STATUS_NO);
-			appendItemOrder.setPaymentStatus(ItemOrder.PAYMENT_STATUS_NO);		
+			appendItemOrder.setPaymentStatus(ItemOrder.PAYMENT_STATUS_NO);
+			appendItemOrder.setOrderType(ItemOrder.ORDER_TYPE_BOOK);
 			addItemOrdersForPrint.add(appendItemOrder);
-			ItemOrder itemOrder = getItemOrderService().queryItemOrderByItemIdBillNoTableNo(appendItemOrder.getItemId(), bill.getBillNo(), tableNo);
+			ItemOrder itemOrder = getItemOrderService().queryItemOrderByItemIdBillNoTableNo(appendItemOrder.getItemId(), bill.getBillNo(), tableNo,appendItemOrder.getFlavorId());
 //			如果当前所点菜品该桌还未点过, 就是新点的菜品, 否则就是加菜
 			if(itemOrder == null){
 				bill.setTotalPrice(bill.getTotalPrice().add(price));				
@@ -98,12 +102,13 @@ public class OrderService {
 		}
 		List<ItemOrder> removeItemOrders = new ArrayList<ItemOrder>();
 		List<ItemOrder> updateItemOrders = new ArrayList<ItemOrder>();
+		List<ItemOrder> cancelItemOrdersForPrint = new ArrayList<ItemOrder>();
 		for(ItemOrder cancelItemOrder : cancelItemOrders){
 			Item item = getItemService().getItemById(cancelItemOrder.getItemId());
 			if(item == null){
 				throw new Exception("编号为"+cancelItemOrder.getItemId()+"的菜品不存在，无法退菜");
 			}
-			ItemOrder itemOrder = getItemOrderService().queryItemOrderByItemIdBillNoTableNo(cancelItemOrder.getItemId(), bill.getBillNo(), tableNo);
+			ItemOrder itemOrder = getItemOrderService().queryItemOrderByItemIdBillNoTableNo(cancelItemOrder.getItemId(), bill.getBillNo(), tableNo, cancelItemOrder.getFlavorId());
 			if(itemOrder == null){
 				throw new Exception(tableNo + "号桌台没有点'" + item.getItemName() + "'这道菜");
 			}
@@ -121,11 +126,16 @@ public class OrderService {
 				updateItemOrders.add(itemOrder);
 			}
 //			同时对订单总价格进行调整, 总价格-所退菜品的价格*所退的菜品份数
-			bill.setTotalPrice(bill.getTotalPrice().subtract(item.getPrice().multiply(new BigDecimal(cancelItemOrder.getItemCount()))));			
+			bill.setTotalPrice(bill.getTotalPrice().subtract(item.getPrice().multiply(new BigDecimal(cancelItemOrder.getItemCount()))));
+//			将要退的菜品也记录在打印队列
+			itemOrder.setOrderType(ItemOrder.ORDER_TYPE_CANCEL);
+			itemOrder.setPrintingStatus(ItemOrder.PRINTING_STATUS_NO);
+			cancelItemOrdersForPrint.add(itemOrder);
 		}
 //		删除已点菜, 或者就该已点的多份菜
 		getItemOrderService().deleteItemOrders(removeItemOrders);
 		getItemOrderService().updateItemOrderPriceAndCount(updateItemOrders);
+		getItemOrderService().addItemOrderForPrint(cancelItemOrdersForPrint);
 //		修改订单总价格
 		getBillService().updateTotalPrice(bill.getTotalPrice(), bill.getBillNo());
 	}
@@ -136,12 +146,12 @@ public class OrderService {
 	 * @param itemId
 	 * @throws Exception 
 	 */
-	public void provideItem(int tableNo, int itemId) throws Exception{
+	public void provideItem(int tableNo, int itemId, int flavorId) throws Exception{
 		Bill bill = billService.queryUnPaidBillByTableNo(tableNo);
 		if(bill == null){
 			throw new Exception("该桌台还未点餐, 或者已经结账");
 		}
-		ItemOrder itemOrder = itemOrderService.queryItemOrderByItemIdBillNoTableNo(itemId, bill.getBillNo(), tableNo);
+		ItemOrder itemOrder = itemOrderService.queryItemOrderByItemIdBillNoTableNo(itemId, bill.getBillNo(), tableNo, flavorId);
 		if(itemOrder == null){
 			throw new Exception("该桌台并没有点此菜品");
 		}

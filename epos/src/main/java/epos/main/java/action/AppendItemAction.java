@@ -59,6 +59,7 @@ public class AppendItemAction extends Action {
 			returnObj.put(MSG, "加菜失败, 错误信息: " + e.getMessage());
 			returnObj.put(RESULT_CODE, Return.PROCESS_RESULT_FAILURE);
 			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return returnObj;
 	}

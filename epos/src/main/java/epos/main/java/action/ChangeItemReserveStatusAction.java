@@ -20,17 +20,16 @@ import epos.main.java.core.Return;
 import epos.main.java.service.ItemService;
 import epos.main.java.vo.Item;
 
-@ActionAuthFilterConfig(mustBeAdmin=true, needAuthorize=true)
-public class UpdateItemAction extends Action{
+@ActionAuthFilterConfig(mustBeAdmin=false, needAuthorize=true)
+public class ChangeItemReserveStatusAction extends Action {
 
-	public static Logger log = Logger.getLogger(UpdateItemAction.class);
+	public static Logger log = Logger.getLogger(ChangeItemReserveStatusAction.class);
 	
-	private final static String IMAGE_PATH = "/images/item/";
 	private ItemService itemService = Env.getBean("itemService");
 	@Override
 	public JSONObject excute(HttpServletRequest request,
 			HttpServletResponse response, JSONObject jsonParam,
-			JSONObject returnObj) throws IOException {
+			JSONObject returnObj) throws IOException {		
 		try {
 			List<Item> items = new ArrayList<Item>();
 			JSONArray jsonArray = jsonParam.getJSONArray(DATA);
@@ -38,22 +37,10 @@ public class UpdateItemAction extends Action{
 				JSONObject jsonObj =  JSONObject.fromObject(obj);
 				Item item = new Item();
 				item.setItemId(jsonObj.getInt("itemId"));
-				item.setItemName(jsonObj.getString("itemName"));
-				item.setItemTypeId(jsonObj.getInt("itemTypeId"));
-				item.setPicName(jsonObj.getString("picName"));
-				item.setSmallPicName(jsonObj.getString("smallPicName"));
-				item.setItemReserveStatus(jsonObj.getInt("itemReserveStatus"));
-				if(StringUtils.isNotBlank(jsonObj.getString("picName"))){
-					item.setImageUrl(IMAGE_PATH + jsonObj.getString("picName"));					
-				}
-				if(StringUtils.isNotBlank(jsonObj.getString("smallPicName"))){
-					item.setSmallImageUrl(IMAGE_PATH + jsonObj.getString("smallPicName"));					
-				}
-				item.setPrice(new BigDecimal(jsonObj.getString("price")));
-				item.setFlavorIds(jsonObj.getString("flavorChoice"));
+				item.setItemReserveStatus(jsonObj.getInt("itemReserveStatus"));				
 				items.add(item);
 			}
-			itemService.updateItems(items);
+			itemService.updateItemReserveStatus(items);
 			returnObj.put(MSG, UPDATE_SUCCESS);
 		} catch (Exception e) {
 			returnObj.put(MSG, UPDATE_FAILURE + e.getMessage());

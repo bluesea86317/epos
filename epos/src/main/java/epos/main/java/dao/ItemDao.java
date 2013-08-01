@@ -35,4 +35,8 @@ public class ItemDao extends SqlMapClientDaoSupport {
 	public Item getItemById(int itemId){
 		return (Item)getSqlMapClientTemplate().queryForObject("Item.getItemById", itemId);
 	}
+
+	public void updateItemReserveStatus(List<Item> items) {
+		DBUtils.excuteBatchUpdate(getSqlMapClientTemplate(), "Item.updateItemReserveStatus", items);		
+	}
 }

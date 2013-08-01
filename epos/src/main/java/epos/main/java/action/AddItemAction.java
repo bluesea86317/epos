@@ -42,6 +42,7 @@ public class AddItemAction extends Action {
 				item.setPicName(jsonObj.getString("picName"));
 				item.setSmallPicName(jsonObj.getString("smallPicName"));
 				item.setPrice(new BigDecimal(jsonObj.getString("price")));
+				item.setItemReserveStatus(jsonObj.getInt("itemReserveStatus"));
 				if(StringUtils.isNotBlank(jsonObj.getString("picName"))){
 					item.setImageUrl(IMAGE_PATH + jsonObj.getString("picName"));					
 				}

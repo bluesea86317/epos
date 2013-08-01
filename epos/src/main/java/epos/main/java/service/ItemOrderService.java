@@ -32,11 +32,12 @@ public class ItemOrderService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
-	public ItemOrder queryItemOrderByItemIdBillNoTableNo(int itemId, String billNo, int tableNo){
+	public ItemOrder queryItemOrderByItemIdBillNoTableNo(int itemId, String billNo, int tableNo, int flavorId){
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("itemId", itemId);
 		param.put("billNo", billNo);
 		param.put("tableNo", tableNo);
+		param.put("flavorId", flavorId);
 		return itemOrderDao.queryItemOrderByItemIdBillNoTableNo(param);
 	}
 	
@@ -52,6 +53,14 @@ public class ItemOrderService {
 	public List<ItemOrderVo> queryItemOrderVoByBillNo(String billNo){
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("billNo", billNo);
+		return itemOrderDao.queryItemOrderVo(param);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
+	public List<ItemOrderVo> queryItemOrderVoByBillNoTableNo(String billNo, int tableNo){
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("billNo", billNo);
+		param.put("tableNo", tableNo);
 		return itemOrderDao.queryItemOrderVo(param);
 	}
 	
